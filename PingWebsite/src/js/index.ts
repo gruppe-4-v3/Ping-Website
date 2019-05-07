@@ -1,12 +1,3 @@
-interface Person {
-    firstName: string;
-    lastName: string;
-}
+import {Core} from '../../node_modules/phaser/src/phaser-arcade-physics'
 
-function greeter(person: Person): string {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-let user: Person = { firstName: "Emil", lastName: "Doe" };
-
-let element: HTMLDivElement = <HTMLDivElement> document.getElementById("content");
-element.innerHTML = greeter(user);
+var game = new Core.Game(800, 400, Core.Auto)
