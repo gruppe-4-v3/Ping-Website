@@ -1,5 +1,3 @@
-import {Core} from '../../node_modules/phaser/src/phaser-arcade-physics'
-
 
 function onSignIn(googleUser : any) {
     var profile = googleUser.getBasicProfile();
