@@ -86,14 +86,14 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/index.htm":
-/*!***********************!*\
-  !*** ./src/index.htm ***!
-  \***********************/
+/***/ "./src/index.html":
+/*!************************!*\
+  !*** ./src/index.html ***!
+  \************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "index.htm";
+module.exports = __webpack_require__.p + "index.html";
 
 /***/ }),
 
@@ -121,18 +121,18 @@ element.innerHTML = greeter(user);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed (from ./node_modules/sass-loader/lib/loader.js):\nError: Cannot find module 'node-sass'\n    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:581:15)\n    at Function.Module._load (internal/modules/cjs/loader.js:507:25)\n    at Module.require (internal/modules/cjs/loader.js:637:17)\n    at require (C:\\Users\\madsm\\Desktop\\Ping\\Ping-Website\\PingWebsite\\node_modules\\v8-compile-cache\\v8-compile-cache.js:159:20)\n    at Object.sassLoader (C:\\Users\\madsm\\Desktop\\Ping\\Ping-Website\\PingWebsite\\node_modules\\sass-loader\\lib\\loader.js:46:72)");
+throw new Error("Module build failed (from ./node_modules/sass-loader/lib/loader.js):\nError: Cannot find module 'node-sass'\n    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:581:15)\n    at Function.Module._load (internal/modules/cjs/loader.js:507:25)\n    at Module.require (internal/modules/cjs/loader.js:637:17)\n    at require (C:\\Users\\null\\source\\3SemProj\\Ping-Website\\PingWebsite\\node_modules\\v8-compile-cache\\v8-compile-cache.js:159:20)\n    at Object.sassLoader (C:\\Users\\null\\source\\3SemProj\\Ping-Website\\PingWebsite\\node_modules\\sass-loader\\lib\\loader.js:46:72)");
 
 /***/ }),
 
 /***/ 0:
-/*!**********************************************************************!*\
-  !*** multi ./src/index.htm ./src/scss/styles.scss ./src/js/index.ts ***!
-  \**********************************************************************/
+/*!***********************************************************************!*\
+  !*** multi ./src/index.html ./src/scss/styles.scss ./src/js/index.ts ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./src/index.htm */"./src/index.htm");
+__webpack_require__(/*! ./src/index.html */"./src/index.html");
 __webpack_require__(/*! ./src/scss/styles.scss */"./src/scss/styles.scss");
 module.exports = __webpack_require__(/*! ./src/js/index.ts */"./src/js/index.ts");
 
