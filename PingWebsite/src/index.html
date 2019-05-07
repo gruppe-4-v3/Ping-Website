@@ -17,14 +17,7 @@
       auth2.signOut().then(function () {
         console.log('User signed out.');
       });
-    }
-    function onSignIn() {
-  var auth2 = gapi.auth2.getAuthInstance();
-  console.log('ID: ' + auth2.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + auth2.getName());
-  console.log('Image URL: ' + auth2.getImageUrl());
-  console.log('Email: ' + auth2.getEmail()); // This is null if the 'email' scope is not present.
-}
+    }    
   </script>
   <script src="bundle.js"></script>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
