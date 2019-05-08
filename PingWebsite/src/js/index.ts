@@ -7,7 +7,10 @@ let config: GameConfig = {
   height: 600,
   parent: "game",
   backgroundColor: "#18216D",
-  scene: [GameScene]
+  physics: {
+    default: "arcade"
+  },
+  //scene: [GameScene]
 }
 
 let game: Phaser.Game = new Phaser.Game(config);
