@@ -16,11 +16,12 @@ let config: GameConfig = {
 let game: Phaser.Game = new Phaser.Game(config);
 
 let SignIn: HTMLDivElement = <HTMLDivElement> document.getElementById("signin");
-SignIn.addEventListener('data-onsuccess', onSignIn)
+//SignIn.addEventListener('data-onsuccess', onSignIn)
 //gapi.auth2.getAuthInstance().currentUser.get().isSignedIn()
-function onSignIn() {  
+function onSignInts() {  
   var auth2 = gapi.auth2.getAuthInstance().currentUser.get();
   var profile = auth2.getBasicProfile();
+  console.log('TS')
   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
   console.log('Name: ' + profile.getName());
   console.log('Image URL: ' + profile.getImageUrl());
