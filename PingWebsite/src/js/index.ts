@@ -14,8 +14,10 @@ let game: Phaser.Game = new Phaser.Game(config);
 
 let SignIn: HTMLDivElement = <HTMLDivElement> document.getElementById("signin");
 
-export function onSignIn(googleUser : any) {
-  var profile = googleUser.getBasicProfile();
+gapi.auth2.getAuthInstance().isSignedIn.listen(onSignIn)
+function onSignIn() {  
+  var auth2 = gapi.auth2.getAuthInstance().currentUser.get();
+  var profile = auth2.getBasicProfile();
   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
   console.log('Name: ' + profile.getName());
   console.log('Image URL: ' + profile.getImageUrl());
