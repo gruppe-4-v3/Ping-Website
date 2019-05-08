@@ -13,7 +13,10 @@ let config: GameConfig = {
   scene: [GameScene]
 }
 
-let game: Phaser.Game = new Phaser.Game(config);
+document.getElementById('startGameBtn').addEventListener('click', function() {
+  let game: Phaser.Game = new Phaser.Game(config);
+  document.getElementById('startGameBtn').remove()
+})
 
 let SignIn: HTMLDivElement = <HTMLDivElement> document.getElementById("signin");
 //SignIn.addEventListener('data-onsuccess', onSignIn)
