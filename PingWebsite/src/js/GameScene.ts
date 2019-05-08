@@ -1,4 +1,4 @@
-import { GameObjects } from 'phaser'
+import { GameObjects, Physics } from 'phaser'
 
 export class GameScene extends Phaser.Scene {
 
@@ -20,6 +20,14 @@ export class GameScene extends Phaser.Scene {
     create (): void
     {
         this.spawnBall()
+
+        // Calls function if anything touches the worldbounds
+        this.physics.world.on('worldbounds', function(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
+            // remove gameobject if it collides with the bottom of the world
+            if(down){
+                body.gameObject.destroy()
+            }
+        })
         this.cursor = this.input.keyboard.createCursorKeys();
         this.spawnPlayer();
 
@@ -66,6 +74,9 @@ export class GameScene extends Phaser.Scene {
         ballBody.bounce.x = 1
         ballBody.bounce.y = 1
         ballBody.collideWorldBounds = true
+
+        // emmits worldborder event when ball touches the border 
+        ballBody.onWorldBounds = true
     }
 
     private spawnPlayer(): void
