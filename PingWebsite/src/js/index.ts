@@ -2,7 +2,7 @@ import * as Phaser from "phaser";
 import { GameScene } from "./GameScene"
 
 let config: GameConfig = {
-  title: "Starfall",
+  title: "Ping (Name Subject to Change)",
   width: 800,
   height: 600,
   parent: "game",
