@@ -10,7 +10,7 @@ let config: GameConfig = {
   physics: {
     default: "arcade"
   },
-  //scene: [GameScene]
+  scene: [GameScene]
 }
 
 let game: Phaser.Game = new Phaser.Game(config);
