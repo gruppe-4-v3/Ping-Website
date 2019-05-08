@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import { GameScene } from "GameScene"
+import { GameScene } from "./GameScene"
 
 let config: GameConfig = {
   title: "Starfall",
