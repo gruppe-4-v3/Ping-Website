@@ -10,6 +10,8 @@ let config: GameConfig = {
 
 let game: Phaser.Game = new Phaser.Game(config);
 
+let SignIn: HTMLDivElement = <HTMLDivElement> document.getElementById("signin");
+SignIn.addEventListener('data-onsuccess', onSignIn)
 function onSignIn(googleUser : any) {
   var profile = googleUser.getBasicProfile();
   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
