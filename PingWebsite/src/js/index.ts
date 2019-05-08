@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import { GameScene } from "GameScene"
+import { GameScene } from "./GameScene"
 
 let config: GameConfig = {
   title: "Starfall",
@@ -10,7 +10,7 @@ let config: GameConfig = {
   physics: {
     default: "arcade"
   },
-  //scene: [GameScene]
+  scene: [GameScene]
 }
 
 let game: Phaser.Game = new Phaser.Game(config);
