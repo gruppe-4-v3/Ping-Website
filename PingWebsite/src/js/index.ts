@@ -1,11 +1,13 @@
 import * as Phaser from "phaser";
+import { GameScene } from "GameScene"
 
 let config: GameConfig = {
   title: "Starfall",
   width: 800,
   height: 600,
   parent: "game",
-  backgroundColor: "#18216D"
+  backgroundColor: "#18216D",
+  scene: [GameScene]
 }
 
 let game: Phaser.Game = new Phaser.Game(config);
