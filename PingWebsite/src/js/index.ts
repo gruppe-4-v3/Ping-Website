@@ -13,8 +13,8 @@ let config: GameConfig = {
 let game: Phaser.Game = new Phaser.Game(config);
 
 let SignIn: HTMLDivElement = <HTMLDivElement> document.getElementById("signin");
-
-gapi.auth2.getAuthInstance().isSignedIn.listen(onSignIn)
+SignIn.addEventListener('data-onsuccess', onSignIn)
+//gapi.auth2.getAuthInstance().currentUser.get().isSignedIn()
 function onSignIn() {  
   var auth2 = gapi.auth2.getAuthInstance().currentUser.get();
   var profile = auth2.getBasicProfile();
