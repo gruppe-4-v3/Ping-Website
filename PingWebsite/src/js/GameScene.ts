@@ -1,3 +1,5 @@
+import { GameObjects } from 'phaser'
+
 export class GameScene extends Phaser.Scene {
 
     constructor() {
@@ -14,10 +16,28 @@ export class GameScene extends Phaser.Scene {
     // Initializes all game objects and adds them to the game
     create (): void
     {
+        this.spawnBall()
     }
 
     // Updates every game tick, cointains dynamic 
     update (): void
     {
+
+    }
+
+    private spawnBall(): void {
+        let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
+        let size: number = 15
+        let colour: number = 0xff0000
+        let ball: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, size, colour)
+        
+        let object: GameObjects.GameObject = this.physics.add.existing(ball)
+        if(ball.body instanceof Phaser.Physics.Arcade.Body){
+            ball.body.velocity.x = 100
+            ball.body.velocity.y = 100
+            ball.body.bounce.x = 1
+            ball.body.bounce.y = 1
+            ball.body.collideWorldBounds = true
+        }
     }
 }
