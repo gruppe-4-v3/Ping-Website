@@ -10,12 +10,13 @@ export class GameScene extends Phaser.Scene {
 
     cursor: Phaser.Input.Keyboard.CursorKeys
     player: Phaser.GameObjects.Rectangle
-    timeText: Phaser.GameObjects.Text
+    scoreText: Phaser.GameObjects.Text
+    score: number = 0
 
     // How often a new ball spawns in seconds
     ballSpawnTime: number = 1.5
     // Time since last ball spawned
-    lastBallTime: number = 0
+    lastBallTime: number = this.ballSpawnTime
     
 
     // Loads all assets from files into memory
@@ -28,11 +29,11 @@ export class GameScene extends Phaser.Scene {
     {
         let livesRemaining = 3;
         let lifeText: GameObjects.Text;
-        this.spawnBall()
+        this.add
 
         //Adds a simple visual reference of lives remaining.
         lifeText = this.add.text(16, 16, 'Lives: '+livesRemaining, { fontSize: '32px', fill: '#f2f2f2' });
-        this.timeText = this.add.text(300, 16, '', { fontSize: '32px', fill: '#f2f2f2' })
+        this.scoreText = this.add.text(300, 16, '', { fontSize: '32px', fill: '#f2f2f2' })
 
         // Calls function if anything touches the worldbounds
         this.physics.world.on('worldbounds', function(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
@@ -55,8 +56,7 @@ export class GameScene extends Phaser.Scene {
         
 
         this.cursor = this.input.keyboard.createCursorKeys();
-        this.spawnPlayer();
-        
+        this.spawnPlayer();        
     }
 
     // Updates every game tick
@@ -65,20 +65,10 @@ export class GameScene extends Phaser.Scene {
     // delta = Time since last game tick
     update (time: number, delta: number): void
     {
-        // Time since start of game in seconds
-        let timeInSec = Math.floor(time) / 1000
         // Converts delta to seconds
         let deltaInSec = delta / 1000
         let speed = 200;
- 
-        this.lastBallTime = this.lastBallTime + deltaInSec
-        // Spawn new ball if time since last ball spawn is greater time allowd
-        if(this.lastBallTime > this.ballSpawnTime) {
-            this.spawnBall()
-            this.lastBallTime = 0
-        }
 
-        let object: GameObjects.GameObject = this.physics.add.existing(this.player)
         if(this.player.body instanceof Phaser.Physics.Arcade.Body){
             if(this.cursor.left.isDown)// move left if the left key is pressed
             {
@@ -95,7 +85,14 @@ export class GameScene extends Phaser.Scene {
             this.player.body.collideWorldBounds = true;
         }
 
-        this.timeText.text = 'Time: ' + timeInSec.toString()
+        this.lastBallTime = this.lastBallTime + deltaInSec
+        // Spawn new ball if time since last ball spawn is greater time allowd
+        if(this.lastBallTime > this.ballSpawnTime) {
+            this.spawnBall()
+            this.lastBallTime = 0
+        }
+
+        this.scoreText.text = 'Score: ' + this.score.toString()
     }
 
     // Spawns a ball object in the gamescene
@@ -119,10 +116,20 @@ export class GameScene extends Phaser.Scene {
 
         // emmits worldborder event when ball touches the border 
         ballBody.onWorldBounds = true
+
+        this.physics.add.collider(ball, this.player, this.onPlayerCollide, null, this)
+    }
+
+    private onPlayerCollide(ball: GameObjects.GameObject, player: GameObjects.GameObject){
+        ball.destroy()
+        this.score++;
     }
 
     private spawnPlayer(): void
     {
         this.player = this.add.rectangle(400, 580, 100, 10, 0xff000)
+        let playerBody: Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>this.physics.add.existing(this.player).body;
+        playerBody.onCollide = true
+        playerBody.immovable = true
     }
 }
