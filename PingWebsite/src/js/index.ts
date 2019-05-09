@@ -9,6 +9,11 @@ import { PauseScene } from "./PauseScene";
 var userID : string = "";
 var userName : string = "";
 
+/** GameConfig that contains all settings for the Phaser.Game object
+ * 
+ * See: https://photonstorm.github.io/phaser3-docs/global.html#GameConfig
+ * for a list of possible settings
+ */
 let config: GameConfig = {
   title: "Ping (Name Subject to Change)",
   width: 800,
@@ -18,16 +23,17 @@ let config: GameConfig = {
   physics: {
     default: "arcade"
   },
-  scene: [GameScene, PauseScene]
+  scene: [GameScene, PauseScene],
+  url: "https://gruppe-4-v3.github.io/Ping-Website/PingWebsite/dist/"
+  
 }
-
-document.getElementById('startGameBtn').addEventListener('click', function() {
-  let game: Phaser.Game = new Phaser.Game(config);
-  document.getElementById('startGameBtn').remove()
-})
 
 var signinbut : HTMLDivElement = <HTMLDivElement> document.getElementById("signin2");
 signinbut.addEventListener('sign', signinfunc)
+
+// starts game
+let game: Phaser.Game = new Phaser.Game(config);
+
 
 function signinfunc() {
   console.log("in ts");

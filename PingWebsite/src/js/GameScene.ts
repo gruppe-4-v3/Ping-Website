@@ -11,34 +11,36 @@ export class GameScene extends Phaser.Scene {
 
     cursor: Phaser.Input.Keyboard.CursorKeys
     player: Phaser.GameObjects.Rectangle
-    timeText: Phaser.GameObjects.Text
     pauseButton: Phaser.Input.Keyboard.Key
     
-    // Score for current game
+    /** Score for current game  */
     score: number = 0
     scoreText: Phaser.GameObjects.Text
 
-    // How often a new ball spawns in seconds
+    /** How often a new ball spawns in seconds */
     ballSpawnTime: number = 1.5
-    // Time since last ball spawned
+    /** Time since last ball spawned */
     lastBallTime: number = this.ballSpawnTime
 
-    // How fast the ball will move horizontally
-    minBallVelocityX : number = -200;
-    maxBallVelocityX : number = 200;
+    /** How fast the ball will move horizontally */
+    minBallVelocityX : number = -100;
+    maxBallVelocityX : number = 100;
 
-    // How fast the ball will fall
+    /** How fast the ball will fall */
     ballVelocityY : number = 100;
 
-    // The players speed
+    /** The players speed */
     playerSpeed : number = 300;
     
-    // Loads all assets from files into memory
+    /** Loads all assets from files into memory */
     preload (): void
     {
     }
 
-    // Initializes all game objects and adds them to the game
+    /** Initializes all game objects and adds them to the game.
+     * 
+     * Contains all code that only needs to be run one time
+     */ 
     create (): void
     {
         let livesRemaining = 3;
@@ -72,14 +74,14 @@ export class GameScene extends Phaser.Scene {
         this.pauseButton = this.input.keyboard.addKey('p');
     }
 
-    // Updates every game tick
-
-    // time = The current time in ms
-    // delta = Time since last game tick
+    /** Method that runs every game tick. Contains all code that can change dynamically
+    @param time Time since screen got loaded in ms
+    @param delta Time since last game tick
+    */
     update (time: number, delta: number): void
     {
         // Converts delta to seconds
-        let deltaInSec = delta / 1000
+        let deltaInSec: number = delta / 1000
  
         this.lastBallTime = this.lastBallTime + deltaInSec
         // Spawn new ball if time since last ball spawn is greater time allowed
@@ -119,8 +121,11 @@ export class GameScene extends Phaser.Scene {
         this.scoreText.text = 'Score: ' + this.score.toString()
     }
 
-    // Spawns a ball object in the gamescene
-    private spawnBall(): void {
+    /** 
+     * Create and adds a ball GameObject to the GameScene.
+     * @returns The new ball
+    */ 
+    private spawnBall(): GameObjects.Arc {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
         let size: number = 15;
         let color: number = 0xff0000;
@@ -143,6 +148,8 @@ export class GameScene extends Phaser.Scene {
 
         // Add collision detection between ball and player
         this.physics.add.collider(ball, this.player, this.onPlayerCollide, null, this)
+
+        return ball;
     }
 
     private onPlayerCollide(ball: GameObjects.GameObject, player: GameObjects.GameObject){
@@ -150,6 +157,7 @@ export class GameScene extends Phaser.Scene {
         this.score++;
     }
 
+    /** Create and adds a player GameObject to the GameScene*/
     private spawnPlayer(): void
     {
         this.player = this.add.rectangle(400, 580, 100, 10, 0xff000)
