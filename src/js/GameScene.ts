@@ -10,7 +10,14 @@ export class GameScene extends Phaser.Scene {
 
     cursor: Phaser.Input.Keyboard.CursorKeys
     player: Phaser.GameObjects.Rectangle
+    timeText: Phaser.GameObjects.Text
     pauseButton: Phaser.Input.Keyboard.Key
+
+    // How often a new ball spawns in seconds
+    ballSpawnTime: number = 1.5
+    // Time since last ball spawned
+    lastBallTime: number = 0
+    
 
     // Loads all assets from files into memory
     preload (): void
@@ -26,6 +33,7 @@ export class GameScene extends Phaser.Scene {
 
         //Adds a simple visual reference of lives remaining.
         lifeText = this.add.text(16, 16, 'Lives: '+livesRemaining, { fontSize: '32px', fill: '#f2f2f2' });
+        this.timeText = this.add.text(300, 16, '', { fontSize: '32px', fill: '#f2f2f2' })
 
         // Calls function if anything touches the worldbounds
         this.physics.world.on('worldbounds', function(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
@@ -45,15 +53,31 @@ export class GameScene extends Phaser.Scene {
                 }
             }
         })
+        
+
         this.cursor = this.input.keyboard.createCursorKeys();
         this.spawnPlayer();
         this.pauseButton = this.input.keyboard.addKey('p');
     }
 
-    // Updates every game tick, contains dynamic 
-    update (): void
+    // Updates every game tick
+
+    // time = The current time in ms
+    // delta = Time since last game tick
+    update (time: number, delta: number): void
     {
+        // Time since start of game in seconds
+        let timeInSec = Math.floor(time) / 1000
+        // Converts delta to seconds
+        let deltaInSec = delta / 1000
         let speed = 200;
+ 
+        this.lastBallTime = this.lastBallTime + deltaInSec
+        // Spawn new ball if time since last ball spawn is greater time allowd
+        if(this.lastBallTime > this.ballSpawnTime) {
+            this.spawnBall()
+            this.lastBallTime = 0
+        }
 
         let object: GameObjects.GameObject = this.physics.add.existing(this.player)
         if(this.player.body instanceof Phaser.Physics.Arcade.Body){
@@ -72,10 +96,7 @@ export class GameScene extends Phaser.Scene {
             this.player.body.collideWorldBounds = true;
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.pauseButton)) {
-            this.scene.launch('PauseScene');
-            this.scene.pause('GameScene');
-        }
+        this.timeText.text = 'Time: ' + timeInSec.toString()
     }
 
     // Spawns a ball object in the gamescene
@@ -91,7 +112,7 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.existing(ball)
 
         let ballBody: Phaser.Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>ball.body
-        ballBody.velocity.x = 100
+        ballBody.velocity.x = 0
         ballBody.velocity.y = 100
         ballBody.bounce.x = 1
         ballBody.bounce.y = 1
