@@ -44,10 +44,25 @@ function getUser(id : string){
 .then(function(response){
   console.log(response.data.Username); // ex.: { user: 'Your User'}
   console.log(response.status); // ex.: 200
+  if (response.data.Username != userName) {
+    postUser()
+  }
 })
 .catch(function (error:AxiosError) : void {
 console.log(error)
 });
+}
+function postUser(){
+  axios.post<IUser>('https://pingwebapi.azurewebsites.net/api/users', {Id:userID,Username:userName})
+  .then(function (response :  AxiosResponse): void
+  {
+      console.log("Statuskoden er :" + response.status);
+  })
+  .catch(
+      function (error:AxiosError) : void{                          
+          console.log(error);
+      }
+  )
 }
 
 window.onload = function(){
