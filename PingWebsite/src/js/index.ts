@@ -1,5 +1,6 @@
 import * as Phaser from "phaser";
 import { GameScene } from "./GameScene"
+import axios from "../../node_modules/axios/index"
 
 let config: GameConfig = {
   title: "Starfall",
@@ -35,4 +36,17 @@ function onSignInts1() {
   console.log('Name: ' + profile.getName());
   console.log('Image URL: ' + profile.getImageUrl());
   console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+window.onload=function(){
+  let btn = document.getElementById("globalHighscore");
+  btn.addEventListener("click", getGlobalHighscore);
+}
+
+function getGlobalHighscore(){
+  
+  axios.get('https://pingwebapi.azurewebsites.net/api/highscore')
+.then(function(response){
+  console.log(response.data); // ex.: { user: 'Your User'}
+  console.log(response.status); // ex.: 200
+});  
 }
