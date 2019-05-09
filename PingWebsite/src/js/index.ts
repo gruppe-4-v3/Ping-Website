@@ -25,4 +25,4 @@ function signinfunc() {
   console.log(but.getAttribute("data-id"));
   console.log(but.getAttribute("data-name"));
 }
-setInterval(signinfunc, 50);
+//setInterval(signinfunc, 50);
