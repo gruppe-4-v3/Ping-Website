@@ -11,7 +11,6 @@ export class GameScene extends Phaser.Scene {
     cursor: Phaser.Input.Keyboard.CursorKeys
     player: Phaser.GameObjects.Rectangle
 
-
     // Loads all assets from files into memory
     preload (): void
     {
@@ -38,7 +37,6 @@ export class GameScene extends Phaser.Scene {
     // Updates every game tick, cointains dynamic 
     update (): void
     {
-
         let speed = 200;
 
         let object: GameObjects.GameObject = this.physics.add.existing(this.player)
@@ -85,7 +83,5 @@ export class GameScene extends Phaser.Scene {
     private spawnPlayer(): void
     {
         this.player = this.add.rectangle(400, 580, 100, 10, 0xff000)
-
-
     }
 }
