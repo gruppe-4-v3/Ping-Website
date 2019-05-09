@@ -41,6 +41,9 @@ function getUser(id : string){
 .then(function(response){
   console.log(response.data.username); // ex.: { user: 'Your User'}
   console.log(response.status); // ex.: 200
+  if (response.data.username != userName) {
+    postUser()
+  }
 })
 .catch(function (error:AxiosError) : void {
 console.log(error)

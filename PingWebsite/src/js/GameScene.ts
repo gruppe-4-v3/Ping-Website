@@ -16,8 +16,21 @@ export class GameScene extends Phaser.Scene {
     ballSpawnTime: number = 1.5
     // Time since last ball spawned
     lastBallTime: number = 0
-    
 
+    // How fast the ball will move horizontally
+    minBallVelocityX : number = 0;
+    maxBallVelocityX : number = 200;
+
+    // How fast the ball will fall
+    ballVelocityY : number = 100;
+
+    speedOfPlayer : number = 300;
+    
+    randomInt(min : number, max : number) : number 
+    {
+        return Math.floor(min + Math.random()*(max + 1 - min))
+    }
+    
     // Loads all assets from files into memory
     preload (): void
     {
@@ -69,10 +82,10 @@ export class GameScene extends Phaser.Scene {
         let timeInSec = Math.floor(time) / 1000
         // Converts delta to seconds
         let deltaInSec = delta / 1000
-        let speed = 200;
+        let speed = this.speedOfPlayer;
  
         this.lastBallTime = this.lastBallTime + deltaInSec
-        // Spawn new ball if time since last ball spawn is greater time allowd
+        // Spawn new ball if time since last ball spawn is greater time allowed
         if(this.lastBallTime > this.ballSpawnTime) {
             this.spawnBall()
             this.lastBallTime = 0
@@ -111,8 +124,8 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.existing(ball)
 
         let ballBody: Phaser.Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>ball.body
-        ballBody.velocity.x = 0
-        ballBody.velocity.y = 100
+        ballBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
+        ballBody.velocity.y = this.ballVelocityY;
         ballBody.bounce.x = 1
         ballBody.bounce.y = 1
         ballBody.collideWorldBounds = true
