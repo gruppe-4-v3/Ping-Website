@@ -5,6 +5,9 @@ import { IScore } from "../js/IScore"
 import { IUsers } from "../js/IUsers"
 
 
+var userID : number = 0;
+var userName : string = "";
+
 let config: GameConfig = {
   title: "Ping (Name Subject to Change)",
   width: 800,
@@ -22,38 +25,15 @@ document.getElementById('startGameBtn').addEventListener('click', function() {
   document.getElementById('startGameBtn').remove()
 })
 
-declare const gapi: any;
-  var auth2;
-  function googleInit() {
-    gapi.load('auth2', () => {
-      this.auth2 = gapi.auth2.init({
-        client_id: '376761281684-pvn87r7hftv8l3cqou29tbbqdapnmq3c.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        scope: 'profile'
-      });
-      this.attachSignin(document.getElementById('signin2'));
-    });
-  }
-  function attachSignin(element : any) {
-    this.auth2.attachClickHandler(element, {},
-      (googleUser : any) => {
+var signinbut : HTMLDivElement = <HTMLDivElement> document.getElementById("signin2");
+signinbut.addEventListener('sign', signinfunc)
 
-        let profile = googleUser.getBasicProfile();
-        console.log('Token || ' + googleUser.getAuthResponse().id_token);
-        console.log('ID: ' + profile.getId());
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail());
-        //YOUR CODE HERE
-
-
-      }, (error : any) => {
-        alert(JSON.stringify(error, undefined, 2));
-      });
-  }
-
-function ngAfterViewInit(){
-      this.googleInit();
+function signinfunc() {
+  console.log("in ts");
+  console.log(signinbut.getAttribute("data-id"));
+  console.log(signinbut.getAttribute("data-name"));
+  userID = +signinbut.getAttribute("data-id");
+  userName = signinbut.getAttribute("data-name");
 }
 
 window.onload = function(){
