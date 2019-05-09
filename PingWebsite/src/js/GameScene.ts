@@ -19,22 +19,37 @@ export class GameScene extends Phaser.Scene {
     // Initializes all game objects and adds them to the game
     create (): void
     {
+        let livesRemaining = 3;
+        let lifeText: GameObjects.Text;
         this.spawnBall()
+
+        //Adds a simple visual reference of lives remaining.
+        lifeText = this.add.text(16, 16, 'Lives: '+livesRemaining, { fontSize: '32px', fill: '#f2f2f2' });
 
         // Calls function if anything touches the worldbounds
         this.physics.world.on('worldbounds', function(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
-            // remove gameobject if it collides with the bottom of the world
+            // remove gameobject if it collides with the bottom of the world and reduces amount of lives remaining
             if(down){
                 body.gameObject.destroy()
+                //Checks amounts of lives left
+                if (livesRemaining != 0) {
+                    livesRemaining--;
+                    lifeText.setText('Lives: '+ livesRemaining);
+                }
+                //Stops the physics if there's no lives left
+                else
+                {
+                    this.physics.pause();
+                    //Maybe add something like a play again button and a main menu button?
+                }
             }
         })
         this.cursor = this.input.keyboard.createCursorKeys();
         this.spawnPlayer();
-
-
+        
     }
 
-    // Updates every game tick, cointains dynamic 
+    // Updates every game tick, contains dynamic 
     update (): void
     {
         let speed = 200;
