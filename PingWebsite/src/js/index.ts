@@ -1,13 +1,16 @@
 import * as Phaser from "phaser";
 import { GameScene } from "./GameScene"
-import axios, { AxiosResponse } from "../../node_modules/axios/index"
+import axios, { AxiosResponse, AxiosError } from "../../node_modules/axios/index"
 import { IScore } from "../js/IScore"
 import { IUsers } from "../js/IUsers"
 
 
-var userID : number = 0;
+var userID : string = "";
 var userName : string = "";
-
+interface IUser {
+  Id : string;
+  Username: string;
+}
 let config: GameConfig = {
   title: "Ping (Name Subject to Change)",
   width: 800,
@@ -32,8 +35,19 @@ function signinfunc() {
   console.log("in ts");
   console.log(signinbut.getAttribute("data-id"));
   console.log(signinbut.getAttribute("data-name"));
-  userID = +signinbut.getAttribute("data-id");
+  userID = signinbut.getAttribute("data-id");
   userName = signinbut.getAttribute("data-name");
+  getUser(userID);
+}
+function getUser(id : string){
+  axios.get<IUser>('https://pingwebapi.azurewebsites.net/api/users/' + id)
+.then(function(response){
+  console.log(response.data.Username); // ex.: { user: 'Your User'}
+  console.log(response.status); // ex.: 200
+})
+.catch(function (error:AxiosError) : void {
+console.log(error)
+});
 }
 
 window.onload = function(){
@@ -47,7 +61,7 @@ function getGlobalHighscore(){
   .then(function(response: AxiosResponse<IScore[]>) : void
   {
     createHighscoreBoard(response);
-  });  
+  });
 }
 
 
@@ -62,20 +76,20 @@ function getLocalHighscore(){
 }
 
 /** Creates a highscoreboard
-* @param response - An AxiosResponse which is made up of an array of IScore. Should already be filtered by the REST Web API 
+* @param response - An AxiosResponse which is made up of an array of IScore. Should already be filtered by the REST Web API
 */
 function createHighscoreBoard(response: AxiosResponse<IScore[]>){
   let ContentGlobalHighscore = document.getElementById("ContentGlobalHighscore");
   DeleteChildnodes(ContentGlobalHighscore);
-  
+
   var tableElement = document.createElement("table");
   var tableHeaderRow = document.createElement("tr");
   var tableHeaderUserElement = document.createElement("th");
   var tableHeaderScoreElement = document.createElement("th");
-  
+
   tableHeaderUserElement.innerHTML = "User";
   tableHeaderScoreElement.innerHTML = "Score";
-  
+
   tableHeaderRow.appendChild(tableHeaderUserElement);
   tableHeaderRow.appendChild(tableHeaderScoreElement);
   tableElement.appendChild(tableHeaderRow);
@@ -84,10 +98,10 @@ function createHighscoreBoard(response: AxiosResponse<IScore[]>){
     var newRow = document.createElement("tr");
     var newUser = document.createElement("td");
     var newScore = document.createElement("td");
-    
+
     newUser.innerHTML = "" + userscore.userId;
     newScore.innerHTML = "" + userscore.score;
-    
+
     newRow.appendChild(newUser);
     newRow.appendChild(newScore);
     tableElement.appendChild(newRow)
