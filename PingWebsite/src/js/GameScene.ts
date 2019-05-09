@@ -52,16 +52,17 @@ export class GameScene extends Phaser.Scene {
     // Updates every game tick, contains dynamic 
     update (): void
     {
+        let speed = 200;
 
         let object: GameObjects.GameObject = this.physics.add.existing(this.player)
         if(this.player.body instanceof Phaser.Physics.Arcade.Body){
             if(this.cursor.left.isDown)// move left if the left key is pressed
             {
-            this.player.body.velocity.x = -100;
+            this.player.body.velocity.x = -speed;
             }
             else if(this.cursor.right.isDown)// move right if the right key is pressed
             {
-                this.player.body.velocity.x = 100;
+                this.player.body.velocity.x = speed;
             }
             else//stop if no key is pressed.
             {
@@ -97,7 +98,5 @@ export class GameScene extends Phaser.Scene {
     private spawnPlayer(): void
     {
         this.player = this.add.rectangle(400, 580, 100, 10, 0xff000)
-
-
     }
 }
