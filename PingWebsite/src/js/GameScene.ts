@@ -10,15 +10,26 @@ export class GameScene extends Phaser.Scene {
 
     cursor: Phaser.Input.Keyboard.CursorKeys
     player: Phaser.GameObjects.Rectangle
-    scoreText: Phaser.GameObjects.Text
+    
+    // Score for current game
     score: number = 0
+    scoreText: Phaser.GameObjects.Text
 
     // How often a new ball spawns in seconds
     ballSpawnTime: number = 1.5
     // Time since last ball spawned
     lastBallTime: number = this.ballSpawnTime
-    
 
+    // How fast the ball will move horizontally
+    minBallVelocityX : number = 0;
+    maxBallVelocityX : number = 200;
+
+    // How fast the ball will fall
+    ballVelocityY : number = 100;
+
+    // The players speed
+    playerSpeed : number = 300;
+    
     // Loads all assets from files into memory
     preload (): void
     {
@@ -41,7 +52,7 @@ export class GameScene extends Phaser.Scene {
             if(down){
                 body.gameObject.destroy()
                 //Checks amounts of lives left
-                if (livesRemaining != 0) {
+                if (livesRemaining != 1) {
                     livesRemaining--;
                     lifeText.setText('Lives: '+ livesRemaining);
                 }
@@ -49,12 +60,11 @@ export class GameScene extends Phaser.Scene {
                 else
                 {
                     this.physics.pause();
-                    //Maybe add something like a play again button and a main menu button?
+                    //TODO: Maybe add something like a play again button and a main menu button?
                 }
             }
         })
         
-
         this.cursor = this.input.keyboard.createCursorKeys();
         this.spawnPlayer();        
     }
@@ -67,16 +77,22 @@ export class GameScene extends Phaser.Scene {
     {
         // Converts delta to seconds
         let deltaInSec = delta / 1000
-        let speed = 200;
+ 
+        this.lastBallTime = this.lastBallTime + deltaInSec
+        // Spawn new ball if time since last ball spawn is greater time allowed
+        if(this.lastBallTime > this.ballSpawnTime) {
+            this.spawnBall()
+            this.lastBallTime = 0
+        }
 
         if(this.player.body instanceof Phaser.Physics.Arcade.Body){
             if(this.cursor.left.isDown)// move left if the left key is pressed
             {
-            this.player.body.velocity.x = -speed;
+            this.player.body.velocity.x = -this.playerSpeed;
             }
             else if(this.cursor.right.isDown)// move right if the right key is pressed
             {
-                this.player.body.velocity.x = speed;
+                this.player.body.velocity.x = this.playerSpeed;
             }
             else//stop if no key is pressed.
             {
@@ -108,15 +124,16 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.existing(ball)
 
         let ballBody: Phaser.Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>ball.body
-        ballBody.velocity.x = 0
-        ballBody.velocity.y = 100
+        ballBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
+        ballBody.velocity.y = this.ballVelocityY;
         ballBody.bounce.x = 1
         ballBody.bounce.y = 1
         ballBody.collideWorldBounds = true
 
-        // emmits worldborder event when ball touches the border 
+        // emits worldborder event when ball touches the border 
         ballBody.onWorldBounds = true
 
+        // Add collision detection between ball and player
         this.physics.add.collider(ball, this.player, this.onPlayerCollide, null, this)
     }
 

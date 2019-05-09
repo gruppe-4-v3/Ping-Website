@@ -1,16 +1,13 @@
 import * as Phaser from "phaser";
 import { GameScene } from "./GameScene"
-import axios, { AxiosResponse, AxiosError } from "../../node_modules/axios/index"
+import axios,{ AxiosResponse, AxiosError } from "../../node_modules/axios/index"
 import { IScore } from "../js/IScore"
 import { IUsers } from "../js/IUsers"
 
 
 var userID : string = "";
 var userName : string = "";
-interface IUser {
-  Id : string;
-  Username: string;
-}
+
 let config: GameConfig = {
   title: "Ping (Name Subject to Change)",
   width: 800,
@@ -40,14 +37,30 @@ function signinfunc() {
   getUser(userID);
 }
 function getUser(id : string){
-  axios.get<IUser>('https://pingwebapi.azurewebsites.net/api/users/' + id)
+  axios.get<IUsers>('https://pingwebapi.azurewebsites.net/api/users/' + id)
 .then(function(response){
-  console.log(response.data.Username); // ex.: { user: 'Your User'}
+  console.log(response.data.username); // ex.: { user: 'Your User'}
   console.log(response.status); // ex.: 200
+  if (response.data.username != userName) {
+    postUser()
+  }
 })
 .catch(function (error:AxiosError) : void {
 console.log(error)
+postUser();
 });
+}
+function postUser(){
+  axios.post<IUsers>('https://pingwebapi.azurewebsites.net/api/users', {Id:userID,Username:userName})
+  .then(function (response :  AxiosResponse): void
+  {
+      console.log("Statuskoden er :" + response.status);
+  })
+  .catch(
+      function (error:AxiosError) : void{                          
+          console.log(error);
+      }
+  )
 }
 
 window.onload = function(){
