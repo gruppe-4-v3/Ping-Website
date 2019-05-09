@@ -61,7 +61,6 @@ typings/
 .next
 
 /PingWebsite/node_modules
-/dist
 .DS_Store
 *.log
 .idea
