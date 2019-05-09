@@ -40,7 +40,6 @@ export class GameScene extends Phaser.Scene {
     {
         let livesRemaining = 3;
         let lifeText: GameObjects.Text;
-        this.add
 
         //Adds a simple visual reference of lives remaining.
         lifeText = this.add.text(16, 16, 'Lives: '+livesRemaining, { fontSize: '32px', fill: '#f2f2f2' });
