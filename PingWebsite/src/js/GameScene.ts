@@ -1,4 +1,5 @@
-import { GameObjects, Physics } from 'phaser'
+import { GameObjects, Physics, Scene } from 'phaser'
+import { PauseScene } from "../js/PauseScene"
 
 export class GameScene extends Phaser.Scene {
 
@@ -11,6 +12,7 @@ export class GameScene extends Phaser.Scene {
     cursor: Phaser.Input.Keyboard.CursorKeys
     player: Phaser.GameObjects.Rectangle
     timeText: Phaser.GameObjects.Text
+    pauseButton: Phaser.Input.Keyboard.Key
 
     // How often a new ball spawns in seconds
     ballSpawnTime: number = 1.5
@@ -63,6 +65,7 @@ export class GameScene extends Phaser.Scene {
         
         this.cursor = this.input.keyboard.createCursorKeys();
         this.spawnPlayer();
+        this.pauseButton = this.input.keyboard.addKey('p');
     }
 
     // Updates every game tick
@@ -99,6 +102,11 @@ export class GameScene extends Phaser.Scene {
                 this.player.body.velocity.x = 0;
             }
             this.player.body.collideWorldBounds = true;
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(this.pauseButton)){
+            this.scene.launch('PauseScene');
+            this.scene.pause('GameScene');
         }
 
         this.timeText.text = 'Time: ' + timeInSec.toString()

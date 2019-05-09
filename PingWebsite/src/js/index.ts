@@ -3,6 +3,7 @@ import { GameScene } from "./GameScene"
 import axios,{ AxiosResponse, AxiosError } from "../../node_modules/axios/index"
 import { IScore } from "../js/IScore"
 import { IUsers } from "../js/IUsers"
+import { PauseScene } from "./PauseScene";
 
 
 var userID : string = "";
@@ -17,7 +18,7 @@ let config: GameConfig = {
   physics: {
     default: "arcade"
   },
-  scene: [GameScene]
+  scene: [GameScene, PauseScene]
 }
 
 document.getElementById('startGameBtn').addEventListener('click', function() {
