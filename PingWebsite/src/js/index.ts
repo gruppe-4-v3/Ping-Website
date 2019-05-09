@@ -39,6 +39,8 @@ function signinfunc() {
 window.onload = function(){
 let BtnGlobalHighscore = document.getElementById("BtnGlobalHighscore");
 BtnGlobalHighscore.addEventListener("click", getGlobalHighscore);
+let BtnLocalHighscore = document.getElementById("BtnLocalHighscore");
+BtnLocalHighscore.addEventListener("click", getLocalHighscore);
 }
 function getGlobalHighscore(){
     axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore')
@@ -46,6 +48,17 @@ function getGlobalHighscore(){
   {
     createHighscoreBoard(response);
   });  
+}
+
+
+function getLocalHighscore(){
+  let inputLocalHighscore = <HTMLInputElement>document.getElementById("inputLocalHighscore");
+  var inputvalue = inputLocalHighscore.value
+  axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore/' + inputvalue)
+.then(function(response: AxiosResponse<IScore[]>) : void
+{
+  createHighscoreBoard(response);
+});  
 }
 
 /** Creates a highscoreboard
