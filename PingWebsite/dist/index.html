@@ -29,7 +29,8 @@
   var signinelement = document.getElementById("signin2");
   signinelement.setAttribute('data-id', profile.getId());
   signinelement.setAttribute('data-name', profile.getName());
-  signinelement.dispatchEvent('click')
+  var event = new CustomEvent('sign');
+  signinelement.dispatchEvent(event);
   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
   console.log('Name: ' + profile.getName());
   console.log('Image URL: ' + profile.getImageUrl());

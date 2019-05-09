@@ -18,7 +18,7 @@ document.getElementById('startGameBtn').addEventListener('click', function() {
   document.getElementById('startGameBtn').remove()
 })
 var but : HTMLDivElement = <HTMLDivElement> document.getElementById("signin2");
-but.addEventListener('click', signinfunc)
+but.addEventListener('sign', signinfunc)
 
 function signinfunc() {
   console.log("in ts");
