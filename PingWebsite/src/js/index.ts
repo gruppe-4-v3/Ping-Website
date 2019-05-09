@@ -13,7 +13,7 @@ let config: GameConfig = {
   title: "Ping (Name Subject to Change)",
   width: 800,
   height: 600,
-  parent: "game",
+  parent: document.getElementById('game'),
   backgroundColor: "#18216D",
   physics: {
     default: "arcade"
