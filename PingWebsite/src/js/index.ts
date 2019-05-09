@@ -1,9 +1,13 @@
 import * as Phaser from "phaser";
-import { GameScene } from "./GameScene"
+import { GameScene } from "./GameScene";
+import axios,{AxiosResponse, AxiosError} from "../../node_modules/axios/index";
 
-var userID : number = 0;
+var userID : string = "";
 var userName : string = "";
-
+interface IUser {
+  Id : string;
+  Username: string;
+}
 let config: GameConfig = {
   title: "Ping (Name Subject to Change)",
   width: 800,
@@ -28,7 +32,17 @@ function signinfunc() {
   console.log("in ts");
   console.log(signinbut.getAttribute("data-id"));
   console.log(signinbut.getAttribute("data-name"));
-  userID = +signinbut.getAttribute("data-id");
+  userID = signinbut.getAttribute("data-id");
   userName = signinbut.getAttribute("data-name");
+  getUser(userID);
 }
-//setInterval(signinfunc, 50);
+function getUser(id : string){
+  axios.get<IUser>('https://pingwebapi.azurewebsites.net/api/users/' + id)
+.then(function(response){
+  console.log(response.data.Username); // ex.: { user: 'Your User'}
+  console.log(response.status); // ex.: 200
+})
+.catch(function (error:AxiosError) : void {
+console.log(error)
+});
+}
