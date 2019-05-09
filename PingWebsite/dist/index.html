@@ -15,14 +15,14 @@
   <br/>
 
   <button id="startGameBtn" >Click me to start the game (TEMP)</button>
-
+  <div id="game"></div>
    
- <h1>Highscore:</h1>
- <h2>Global:</h2> 
- <button id="BtnGlobalHighscore">Global highscore</button>
- <button id="BtnLocalHighscore">Local highscore</button>
- <input id="inputLocalHighscore">
- <div id ="ContentGlobalHighscore"></div>
+  <h1>Highscore:</h1>
+  <h2>Global:</h2> 
+  <button id="BtnGlobalHighscore">Global highscore</button>
+  <button id="BtnLocalHighscore">Local highscore</button>
+  <input id="inputLocalHighscore">
+  <div id ="ContentGlobalHighscore"></div>
 
   <script src="bundle.js"></script>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
@@ -34,13 +34,13 @@
       });
     }  
     function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  var signinelement = document.getElementById("signin2");
-  signinelement.setAttribute('data-id', profile.getId());
-  signinelement.setAttribute('data-name', profile.getName());
-  var event = new CustomEvent('sign');
-  signinelement.dispatchEvent(event);
-  }     
+      var profile = googleUser.getBasicProfile();
+      var signinelement = document.getElementById("signin2");
+      signinelement.setAttribute('data-id', profile.getId());
+      signinelement.setAttribute('data-name', profile.getName());
+      var event = new CustomEvent('sign');
+      signinelement.dispatchEvent(event);
+    }     
   </script>
   <meta name="google-signin-client_id" content="376761281684-pvn87r7hftv8l3cqou29tbbqdapnmq3c.apps.googleusercontent.com">
 </body>

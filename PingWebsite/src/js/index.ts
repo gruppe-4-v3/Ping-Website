@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
 import { GameScene } from "./GameScene"
-import axios, { AxiosResponse, AxiosError } from "../../node_modules/axios/index"
+import axios,{ AxiosResponse, AxiosError } from "../../node_modules/axios/index"
 import { IScore } from "../js/IScore"
 import { IUsers } from "../js/IUsers"
 
@@ -45,11 +45,12 @@ function getUser(id : string){
   console.log(response.data.Username); // ex.: { user: 'Your User'}
   console.log(response.status); // ex.: 200
   if (response.data.Username != userName) {
-    postUser()
+    postUser();
   }
 })
 .catch(function (error:AxiosError) : void {
 console.log(error)
+postUser();
 });
 }
 function postUser(){
