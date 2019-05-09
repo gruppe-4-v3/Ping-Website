@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
 import { GameScene } from "./GameScene"
-import axios, { AxiosResponse, AxiosError } from "../../node_modules/axios/index"
+import axios,{ AxiosResponse, AxiosError } from "../../node_modules/axios/index"
 import { IScore } from "../js/IScore"
 import { IUsers } from "../js/IUsers"
 
@@ -47,10 +47,11 @@ function getUser(id : string){
 })
 .catch(function (error:AxiosError) : void {
 console.log(error)
+postUser();
 });
 }
 function postUser(){
-  axios.post<IUser>('https://pingwebapi.azurewebsites.net/api/users', {Id:userID,Username:userName})
+  axios.post<IUsers>('https://pingwebapi.azurewebsites.net/api/users', {Id:userID,Username:userName})
   .then(function (response :  AxiosResponse): void
   {
       console.log("Statuskoden er :" + response.status);
