@@ -19,8 +19,10 @@ document.getElementById('startGameBtn').addEventListener('click', function() {
 })
 var but : HTMLDivElement = <HTMLDivElement> document.getElementById("signin2");
 but.addEventListener('click', signinfunc)
+
 function signinfunc() {
   console.log("in ts");
   console.log(but.getAttribute("data-id"));
   console.log(but.getAttribute("data-name"));
 }
+setInterval(signinfunc, 50);
