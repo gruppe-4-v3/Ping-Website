@@ -1,14 +1,9 @@
 import * as Phaser from "phaser";
-<<<<<<< HEAD
-import { GameScene } from "./GameScene";
-import axios,{AxiosResponse, AxiosError} from "../../node_modules/axios/index";
-=======
 import { GameScene } from "./GameScene"
-import axios, { AxiosResponse } from "../../node_modules/axios/index"
+import axios, { AxiosResponse, AxiosError } from "../../node_modules/axios/index"
 import { IScore } from "../js/IScore"
 import { IUsers } from "../js/IUsers"
 
->>>>>>> 646813453be9a2ed2584a672bad3ba36c8eca1c0
 
 var userID : string = "";
 var userName : string = "";
@@ -54,8 +49,6 @@ function getUser(id : string){
 console.log(error)
 });
 }
-<<<<<<< HEAD
-=======
 
 window.onload = function(){
 let BtnGlobalHighscore = document.getElementById("BtnGlobalHighscore");
@@ -66,24 +59,24 @@ function getGlobalHighscore(){
   .then(function(response: AxiosResponse<IScore[]>) : void
   {
     createHighscoreBoard(response);
-  });  
+  });
 }
 
 /** Creates a highscoreboard
-* @param response - An AxiosResponse which is made up of an array of IScore. Should already be filtered by the REST Web API 
+* @param response - An AxiosResponse which is made up of an array of IScore. Should already be filtered by the REST Web API
 */
 function createHighscoreBoard(response: AxiosResponse<IScore[]>){
   let ContentGlobalHighscore = document.getElementById("ContentGlobalHighscore");
   DeleteChildnodes(ContentGlobalHighscore);
-  
+
   var tableElement = document.createElement("table");
   var tableHeaderRow = document.createElement("tr");
   var tableHeaderUserElement = document.createElement("th");
   var tableHeaderScoreElement = document.createElement("th");
-  
+
   tableHeaderUserElement.innerHTML = "User";
   tableHeaderScoreElement.innerHTML = "Score";
-  
+
   tableHeaderRow.appendChild(tableHeaderUserElement);
   tableHeaderRow.appendChild(tableHeaderScoreElement);
   tableElement.appendChild(tableHeaderRow);
@@ -92,10 +85,10 @@ function createHighscoreBoard(response: AxiosResponse<IScore[]>){
     var newRow = document.createElement("tr");
     var newUser = document.createElement("td");
     var newScore = document.createElement("td");
-    
+
     newUser.innerHTML = "" + userscore.userId;
     newScore.innerHTML = "" + userscore.score;
-    
+
     newRow.appendChild(newUser);
     newRow.appendChild(newScore);
     tableElement.appendChild(newRow)
@@ -109,4 +102,3 @@ function DeleteChildnodes(element : Element){
     element.removeChild(element.firstChild);
   }
 }
->>>>>>> 646813453be9a2ed2584a672bad3ba36c8eca1c0
