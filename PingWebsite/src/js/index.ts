@@ -25,9 +25,9 @@ declare const gapi: any;
       this.auth2 = gapi.auth2.init({
         client_id: '376761281684-pvn87r7hftv8l3cqou29tbbqdapnmq3c.apps.googleusercontent.com',
         cookiepolicy: 'single_host_origin',
-        scope: 'profile email'
+        scope: 'profile'
       });
-      this.attachSignin(document.getElementById('googleBtn'));
+      this.attachSignin(document.getElementById('signin2'));
     });
   }
   function attachSignin(element : any) {
