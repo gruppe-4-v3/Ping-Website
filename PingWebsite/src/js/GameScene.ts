@@ -26,11 +26,6 @@ export class GameScene extends Phaser.Scene {
 
     speedOfPlayer : number = 300;
     
-    randomInt(min : number, max : number) : number 
-    {
-        return Math.floor(min + Math.random()*(max + 1 - min))
-    }
-    
     // Loads all assets from files into memory
     preload (): void
     {
@@ -53,7 +48,7 @@ export class GameScene extends Phaser.Scene {
             if(down){
                 body.gameObject.destroy()
                 //Checks amounts of lives left
-                if (livesRemaining != 0) {
+                if (livesRemaining != 1) {
                     livesRemaining--;
                     lifeText.setText('Lives: '+ livesRemaining);
                 }
@@ -61,15 +56,13 @@ export class GameScene extends Phaser.Scene {
                 else
                 {
                     this.physics.pause();
-                    //Maybe add something like a play again button and a main menu button?
+                    //TODO: Maybe add something like a play again button and a main menu button?
                 }
             }
         })
         
-
         this.cursor = this.input.keyboard.createCursorKeys();
         this.spawnPlayer();
-        
     }
 
     // Updates every game tick
@@ -130,7 +123,7 @@ export class GameScene extends Phaser.Scene {
         ballBody.bounce.y = 1
         ballBody.collideWorldBounds = true
 
-        // emmits worldborder event when ball touches the border 
+        // emits worldborder event when ball touches the border 
         ballBody.onWorldBounds = true
     }
 
