@@ -17,37 +17,10 @@ document.getElementById('startGameBtn').addEventListener('click', function() {
   let game: Phaser.Game = new Phaser.Game(config);
   document.getElementById('startGameBtn').remove()
 })
-
-declare const gapi: any;
-  var auth2;
-  function googleInit() {
-    gapi.load('auth2', () => {
-      this.auth2 = gapi.auth2.init({
-        client_id: '376761281684-pvn87r7hftv8l3cqou29tbbqdapnmq3c.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        scope: 'profile'
-      });
-      this.attachSignin(document.getElementById('signin2'));
-    });
-  }
-  function attachSignin(element : any) {
-    this.auth2.attachClickHandler(element, {},
-      (googleUser : any) => {
-
-        let profile = googleUser.getBasicProfile();
-        console.log('Token || ' + googleUser.getAuthResponse().id_token);
-        console.log('ID: ' + profile.getId());
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail());
-        //YOUR CODE HERE
-
-
-      }, (error : any) => {
-        alert(JSON.stringify(error, undefined, 2));
-      });
-  }
-
-function ngAfterViewInit(){
-      this.googleInit();
+var but : HTMLDivElement = <HTMLDivElement> document.getElementById("signin2");
+but.addEventListener('click', signinfunc)
+function signinfunc() {
+  console.log("in ts");
+  console.log(but.getAttribute("data-id"))
+  console.log(but.getAttribute("data-name"))
 }
