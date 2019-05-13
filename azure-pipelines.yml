@@ -17,7 +17,7 @@ steps:
 
 - script: |
     npm install
-    npm run webpack:dev
+    npm run webpack:prod
   displayName: 'npm install and build'
 
 - task: ArchiveFiles@2
