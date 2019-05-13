@@ -60,7 +60,10 @@ typings/
 # next.js build output
 .next
 
-/PingWebsite/node_modules
+/node_modules
+/dist
+azure-pipelines.yml
+/.vscode
 .DS_Store
 *.log
 .idea
