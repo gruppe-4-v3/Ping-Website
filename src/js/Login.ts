@@ -1,45 +1,21 @@
-import axios,{ AxiosResponse, AxiosError } from "../../node_modules/axios/index"
-import { IScore } from "./IScore"
-import { IUsers } from "./IUsers"
+import { RESTCalls } from "./RESTCalls"
 
-
-var userID : string = "";
-var userName : string = "";
-
-var signinbut : HTMLDivElement = <HTMLDivElement> document.getElementById("signin2");
-signinbut.addEventListener('sign', signinfunc)
-
-function signinfunc() {
-  console.log("in ts");
-  console.log(signinbut.getAttribute("data-id"));
-  console.log(signinbut.getAttribute("data-name"));
-  userID = signinbut.getAttribute("data-id");
-  userName = signinbut.getAttribute("data-name");
-  getUser(userID);
-}
-function getUser(id : string){
-  axios.get<IUsers>('https://pingwebapi.azurewebsites.net/api/users/' + id)
-.then(function(response){
-  console.log(response.data.username); // ex.: { user: 'Your User'}
-  console.log(response.status); // ex.: 200
-  if (response.data.username != userName) {
-    postUser()
+export class Login {
+  constructor() {
+    this.signinbut.addEventListener('sign', this.signinfunc)
   }
-})
-.catch(function (error:AxiosError) : void {
-console.log(error)
-postUser();
-});
-}
-function postUser(){
-  axios.post<IUsers>('https://pingwebapi.azurewebsites.net/api/users', {Id:userID,Username:userName})
-  .then(function (response :  AxiosResponse): void
-  {
-      console.log("Statuskoden er :" + response.status);
-  })
-  .catch(
-      function (error:AxiosError) : void{                          
-          console.log(error);
-      }
-  )
+
+  userID: string = "";
+  userName: string = "";
+
+  signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
+
+  signinfunc() {
+    console.log("in ts");
+    console.log(this.signinbut.getAttribute("data-id"));
+    console.log(this.signinbut.getAttribute("data-name"));
+    this.userID = this.signinbut.getAttribute("data-id");
+    this.userName = this.signinbut.getAttribute("data-name");
+    RESTCalls.getUser(this.userID);
+  }
 }
