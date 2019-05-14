@@ -1,8 +1,8 @@
 import * as Phaser from "phaser";
 import { GameScene } from "./GameScene"
 import axios,{ AxiosResponse, AxiosError } from "../../node_modules/axios/index"
-import { IScore } from "../js/IScore"
-import { IUsers } from "../js/IUsers"
+import { IScore } from "./IScore"
+import { IUsers } from "./IUsers"
 import { PauseScene } from "./PauseScene";
 
 

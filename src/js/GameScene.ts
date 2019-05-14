@@ -1,5 +1,5 @@
 import { GameObjects, Physics, Scene } from 'phaser'
-import { PauseScene } from "../js/PauseScene"
+import { PauseScene } from "./PauseScene"
 
 export class GameScene extends Phaser.Scene {
 
@@ -82,13 +82,6 @@ export class GameScene extends Phaser.Scene {
     {
         // Converts delta to seconds
         let deltaInSec: number = delta / 1000
- 
-        this.lastBallTime = this.lastBallTime + deltaInSec
-        // Spawn new ball if time since last ball spawn is greater time allowed
-        if(this.lastBallTime > this.ballSpawnTime) {
-            this.spawnBall()
-            this.lastBallTime = 0
-        }
 
         if(this.player.body instanceof Phaser.Physics.Arcade.Body){
             if(this.cursor.left.isDown)// move left if the left key is pressed
