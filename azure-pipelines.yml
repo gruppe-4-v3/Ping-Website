@@ -6,36 +6,56 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+jobs:
+- job: "Test"
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'  
+    displayName: 'Install Node.js'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+  - script: |
+      npm install
+      npm run test
+    displayName: 'npm install and test'
 
-- script: |
-    npm install
-    npm run webpack:prod
-  displayName: 'npm install and build'
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: '**/TEST-RESULTS.xml'
 
-- task: ArchiveFiles@2
-  condition: succeeded()
-  inputs:
-    rootFolderOrFile: '/home/vsts/work/1/s/dist'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
+- job: "Deploy"
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
 
-- task: AzureWebApp@1
-  condition: succeeded()
-  inputs:
-    azureSubscription: 'b4ab5858-71f7-4c0f-8586-93fd0b1269f3'
-    appType: 'webApp'
-    appName: 'ProjectPing'
-    package: '/home/vsts/work/1/a/*.zip'
-    deploymentMethod: 'zipDeploy'
+  - script: |
+      npm install
+      npm run webpack:prod
+    displayName: 'npm install and build'
 
+  - task: ArchiveFiles@2
+    condition: succeeded()
+    inputs:
+      rootFolderOrFile: '/home/vsts/work/1/s/dist'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+
+  - task: AzureWebApp@1
+    condition: succeeded()
+    inputs:
+      azureSubscription: 'b4ab5858-71f7-4c0f-8586-93fd0b1269f3'
+      appType: 'webApp'
+      appName: 'ProjectPing'
+      package: '/home/vsts/work/1/a/*.zip'
+      deploymentMethod: 'zipDeploy'
 
