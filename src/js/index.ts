@@ -4,6 +4,7 @@ import axios,{ AxiosResponse, AxiosError } from "../../node_modules/axios/index"
 import { IScore } from "./IScore"
 import { IUsers } from "./IUsers"
 import { PauseScene } from "./PauseScene";
+import { MMenuScene } from "./MMenuScene";
 
 
 var userID : string = "";
@@ -23,7 +24,7 @@ let config: GameConfig = {
   physics: {
     default: "arcade"
   },
-  scene: [GameScene, PauseScene],
+  scene: [MMenuScene, GameScene, PauseScene],
   url: "https://gruppe-4-v3.github.io/Ping-Website/PingWebsite/dist/"
   
 }
