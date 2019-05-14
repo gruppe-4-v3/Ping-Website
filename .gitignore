@@ -70,3 +70,4 @@ azure-pipelines.yml
 .vscode
 .eslintcache
 package-lock.json
+junit.xml
