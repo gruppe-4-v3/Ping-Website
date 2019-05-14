@@ -25,9 +25,10 @@ jobs:
     condition: succeededOrFailed()
     inputs:
       testRunner: JUnit
-      testResultsFiles: '**/TEST-RESULTS.xml'
+      testResultsFiles: '**/junit.xml'
 
 - job: "Deploy"
+  dependsOn: Test
   pool:
     vmImage: 'ubuntu-latest'
   steps:
