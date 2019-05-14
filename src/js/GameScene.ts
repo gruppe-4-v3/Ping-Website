@@ -87,6 +87,7 @@ export class GameScene extends Phaser.Scene {
             this.player.body.collideWorldBounds = true;
         }
 
+        // Pause the GameScene if the pausebutton key is pressed and switch to PauseScene. 
         if(Phaser.Input.Keyboard.JustDown(this.pauseButton)){
             this.scene.launch('PauseScene');
             this.scene.pause('GameScene');
@@ -173,6 +174,7 @@ export class GameScene extends Phaser.Scene {
     private endGame(){
         this.scene.pause();
 
+        
         //TODO: Maybe add something like a play again button and a main menu button?
     }
 }

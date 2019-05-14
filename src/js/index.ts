@@ -5,7 +5,6 @@ import { IScore } from "./IScore"
 import { IUsers } from "./IUsers"
 import { PauseScene } from "./PauseScene";
 
-
 var userID : string = "";
 var userName : string = "";
 
@@ -24,7 +23,7 @@ let config: GameConfig = {
     default: "arcade"
   },
   scene: [GameScene, PauseScene],
-  url: "https://gruppe-4-v3.github.io/Ping-Website/PingWebsite/dist/"
+  url: "http://projectping.azurewebsites.net/"
   
 }
 
@@ -45,7 +44,8 @@ function signinfunc() {
 }
 function getUser(id : string){
   axios.get<IUsers>('https://pingwebapi.azurewebsites.net/api/users/' + id)
-.then(function(response){
+.then(function(response : AxiosResponse) : void
+{
   console.log(response.data.username); // ex.: { user: 'Your User'}
   console.log(response.status); // ex.: 200
   if (response.data.username != userName) {
@@ -59,7 +59,7 @@ postUser();
 }
 function postUser(){
   axios.post<IUsers>('https://pingwebapi.azurewebsites.net/api/users', {Id:userID,Username:userName})
-  .then(function (response :  AxiosResponse): void
+  .then(function (response :  AxiosResponse) : void
   {
       console.log("Statuskoden er :" + response.status);
   })
@@ -70,12 +70,24 @@ function postUser(){
   )
 }
 
-window.onload = function(){
+function postHighscore(score : number){
+  axios.post<IScore>('https://pingwebapi.azurewebsites.net/api/highscore', {UserId:userID,Score:score})
+  .then(function (response:AxiosResponse) : void{
+      console.log("Highscore postet til database: " + userID + score )
+  })
+  .catch(
+    function(error:AxiosResponse) : void 
+    {
+      console.log(error);
+    }
+  )
+}
+
 let BtnGlobalHighscore = document.getElementById("BtnGlobalHighscore");
 BtnGlobalHighscore.addEventListener("click", getGlobalHighscore);
 let BtnLocalHighscore = document.getElementById("BtnLocalHighscore");
 BtnLocalHighscore.addEventListener("click", getLocalHighscore);
-}
+
 function getGlobalHighscore(){
     axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore')
   .then(function(response: AxiosResponse<IScore[]>) : void
@@ -84,11 +96,10 @@ function getGlobalHighscore(){
   });
 }
 
-
 function getLocalHighscore(){
   let inputLocalHighscore = <HTMLInputElement>document.getElementById("inputLocalHighscore");
   var inputvalue = inputLocalHighscore.value
-  axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore/' + inputvalue)
+  axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore/' + userID)
 .then(function(response: AxiosResponse<IScore[]>) : void
 {
   createHighscoreBoard(response);
