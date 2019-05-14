@@ -28,6 +28,7 @@ jobs:
       testResultsFiles: '**/junit.xml'
 
 - job: "Deploy"
+  dependsOn: Test
   pool:
     vmImage: 'ubuntu-latest'
   steps:
