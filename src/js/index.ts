@@ -1,8 +1,8 @@
 import * as Phaser from "phaser";
-import { GameScene } from "./GameScene"
-import { PauseScene } from "./PauseScene";
+import { GameScene } from "./Scenes/GameScene"
+import { PauseScene } from "./Scenes/PauseScene";
 import { Login } from "./Login"
-import { MMenuScene } from "./MMenuScene";
+import { MMenuScene } from "./Scenes/MMenuScene";
 
 
 

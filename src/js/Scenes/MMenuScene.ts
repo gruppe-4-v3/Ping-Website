@@ -1,4 +1,4 @@
-import { TextButtons } from './game-objects/TextButtons'
+import { TextButtons } from '../GameObjects/TextButtons'
 
 export class MMenuScene extends Phaser.Scene {
     constructor(){
