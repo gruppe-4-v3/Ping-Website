@@ -13,6 +13,10 @@ export class GameScene extends Phaser.Scene {
     player: Phaser.GameObjects.Rectangle
     pauseButton: Phaser.Input.Keyboard.Key
     
+    /**  */
+    livesRemaining: number = 3;
+    lifeText: Phaser.GameObjects.Text
+
     /** Score for current game  */
     score: number = 0
     scoreText: Phaser.GameObjects.Text
@@ -43,31 +47,15 @@ export class GameScene extends Phaser.Scene {
      */ 
     create (): void
     {
-        let livesRemaining = 3;
+        
         let lifeText: GameObjects.Text;
 
         //Adds a simple visual reference of lives remaining.
-        lifeText = this.add.text(16, 16, 'Lives: '+livesRemaining, { fontSize: '32px', fill: '#f2f2f2' });
+        this.lifeText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#f2f2f2' });
         this.scoreText = this.add.text(300, 16, '', { fontSize: '32px', fill: '#f2f2f2' })
 
         // Calls function if anything touches the worldbounds
-        this.physics.world.on('worldbounds', function(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
-            // remove gameobject if it collides with the bottom of the world and reduces amount of lives remaining
-            if(down){
-                body.gameObject.destroy()
-                //Checks amounts of lives left
-                if (livesRemaining != 1) {
-                    livesRemaining--;
-                    lifeText.setText('Lives: '+ livesRemaining);
-                }
-                //Stops the physics if there's no lives left
-                else
-                {
-                    this.physics.pause();
-                    //TODO: Maybe add something like a play again button and a main menu button?
-                }
-            }
-        })
+        this.physics.world.on('worldbounds', (body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) => this.onWorldboundsCollision(body, up, down, left, right))
         
         this.cursor = this.input.keyboard.createCursorKeys();
         this.spawnPlayer();
@@ -112,6 +100,7 @@ export class GameScene extends Phaser.Scene {
         }
 
         this.scoreText.text = 'Score: ' + this.score.toString()
+        this.lifeText.text = 'Lives: '+ this.livesRemaining.toString();
     }
 
     /** 
@@ -157,5 +146,33 @@ export class GameScene extends Phaser.Scene {
         let playerBody: Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>this.physics.add.existing(this.player).body;
         playerBody.onCollide = true
         playerBody.immovable = true
+    }
+
+    /** Is called when something collides with the world bounds 
+     * @param body The body of the colliding GameObject
+     * @param up True if GameObject collide with the top
+     * @param down True if GameObject collide with the bottom
+     * @param left True if GameObject collide with the left side
+     * @param right True if GameObject collide with the right side
+    */
+    private onWorldboundsCollision(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
+        // remove gameobject if it collides with the bottom of the world and reduces amount of lives remaining
+        if(down){
+            body.gameObject.destroy()
+            this.livesRemaining--;
+            
+            //Stops the physics if there's no lives left
+            if(this.livesRemaining < 1)
+            {
+                this.endGame()
+            }
+        }
+    }
+
+    /** May contain spoilers */
+    private endGame(){
+        this.scene.pause();
+
+        //TODO: Maybe add something like a play again button and a main menu button?
     }
 }

@@ -7,8 +7,6 @@ import { PauseScene } from "./PauseScene";
 import { MMenuScene } from "./MMenuScene";
 
 
-var userID : string = "";
-var userName : string = "";
 
 /** GameConfig that contains all settings for the Phaser.Game object
  * 
@@ -29,47 +27,8 @@ let config: GameConfig = {
   
 }
 
-var signinbut : HTMLDivElement = <HTMLDivElement> document.getElementById("signin2");
-signinbut.addEventListener('sign', signinfunc)
-
 // starts game
 let game: Phaser.Game = new Phaser.Game(config);
-
-
-function signinfunc() {
-  console.log("in ts");
-  console.log(signinbut.getAttribute("data-id"));
-  console.log(signinbut.getAttribute("data-name"));
-  userID = signinbut.getAttribute("data-id");
-  userName = signinbut.getAttribute("data-name");
-  getUser(userID);
-}
-function getUser(id : string){
-  axios.get<IUsers>('https://pingwebapi.azurewebsites.net/api/users/' + id)
-.then(function(response){
-  console.log(response.data.username); // ex.: { user: 'Your User'}
-  console.log(response.status); // ex.: 200
-  if (response.data.username != userName) {
-    postUser()
-  }
-})
-.catch(function (error:AxiosError) : void {
-console.log(error)
-postUser();
-});
-}
-function postUser(){
-  axios.post<IUsers>('https://pingwebapi.azurewebsites.net/api/users', {Id:userID,Username:userName})
-  .then(function (response :  AxiosResponse): void
-  {
-      console.log("Statuskoden er :" + response.status);
-  })
-  .catch(
-      function (error:AxiosError) : void{                          
-          console.log(error);
-      }
-  )
-}
 
 window.onload = function(){
 let BtnGlobalHighscore = document.getElementById("BtnGlobalHighscore");
