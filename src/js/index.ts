@@ -3,6 +3,7 @@ import { GameScene } from "./Scenes/GameScene"
 import { PauseScene } from "./Scenes/PauseScene";
 import { Login } from "./Login"
 import { MMenuScene } from "./Scenes/MMenuScene";
+import { RESTCalls } from "./RESTCalls";
 
 
 
@@ -25,6 +26,8 @@ let config: GameConfig = {
 }
 
 let login:Login = new Login();
+
+document.getElementById("BtnGlobalHighscore").addEventListener("click", RESTCalls.getGlobalHighscore);
 
 // starts game
 let game: Phaser.Game = new Phaser.Game(config);
