@@ -5,8 +5,6 @@ import { IScore } from "./IScore"
 import { IUsers } from "./IUsers"
 import { PauseScene } from "./PauseScene";
 
-var userID : string = "";
-var userName : string = "";
 
 /** GameConfig that contains all settings for the Phaser.Game object
  * 
@@ -27,62 +25,10 @@ let config: GameConfig = {
   
 }
 
-var signinbut : HTMLDivElement = <HTMLDivElement> document.getElementById("signin2");
-signinbut.addEventListener('sign', signinfunc)
-
 // starts game
 let game: Phaser.Game = new Phaser.Game(config);
 
-
-function signinfunc() {
-  console.log("in ts");
-  console.log(signinbut.getAttribute("data-id"));
-  console.log(signinbut.getAttribute("data-name"));
-  userID = signinbut.getAttribute("data-id");
-  userName = signinbut.getAttribute("data-name");
-  getUser(userID);
-}
-function getUser(id : string){
-  axios.get<IUsers>('https://pingwebapi.azurewebsites.net/api/users/' + id)
-.then(function(response : AxiosResponse) : void
-{
-  console.log(response.data.username); // ex.: { user: 'Your User'}
-  console.log(response.status); // ex.: 200
-  if (response.data.username != userName) {
-    postUser()
-  }
-})
-.catch(function (error:AxiosError) : void {
-console.log(error)
-postUser();
-});
-}
-function postUser(){
-  axios.post<IUsers>('https://pingwebapi.azurewebsites.net/api/users', {Id:userID,Username:userName})
-  .then(function (response :  AxiosResponse) : void
-  {
-      console.log("Statuskoden er :" + response.status);
-  })
-  .catch(
-      function (error:AxiosError) : void{                          
-          console.log(error);
-      }
-  )
-}
-
-function postHighscore(score : number){
-  axios.post<IScore>('https://pingwebapi.azurewebsites.net/api/highscore', {UserId:userID,Score:score})
-  .then(function (response:AxiosResponse) : void{
-      console.log("Highscore postet til database: " + userID + score )
-  })
-  .catch(
-    function(error:AxiosResponse) : void 
-    {
-      console.log(error);
-    }
-  )
-}
-
+window.onload = function(){
 let BtnGlobalHighscore = document.getElementById("BtnGlobalHighscore");
 BtnGlobalHighscore.addEventListener("click", getGlobalHighscore);
 let BtnLocalHighscore = document.getElementById("BtnLocalHighscore");
