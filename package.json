@@ -8,7 +8,7 @@
     "webpack:prod": "node_modules\\.bin\\webpack --mode=production",
     "watch": "node_modules\\.bin\\webpack --mode=development --watch",
     "serve": "node_modules\\.bin\\http-server dist/ -g -o",
-    "test:watch": "jest-webpack --mode=development --watch",
+    "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors",
     "test": "jest"
   },
