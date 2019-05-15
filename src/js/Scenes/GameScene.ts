@@ -1,5 +1,7 @@
 import { GameObjects, Physics, Scene, Time, Game } from 'phaser'
 import { PauseScene } from "./PauseScene"
+import { RESTCalls } from "./../RESTCalls"
+import { Login } from "./../Login"
 
 export class GameScene extends Phaser.Scene {
 
@@ -37,7 +39,7 @@ export class GameScene extends Phaser.Scene {
     ballVelocityY: number = 100;
 
     /** The players speed */
-    playerSpeed: number = 300;
+    playerSpeed: number = 400;
 
     /** Loads all assets from files into memory */
     preload(): void {
@@ -262,6 +264,11 @@ export class GameScene extends Phaser.Scene {
     /** May contain spoilers */
     private endGame() {
         this.scene.pause();
+
+        var user = Login.userID;
+        var saveScore = this.score;
+        RESTCalls.postHighscore(user, saveScore);
+        console.log("Reached below postHighscore");
 
 
         //TODO: Maybe add something like a play again button and a main menu button?

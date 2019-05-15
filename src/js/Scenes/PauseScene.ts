@@ -16,7 +16,6 @@ export class PauseScene extends Phaser.Scene {
 
     update() : void
     {
-        console.log('This is the other scene')
         if(Phaser.Input.Keyboard.JustDown(this.pauseButton)){
             this.scene.resume('GameScene');
             this.scene.stop();
