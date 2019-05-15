@@ -23,14 +23,26 @@ export class GameScene extends Phaser.Scene {
     score: number = 0
     scoreText: Phaser.GameObjects.Text
 
-    powerUpSpawnTime: number = 30;
+    /** POWERUP PROPERTIES */
+    //Times
+    powerUpSpawnTime: number = 35;
     lastPowerUpTime: number = this.powerUpSpawnTime
+    //Colors
+
+    fastColor: number = 0xffce00;
+    biggerColor: number = 0x00ff1e;
+    straightColor: number = 0xf272c7;
+    slowColor: number = 0xff0000;
+    smallColor: number = 0x6f00ff;
+
 
     /** How often a new ball spawns in seconds */
     ballSpawnTime: number = 2
     /** Time since last ball spawned */
     lastBallTime: number = this.ballSpawnTime
 
+    onlyVertical: boolean = false;
+    
     /** How fast the ball will move horizontally */
     minBallVelocityX: number = -100;
     maxBallVelocityX: number = 100;
@@ -105,16 +117,34 @@ export class GameScene extends Phaser.Scene {
         this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
         // Spawn new ball if time since last ball spawn is greater time allowd
         if(this.lastPowerUpTime > this.powerUpSpawnTime) {
-            this.PowerUpAndDown(0xffce00)
+            this.PowerUpAndDown(this.fastColor)
             this.lastPowerUpTime = 0
         }
-
         this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
         // Spawn new ball if time since last ball spawn is greater time allowd
         if(this.lastPowerUpTime > this.powerUpSpawnTime) {
-            this.PowerUpAndDown(0x00ff1e)
+            this.PowerUpAndDown(this.biggerColor)
             this.lastPowerUpTime = 0
         }
+        this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
+        // Spawn new ball if time since last ball spawn is greater time allowd
+        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
+            this.PowerUpAndDown(this.straightColor)
+            this.lastPowerUpTime = 0
+        }
+        this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
+        // Spawn new ball if time since last ball spawn is greater time allowd
+        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
+            this.PowerUpAndDown(this.slowColor)
+            this.lastPowerUpTime = 0
+        }
+        this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
+        // Spawn new ball if time since last ball spawn is greater time allowd
+        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
+            this.PowerUpAndDown(this.smallColor)
+            this.lastPowerUpTime = 0
+        }
+
 
 
         this.scoreText.text = 'Score: ' + this.score.toString()
@@ -191,15 +221,15 @@ export class GameScene extends Phaser.Scene {
 
         ball.destroy()
         
-        if(ball.fillColor == 0xffce00)
+        if(ball.fillColor == this.fastColor)
         {
-            this.playerSpeed = 600
+            this.playerSpeed = this.playerSpeed * 2
 
-            this.time.addEvent({delay: 2000, callback: function(){this.playerSpeed = 300},
+            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = 300},
             callbackScope: this})
         }
 
-        else if(ball.fillColor == 0x00ff1e)
+        else if(ball.fillColor == this.biggerColor)
         {
             this.player.setScale(2,2)
 
@@ -214,9 +244,37 @@ export class GameScene extends Phaser.Scene {
             },
             callbackScope: this})
         }
-        else if(ball.fillColor == 0xf272c7)
+        else if(ball.fillColor == this.straightColor)
         {
-            
+        
+        this.maxBallVelocityX = 0;
+        this.minBallVelocityX = 0;
+
+          this.time.addEvent({delay: 5000, callback: function(){this.maxBallVelocityX = 100, this.minBallVelocityX = -100},
+          callbackScope: this})
+          
+        }
+        else if(ball.fillColor == this.slowColor)
+        {
+            this.playerSpeed = this.playerSpeed / 2
+
+            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = 300},
+            callbackScope: this})
+        }
+        else if(ball.fillColor == this.smallColor)
+        {
+            this.player.setScale(0.5,0.5)
+
+            let scale: number;
+            scale = 0.5;
+            this.time.addEvent({delay: 100, callback: function(){   
+              
+                this.time.addEvent({delay: 100, callback: function(){
+                    scale += 0.01
+                    this.player.setScale(scale, scale)
+                }, callbackScope: this, repeat: 50})                       
+            },
+            callbackScope: this})
         }
 
     }
