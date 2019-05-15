@@ -1,4 +1,4 @@
-import { GameObjects, Physics, Scene } from 'phaser'
+import { GameObjects, Physics, Scene, Time, Game } from 'phaser'
 import { PauseScene } from "./PauseScene"
 
 export class GameScene extends Phaser.Scene {
@@ -12,7 +12,7 @@ export class GameScene extends Phaser.Scene {
     cursor: Phaser.Input.Keyboard.CursorKeys
     player: Phaser.GameObjects.Rectangle
     pauseButton: Phaser.Input.Keyboard.Key
-    
+    time: Phaser.Time.Clock
     /**  */
     livesRemaining: number = 3;
     lifeText: Phaser.GameObjects.Text
@@ -21,8 +21,11 @@ export class GameScene extends Phaser.Scene {
     score: number = 0
     scoreText: Phaser.GameObjects.Text
 
+    powerUpSpawnTime: number = 10;
+    lastPowerUpTime: number = this.powerUpSpawnTime
+
     /** How often a new ball spawns in seconds */
-    ballSpawnTime: number = 1.5
+    ballSpawnTime: number = 2
     /** Time since last ball spawned */
     lastBallTime: number = this.ballSpawnTime
 
@@ -71,6 +74,8 @@ export class GameScene extends Phaser.Scene {
         // Converts delta to seconds
         let deltaInSec: number = delta / 1000
 
+
+
         if(this.player.body instanceof Phaser.Physics.Arcade.Body){
             if(this.cursor.left.isDown)// move left if the left key is pressed
             {
@@ -98,6 +103,14 @@ export class GameScene extends Phaser.Scene {
             this.spawnBall()
             this.lastBallTime = 0
         }
+
+        this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
+        // Spawn new ball if time since last ball spawn is greater time allowd
+        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
+            this.PowerUp()
+            this.lastPowerUpTime = 0
+        }
+
 
         this.scoreText.text = 'Score: ' + this.score.toString()
         this.lifeText.text = 'Lives: '+ this.livesRemaining.toString();
@@ -137,15 +150,60 @@ export class GameScene extends Phaser.Scene {
     private onPlayerCollide(ball: GameObjects.GameObject, player: GameObjects.GameObject){
         ball.destroy()
         this.score++;
+        
+    }
+
+    private PowerUp(): GameObjects.Rectangle
+    {
+        let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
+        let size: number = 15;
+        let color: number = 0x00ff1e;
+
+        let ball: Phaser.GameObjects.Rectangle = this.add.rectangle(spawnPoint.x, spawnPoint.y, 20, 20, color);
+        this.physics.add.existing(ball);
+
+        let ballBody: Phaser.Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>ball.body
+        ballBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
+        ballBody.velocity.y = this.ballVelocityY;
+        ballBody.bounce.x = 1
+        ballBody.bounce.y = 1
+        ballBody.collideWorldBounds = true
+
+                // emits worldborder event when ball touches the border 
+                ballBody.onWorldBounds = true
+
+                this.physics.add.collider(ball, this.player, this.onPlayerCollidePowerUp, null, this)
+
+                return ball;
+
+    }
+
+    private onPlayerCollidePowerUp(ball: GameObjects.GameObject, player: GameObjects.GameObject){
+        
+        
+        ball.destroy()
+        
+
+        this.playerSpeed = 600
+
+        this.time.addEvent({delay: 2000, callback: function(){this.playerSpeed = 300},
+        callbackScope: this})
+        this.player.setScale(2,2)
+
+        this.time.addEvent({delay: 2000, callback: function(){this.player.setScale(1,1)},
+        callbackScope: this})
+
     }
 
     /** Create and adds a player GameObject to the GameScene*/
-    private spawnPlayer(): void
+    private spawnPlayer(): GameObjects.Rectangle
     {
         this.player = this.add.rectangle(400, 580, 100, 10, 0xff000)
         let playerBody: Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>this.physics.add.existing(this.player).body;
         playerBody.onCollide = true
         playerBody.immovable = true
+
+        return this.player
     }
 
     /** Is called when something collides with the world bounds 
@@ -158,8 +216,20 @@ export class GameScene extends Phaser.Scene {
     private onWorldboundsCollision(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
         // remove gameobject if it collides with the bottom of the world and reduces amount of lives remaining
         if(down){
-            body.gameObject.destroy()
-            this.livesRemaining--;
+
+            if(body.width == 20)
+            {
+                body.gameObject.destroy()
+            
+            }
+            else
+            {
+                body.gameObject.destroy()
+                this.livesRemaining--;
+            }
+
+
+
             
             //Stops the physics if there's no lives left
             if(this.livesRemaining < 1)
