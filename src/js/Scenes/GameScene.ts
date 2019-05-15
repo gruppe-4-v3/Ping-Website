@@ -61,7 +61,7 @@ export class GameScene extends Phaser.Scene {
      * Contains all code that only needs to be run one time
      */
     create(): void {
-
+        this.scale.toggleFullscreen();
         let lifeText: GameObjects.Text;
 
         //Adds a simple visual reference of lives remaining.

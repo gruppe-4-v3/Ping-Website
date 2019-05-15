@@ -5,8 +5,6 @@ import { MMenuScene } from "./Scenes/MMenuScene";
 import { HighScoreScene } from "./Scenes/HighScoreScene";
 import { GameOverScene } from "./Scenes/GameOverScene";
 import { Login } from "./Login"
-import { RESTCalls } from "./RESTCalls";
-
 
 
 /** GameConfig that contains all settings for the Phaser.Game object
@@ -15,6 +13,10 @@ import { RESTCalls } from "./RESTCalls";
  * for a list of possible settings
  */
 let config: GameConfig = {
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
   title: "Ping (Name Subject to Change)",
   width: 800,
   height: 600,
@@ -29,8 +31,6 @@ let config: GameConfig = {
 
 var signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
 signinbut.addEventListener('sign', Login.signinfunc)
-
-document.getElementById("BtnGlobalHighscore").addEventListener("click", RESTCalls.getGlobalHighscore);
 
 // starts game
 let game: Phaser.Game = new Phaser.Game(config);
