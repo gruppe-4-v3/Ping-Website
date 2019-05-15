@@ -4,13 +4,13 @@ import { IUsers } from "./IUsers"
 
 export class RESTCalls {
 
-  static getUser(id: string) {
+  static getUser(id: string, name: string) {
     axios.get<IUsers>('https://pingwebapi.azurewebsites.net/api/users/' + id)
       .then(function (response) {
         console.log(response.data.username); // ex.: { user: 'Your User'}
         console.log(response.status); // ex.: 200
-        if (response.data.username != this.userName) {
-          this.postUser()
+        if (response.data.username != name) {
+          this.postUser(id, name);
         }
       })
       .catch(function (error: AxiosError): void {

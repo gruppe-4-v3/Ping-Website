@@ -16,6 +16,6 @@ export class Login {
     console.log(signinbut.getAttribute("data-name"));
     this.userID = signinbut.getAttribute("data-id");
     this.userName = signinbut.getAttribute("data-name");
-    RESTCalls.getUser(this.userID);
+    RESTCalls.getUser(this.userID, this.userName);
   }
 }
