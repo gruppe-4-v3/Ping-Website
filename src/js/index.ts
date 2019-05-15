@@ -25,7 +25,9 @@ let config: GameConfig = {
   url: "http://projectping.azurewebsites.net/"
 }
 
-let login:Login = new Login();
+var login: Login = new Login();
+var signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
+signinbut.addEventListener('sign', login.signinfunc)
 
 document.getElementById("BtnGlobalHighscore").addEventListener("click", RESTCalls.getGlobalHighscore);
 
