@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from "../../node_modules/axios/index"
-import { IScore } from "./IScore"
-import { IUsers } from "./IUsers"
+import { IScore } from "./Model/IScore"
+import { IUsers } from "./Model/IUsers"
 
 export class RESTCalls {
 
