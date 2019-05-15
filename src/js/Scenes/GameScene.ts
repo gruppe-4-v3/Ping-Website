@@ -237,7 +237,9 @@ export class GameScene extends Phaser.Scene {
     private endGame() {
         this.scene.pause();
 
-        RESTCalls.postHighscore(Login.userID, this.score);
+        var user = Login.userID;
+        var saveScore = this.score;
+        RESTCalls.postHighscore(user, saveScore);
         console.log("Reached below postHighscore");
 
 
