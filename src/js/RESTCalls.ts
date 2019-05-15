@@ -12,7 +12,7 @@ export class RESTCalls {
       })
       .catch(function (error: AxiosError): void {
         console.log(error)
-        this.postUser(id, name);
+        RESTCalls.postUser(id, name);
       });
   }
   static postUser(userID: string, userName: string) {
