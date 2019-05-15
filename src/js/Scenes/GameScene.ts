@@ -1,5 +1,4 @@
 import { GameObjects, Physics, Scene, Time, Game } from 'phaser'
-import { PauseScene } from "./PauseScene"
 
 export class GameScene extends Phaser.Scene {
 
