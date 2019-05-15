@@ -1,15 +1,14 @@
 import { RESTCalls } from "./RESTCalls"
 
+
 export class Login {
-  static userID: string = "";
-  static userName: string = "";
+  static signInBtn: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
+  static userID: string = Login.signInBtn.getAttribute("data-id");
+  static userName: string = Login.signInBtn.getAttribute("data-name");
 
   static signinfunc() {
-    let signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
-    console.log(signinbut.getAttribute("data-id"));
-    console.log(signinbut.getAttribute("data-name"));
-    this.userID = signinbut.getAttribute("data-id");
-    this.userName = signinbut.getAttribute("data-name");
+    console.log(this.signInBtn.getAttribute("data-id"));
+    console.log(this.signInBtn.getAttribute("data-name"));
     RESTCalls.getUser(this.userID, this.userName);
   }
 }
