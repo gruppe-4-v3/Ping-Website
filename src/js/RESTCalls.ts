@@ -7,10 +7,7 @@ export class RESTCalls {
   static getUser(id: string, name: string) {
     axios.get<IUsers>('https://pingwebapi.azurewebsites.net/api/users/' + id)
       .then((response) => {
-        console.log("Bruger allerede kendt:")
-        console.log("Brugernavn: " + response.data.username); // ex.: { user: 'Your User'}
-        console.log("ID: " + response.data.id);
-        console.log(response.status); // ex.: 20
+        console.log("Bruger allerede kendt:" + response.data.username + ", ID: " + response.data.id)
       })
       .catch((error: AxiosError) => {
         console.log("Bruger ikke fundet.")

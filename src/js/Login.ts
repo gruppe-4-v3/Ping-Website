@@ -10,7 +10,6 @@ export class Login {
     console.log(signinbut.getAttribute("data-name"));
     this.userID = signinbut.getAttribute("data-id");
     this.userName = signinbut.getAttribute("data-name");
-    console.log(this.userName + " fra google login")
     RESTCalls.getUser(this.userID, this.userName);
   }
 }
