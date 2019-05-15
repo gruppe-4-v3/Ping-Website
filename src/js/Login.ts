@@ -2,13 +2,14 @@ import { RESTCalls } from "./RESTCalls"
 
 export class Login {
   constructor() {
+    this.signinbut = <HTMLDivElement>document.getElementById("signin2");
     this.signinbut.addEventListener('sign', this.signinfunc)
   }
 
   userID: string = "";
   userName: string = "";
 
-  signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
+  signinbut: HTMLDivElement;
 
   signinfunc() {
     console.log("in ts");
