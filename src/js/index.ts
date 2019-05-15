@@ -1,8 +1,10 @@
 import * as Phaser from "phaser";
 import { GameScene } from "./Scenes/GameScene"
 import { PauseScene } from "./Scenes/PauseScene";
-import { Login } from "./Login"
 import { MMenuScene } from "./Scenes/MMenuScene";
+import { HighScoreScene } from "./Scenes/HighScoreScene";
+import { GameOverScene } from "./Scenes/GameOverScene";
+import { Login } from "./Login"
 import { RESTCalls } from "./RESTCalls";
 
 
@@ -21,7 +23,7 @@ let config: GameConfig = {
   physics: {
     default: "arcade"
   },
-  scene: [MMenuScene, GameScene, PauseScene],
+  scene: [MMenuScene, GameScene, PauseScene, HighScoreScene, GameOverScene],
   url: "http://projectping.azurewebsites.net/"
 }
 
