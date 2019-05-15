@@ -37,7 +37,7 @@ export class GameScene extends Phaser.Scene {
     ballVelocityY: number = 100;
 
     /** The players speed */
-    playerSpeed: number = 300;
+    playerSpeed: number = 400;
 
     /** Loads all assets from files into memory */
     preload(): void {
@@ -182,7 +182,7 @@ export class GameScene extends Phaser.Scene {
 
         this.playerSpeed = 600
 
-        this.time.addEvent({delay: 2000, callback: function(){this.playerSpeed = 300},
+        this.time.addEvent({delay: 2000, callback: function(){this.playerSpeed = 400},
         callbackScope: this})
         this.player.setScale(2,2)
 
