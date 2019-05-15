@@ -2,13 +2,15 @@ import { RESTCalls } from "./RESTCalls"
 
 
 export class Login {
-  static signInBtn: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
-  static userID: string = Login.signInBtn.getAttribute("data-id");
-  static userName: string = Login.signInBtn.getAttribute("data-name");
+  static userID: string = "";
+  static userName: string = "";
 
   static signinfunc() {
-    console.log(this.signInBtn.getAttribute("data-id"));
-    console.log(this.signInBtn.getAttribute("data-name"));
+    let signInBtn: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
+    console.log(signInBtn.getAttribute("data-id"));
+    console.log(signInBtn.getAttribute("data-name"));
+    this.userID = signInBtn.getAttribute("data-id");
+    this.userName = signInBtn.getAttribute("data-name");
     RESTCalls.getUser(this.userID, this.userName);
   }
 }
