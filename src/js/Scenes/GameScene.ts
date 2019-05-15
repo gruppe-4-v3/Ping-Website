@@ -1,5 +1,7 @@
 import { GameObjects, Physics, Scene, Time, Game } from 'phaser'
 import { PauseScene } from "./PauseScene"
+import { RESTCalls } from "./../RESTCalls"
+import { Login } from "./../Login"
 
 export class GameScene extends Phaser.Scene {
 
@@ -234,6 +236,9 @@ export class GameScene extends Phaser.Scene {
     /** May contain spoilers */
     private endGame() {
         this.scene.pause();
+
+        RESTCalls.postHighscore(Login.userID, this.score);
+        console.log("Reached below postHighscore");
 
 
         //TODO: Maybe add something like a play again button and a main menu button?

@@ -1,15 +1,15 @@
 import { RESTCalls } from "./RESTCalls"
 
 export class Login {
-  constructor() {    
+  constructor() {
   }
 
-  userID: string = "";
-  userName: string = "";
+  static userID: string = "";
+  static userName: string = "";
 
-  
 
-  signinfunc() {
+
+  static signinfunc() {
     console.log("in ts");
     let signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
     console.log(signinbut.getAttribute("data-id"));
