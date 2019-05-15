@@ -7,6 +7,7 @@ import { HighScoreScene } from "./Scenes/HighScoreScene";
 import { GameOverScene } from "./Scenes/GameOverScene";
 /* End of scene imports */
 import { Login } from "./Login"
+import { RESTCalls } from "./RESTCalls";
 
 
 /** GameConfig that contains all settings for the Phaser.Game object
@@ -33,6 +34,13 @@ let config: GameConfig = {
 
 var signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
 signinbut.addEventListener('sign', Login.signinfunc)
+
+let postScoreBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById("postScore")
+postScoreBtn.addEventListener('click', postScore)
+
+function postScore(){
+  RESTCalls.postHighscore("102757993538341953029", 523)
+}
 
 // starts game
 let game: Phaser.Game = new Phaser.Game(config);
