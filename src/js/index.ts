@@ -17,7 +17,7 @@ let config: GameConfig = {
   width: 800,
   height: 600,
   parent: document.getElementById('game'),
-  backgroundColor: "#18216D",
+  backgroundColor: "#ff8d00",
   physics: {
     default: "arcade"
   },
@@ -25,9 +25,8 @@ let config: GameConfig = {
   url: "http://projectping.azurewebsites.net/"
 }
 
-var login: Login = new Login();
 var signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
-signinbut.addEventListener('sign', login.signinfunc)
+signinbut.addEventListener('sign', Login.signinfunc)
 
 document.getElementById("BtnGlobalHighscore").addEventListener("click", RESTCalls.getGlobalHighscore);
 

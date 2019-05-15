@@ -1,4 +1,7 @@
 import { GameObjects, Physics, Scene, Time, Game } from 'phaser'
+import { PauseScene } from "./PauseScene"
+import { RESTCalls } from "./../RESTCalls"
+import { Login } from "./../Login"
 
 export class GameScene extends Phaser.Scene {
 
@@ -20,7 +23,7 @@ export class GameScene extends Phaser.Scene {
     score: number = 0
     scoreText: Phaser.GameObjects.Text
 
-    powerUpSpawnTime: number = 10;
+    powerUpSpawnTime: number = 30;
     lastPowerUpTime: number = this.powerUpSpawnTime
 
     /** How often a new ball spawns in seconds */
@@ -36,7 +39,7 @@ export class GameScene extends Phaser.Scene {
     ballVelocityY: number = 100;
 
     /** The players speed */
-    playerSpeed: number = 300;
+    playerSpeed: number = 400;
 
     /** Loads all assets from files into memory */
     preload(): void {
@@ -63,7 +66,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     /** Method that runs every game tick. Contains all code that can change dynamically
-    @param time Time since screen got loaded in ms
+    @param time Time since scene got loaded in ms
     @param delta Time since last game tick
     */
     update(time: number, delta: number): void {
@@ -102,7 +105,14 @@ export class GameScene extends Phaser.Scene {
         this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
         // Spawn new ball if time since last ball spawn is greater time allowd
         if(this.lastPowerUpTime > this.powerUpSpawnTime) {
-            this.PowerUp()
+            this.PowerUpAndDown(0xffce00)
+            this.lastPowerUpTime = 0
+        }
+
+        this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
+        // Spawn new ball if time since last ball spawn is greater time allowd
+        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
+            this.PowerUpAndDown(0x00ff1e)
             this.lastPowerUpTime = 0
         }
 
@@ -118,7 +128,7 @@ export class GameScene extends Phaser.Scene {
     private spawnBall(): GameObjects.Arc {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
         let size: number = 15;
-        let color: number = 0xff0000;
+        let color: number = 0x0038ff;
 
         // add ball to the GameScene rendere
         let ball: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, size, color);
@@ -148,11 +158,12 @@ export class GameScene extends Phaser.Scene {
         
     }
 
-    private PowerUp(): GameObjects.Rectangle
+
+    private PowerUpAndDown(color: number): GameObjects.Rectangle
     {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
         let size: number = 15;
-        let color: number = 0x00ff1e;
+        //farven 0xffce00;
 
         let ball: Phaser.GameObjects.Rectangle = this.add.rectangle(spawnPoint.x, spawnPoint.y, 20, 20, color);
         this.physics.add.existing(ball);
@@ -169,31 +180,51 @@ export class GameScene extends Phaser.Scene {
 
                 this.physics.add.collider(ball, this.player, this.onPlayerCollidePowerUp, null, this)
 
+
                 return ball;
 
     }
 
-    private onPlayerCollidePowerUp(ball: GameObjects.GameObject, player: GameObjects.GameObject){
+    private onPlayerCollidePowerUp(ball: GameObjects.Rectangle, player: GameObjects.GameObject){
         
         
+
         ball.destroy()
         
+        if(ball.fillColor == 0xffce00)
+        {
+            this.playerSpeed = 600
 
-        this.playerSpeed = 600
+            this.time.addEvent({delay: 2000, callback: function(){this.playerSpeed = 300},
+            callbackScope: this})
+        }
 
-        this.time.addEvent({delay: 2000, callback: function(){this.playerSpeed = 300},
-        callbackScope: this})
-        this.player.setScale(2,2)
+        else if(ball.fillColor == 0x00ff1e)
+        {
+            this.player.setScale(2,2)
 
-        this.time.addEvent({delay: 2000, callback: function(){this.player.setScale(1,1)},
-        callbackScope: this})
+            let scale: number;
+            scale = 2;
+            this.time.addEvent({delay: 100, callback: function(){   
+              
+                this.time.addEvent({delay: 100, callback: function(){
+                    scale -= 0.01
+                    this.player.setScale(scale, scale)
+                }, callbackScope: this, repeat: 100})                       
+            },
+            callbackScope: this})
+        }
+        else if(ball.fillColor == 0xf272c7)
+        {
+            
+        }
 
     }
 
     /** Create and adds a player GameObject to the GameScene*/
     private spawnPlayer(): GameObjects.Rectangle
     {
-        this.player = this.add.rectangle(400, 580, 100, 10, 0xff000)
+        this.player = this.add.rectangle(400, 580, 100, 10, 0x0038ff)
         let playerBody: Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>this.physics.add.existing(this.player).body;
         playerBody.onCollide = true
         playerBody.immovable = true
@@ -233,6 +264,11 @@ export class GameScene extends Phaser.Scene {
     /** May contain spoilers */
     private endGame() {
         this.scene.pause();
+
+        var user = Login.userID;
+        var saveScore = this.score;
+        RESTCalls.postHighscore(user, saveScore);
+        console.log("Reached below postHighscore");
 
 
         //TODO: Maybe add something like a play again button and a main menu button?
