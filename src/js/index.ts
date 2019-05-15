@@ -1,9 +1,11 @@
 import * as Phaser from "phaser";
+/* Scene imports */
 import { GameScene } from "./Scenes/GameScene"
 import { PauseScene } from "./Scenes/PauseScene";
 import { MMenuScene } from "./Scenes/MMenuScene";
 import { HighScoreScene } from "./Scenes/HighScoreScene";
 import { GameOverScene } from "./Scenes/GameOverScene";
+/* End of scene imports */
 import { Login } from "./Login"
 import { RESTCalls } from "./RESTCalls";
 

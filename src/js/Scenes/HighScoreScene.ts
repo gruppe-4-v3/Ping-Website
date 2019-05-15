@@ -1,4 +1,4 @@
-import { TextButtons } from "../GameObjects/TextButtons";
+import { TextButtons } from "../GameObjects/TextButtons"
 
 export class HighScoreScene extends Phaser.Scene {
     constructor(){
