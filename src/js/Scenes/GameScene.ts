@@ -322,10 +322,7 @@ export class GameScene extends Phaser.Scene {
     private endGame() {
         this.scene.pause();
 
-        var user = Login.userID;
-        var saveScore = this.score;
-        RESTCalls.postHighscore(user, saveScore);
-        console.log("Reached below postHighscore");
+        Login.userID ? RESTCalls.postHighscore(Login.userID, this.score) : console.log("Bruger ikke logget ind, gemmer ikke score.")
         this.scene.launch("GameOverScene");
         this.scene.stop();
     }

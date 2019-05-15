@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en-US">
+
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Project Ping</title>
@@ -9,8 +10,9 @@
 <body>
   <div id="signin2" class="g-signin2" data-onsuccess="onSignIn" data-id="" data-name=""></div>
   <a href="#" onclick="signOut();">Sign out</a>
-
-  <br/>
+  <br />
+  <button id="createUser">Test User Creation</button>
+  <button id="createScore">Test Score Creation</button>
 
   <div id="game"></div>
 
@@ -20,9 +22,9 @@
     function signOut() {
       var auth2 = gapi.auth2.getAuthInstance();
       auth2.signOut().then(function () {
-      console.log('User signed out.');
+        console.log('User signed out.');
       });
-    }  
+    }
     function onSignIn(googleUser) {
       var profile = googleUser.getBasicProfile();
       var signinelement = document.getElementById("signin2");
@@ -32,6 +34,8 @@
       signinelement.dispatchEvent(event);
     }     
   </script>
-  <meta name="google-signin-client_id" content="376761281684-92onvfvtdngn08er53l38qcg1l1f4fls.apps.googleusercontent.com">
+  <meta name="google-signin-client_id"
+    content="376761281684-92onvfvtdngn08er53l38qcg1l1f4fls.apps.googleusercontent.com">
 </body>
+
 </html>

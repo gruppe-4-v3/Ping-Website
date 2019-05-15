@@ -35,5 +35,19 @@ let config: GameConfig = {
 var signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
 signinbut.addEventListener('sign', Login.signinfunc);
 
+let createUserBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById("createUser");
+createUserBtn.addEventListener("click", createUser)
+
+let createScoreBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById("createScore");
+createScoreBtn.addEventListener("click", createScore)
+
+function createUser() {
+  RESTCalls.getUser("111111", "Emil Hammer");
+}
+
+function createScore() {
+  RESTCalls.postHighscore("111111", 500);
+}
+
 // starts game
 let game: Phaser.Game = new Phaser.Game(config);
