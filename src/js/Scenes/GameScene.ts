@@ -326,8 +326,7 @@ export class GameScene extends Phaser.Scene {
         var saveScore = this.score;
         RESTCalls.postHighscore(user, saveScore);
         console.log("Reached below postHighscore");
-
-
-        //TODO: Maybe add something like a play again button and a main menu button?
+        this.scene.launch("GameOverScene");
+        this.scene.stop();
     }
 }
