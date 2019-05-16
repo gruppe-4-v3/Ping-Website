@@ -167,7 +167,12 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.existing(ball);
 
         let ballBody: Phaser.Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>ball.body
-        ballBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
+        if (Phaser.Math.Between(1, 10) == 5) {
+            ballBody.velocity.x = 0;
+        }
+        else {
+            ballBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
+        }
         ballBody.velocity.y = this.ballVelocityY;
         ballBody.bounce.x = 1
         ballBody.bounce.y = 1
