@@ -4,10 +4,8 @@ import { Login } from "./../Login"
 
 export class GameScene extends Phaser.Scene {
 
-    constructor() {
-        super({
-            key: "GameScene"
-        });
+    constructor(config: string | Phaser.Scenes.Settings.Config) {
+        super(config);
     }
 
     cursor: Phaser.Input.Keyboard.CursorKeys
@@ -53,7 +51,7 @@ export class GameScene extends Phaser.Scene {
     ballVelocityY: number = 100;
 
     /** The players speed */
-    playerSpeed: number = 400;
+    playerSpeed: number = 600;
 
     /** Loads all assets from files into memory */
     preload(): void {
@@ -184,7 +182,7 @@ export class GameScene extends Phaser.Scene {
         return ball;
     }
 
-    private onPlayerCollide(ball: GameObjects.GameObject, player: GameObjects.GameObject) {
+    protected onPlayerCollide(ball: GameObjects.GameObject, player: GameObjects.GameObject) {
         ball.destroy()
         this.score++;
         
@@ -227,7 +225,7 @@ export class GameScene extends Phaser.Scene {
         {
             this.playerSpeed = this.playerSpeed * 2
 
-            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = 300},
+            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = this.playerSpeed/2},
             callbackScope: this})
         }
 
