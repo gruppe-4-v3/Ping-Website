@@ -25,11 +25,18 @@ export class MMenuScene extends Phaser.Scene {
         var playButton = new TextButtons(this,350,300,'Start Game!',{fill:'#f2f2f2'});
         this.add.existing(playButton);
         playButton.on('pointerup', () => {
-            this.scene.launch('GameScene');
+            this.scene.launch('StandardMode');
             this.scene.stop();
         })
 
-        var highScoreButton = new TextButtons(this,350,325,'High Scores',{fill:'#f2f2f2'});
+        var playButton = new TextButtons(this,350,325,'Start Challenge Mode!',{fill:'#f2f2f2'});
+        this.add.existing(playButton);
+        playButton.on('pointerup', () => {
+            this.scene.launch('ChallengeMode');
+            this.scene.stop();
+        })
+
+        var highScoreButton = new TextButtons(this,350,350,'High Scores',{fill:'#f2f2f2'});
         this.add.existing(highScoreButton);
         highScoreButton.on('pointerup', () => {
             this.scene.launch('HighScoreScene');

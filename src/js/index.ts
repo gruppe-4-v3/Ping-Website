@@ -8,6 +8,8 @@ import { GameOverScene } from "./Scenes/GameOverScene";
 /* End of scene imports */
 import { Login } from "./Login"
 import { RESTCalls } from "./RESTCalls";
+import { ChallengeMode } from "./Scenes/ChallengeMode";
+import { StandardMode } from "./Scenes/StandardMode";
 
 
 /** GameConfig that contains all settings for the Phaser.Game object
@@ -28,7 +30,7 @@ let config: GameConfig = {
   physics: {
     default: "arcade"
   },
-  scene: [MMenuScene, GameScene, PauseScene, HighScoreScene, GameOverScene],
+  scene: [MMenuScene, StandardMode, ChallengeMode, PauseScene, HighScoreScene, GameOverScene],
   url: "http://projectping.azurewebsites.net/"
 }
 
