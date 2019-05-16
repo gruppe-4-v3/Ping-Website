@@ -14,8 +14,9 @@ export class GameScene extends Phaser.Scene {
     player: Phaser.GameObjects.Rectangle
     pauseButton: Phaser.Input.Keyboard.Key
     time: Phaser.Time.Clock
-    /**  */
-    livesRemaining: number = 3;
+    
+    /** Counter for the amount of lives left */
+    livesRemaining: number;
     lifeText: Phaser.GameObjects.Text
 
     /** Score for current game  */
@@ -61,8 +62,8 @@ export class GameScene extends Phaser.Scene {
      * Contains all code that only needs to be run one time
      */
     create(): void {
-        this.scale.toggleFullscreen();
-        let lifeText: GameObjects.Text;
+
+        this.livesRemaining = 3;
 
         //Adds a simple visual reference of lives remaining.
         this.lifeText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#f2f2f2' });
@@ -320,7 +321,7 @@ export class GameScene extends Phaser.Scene {
 
     /** May contain spoilers */
     private endGame() {
-        this.scene.pause();
+//        this.scene.pause();
 
         console.log(Login.userID);
         Login.userID ? RESTCalls.postHighscore(Login.userID, this.score) : console.log("Bruger ikke logget ind, gemmer ikke score.")
