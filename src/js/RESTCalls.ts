@@ -5,10 +5,9 @@ import { IUsers } from "./Model/IUsers"
 export class RESTCalls {
 
   static getUser(id: string, name: string) {
-    return axios.get<IUsers>('https://pingwebapi.azurewebsites.net/api/users/' + id)
+    axios.get<IUsers>('https://pingwebapi.azurewebsites.net/api/users/' + id)
       .then((response) => {
         console.log("Bruger allerede kendt: " + response.data.username + ", ID: " + response.data.id)
-        return response;
       })
       .catch((error: AxiosError) => {
         console.log("Bruger ikke fundet.")
@@ -16,10 +15,9 @@ export class RESTCalls {
       })
   }
   static postUser(userID: string, userName: string) {
-    return axios.post<IUsers>('https://pingwebapi.azurewebsites.net/api/users', { Id: userID, Username: userName })
+    axios.post<IUsers>('https://pingwebapi.azurewebsites.net/api/users', { Id: userID, Username: userName })
       .then((response: AxiosResponse) => {
         console.log("Ny bruger oprettet");
-        return response;
       })
       .catch((error: AxiosError) => {
           console.log(error);
