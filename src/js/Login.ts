@@ -9,8 +9,8 @@ export class Login {
     let signInBtn: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
     console.log(signInBtn.getAttribute("data-id"));
     console.log(signInBtn.getAttribute("data-name"));
-    this.userID = signInBtn.getAttribute("data-id");
-    this.userName = signInBtn.getAttribute("data-name");
+    Login.userID = signInBtn.getAttribute("data-id");
+    Login.userName = signInBtn.getAttribute("data-name");
     RESTCalls.getUser(this.userID, this.userName);
   }
 }
