@@ -14,8 +14,9 @@ export class GameScene extends Phaser.Scene {
     player: Phaser.GameObjects.Rectangle
     pauseButton: Phaser.Input.Keyboard.Key
     time: Phaser.Time.Clock
-    /**  */
-    livesRemaining: number = 3;
+    
+    /** Counter for the amount of lives left */
+    livesRemaining: number;
     lifeText: Phaser.GameObjects.Text
 
     /** Score for current game  */
@@ -27,10 +28,12 @@ export class GameScene extends Phaser.Scene {
     powerUpSpawnTime: number = 55;
     lastPowerUpTime: number = this.powerUpSpawnTime
     //Colors
-
+    playerColor : number = 0x0038ff;
+    //Powerups
     fastColor: number = 0xffce00;
     biggerColor: number = 0x00ff1e;
     straightColor: number = 0xf272c7;
+    //Powerdowns
     slowColor: number = 0xff0000;
     smallColor: number = 0x6f00ff;
 
@@ -61,8 +64,8 @@ export class GameScene extends Phaser.Scene {
      * Contains all code that only needs to be run one time
      */
     create(): void {
-        this.scale.toggleFullscreen();
-        let lifeText: GameObjects.Text;
+
+        this.livesRemaining = 3;
 
         //Adds a simple visual reference of lives remaining.
         this.lifeText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#f2f2f2' });
@@ -281,7 +284,7 @@ export class GameScene extends Phaser.Scene {
     /** Create and adds a player GameObject to the GameScene*/
     private spawnPlayer(): GameObjects.Rectangle
     {
-        this.player = this.add.rectangle(400, 580, 100, 10, 0x0038ff)
+        this.player = this.add.rectangle(400, 580, 100, 10, this.playerColor)
         let playerBody: Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>this.physics.add.existing(this.player).body;
         playerBody.onCollide = true
         playerBody.immovable = true
@@ -321,9 +324,12 @@ export class GameScene extends Phaser.Scene {
     /** May contain spoilers */
     private endGame() {
         this.scene.pause();
-
+        Login.signinfunc;
         console.log(Login.userID);
-        Login.userID ? RESTCalls.postHighscore(Login.userID, this.score) : console.log("Bruger ikke logget ind, gemmer ikke score.")
+        if (Login.userID.length > 0){
+            RESTCalls.getUser(Login.userID, Login.userName);
+        }
+        Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score) : console.log("Bruger ikke logget ind, gemmer ikke score.")
         this.scene.launch("GameOverScene");
         this.scene.stop();
     }

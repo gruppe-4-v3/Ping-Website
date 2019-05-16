@@ -14,6 +14,13 @@ export class MMenuScene extends Phaser.Scene {
 
     create() : void
     {
+        //Button for fullscreen toggling
+        var fullScreenButton = new TextButtons(this,700,50,'FULLSCREEN',{fill:'#f2f2f2'});
+        this.add.existing(fullScreenButton);
+        fullScreenButton.on('pointerup', () => {
+            this.scale.toggleFullscreen();
+        });
+
         var playButton = new TextButtons(this,350,300,'Start Game!',{fill:'#f2f2f2'});
         this.add.existing(playButton);
         playButton.on('pointerup', () => {
