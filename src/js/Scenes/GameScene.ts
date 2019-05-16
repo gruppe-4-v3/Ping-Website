@@ -321,7 +321,7 @@ export class GameScene extends Phaser.Scene {
     /** May contain spoilers */
     private endGame() {
         this.scene.pause();
-
+        Login.signinfunc;
         console.log(Login.userID);
         if (Login.userID.length > 0){
             RESTCalls.getUser(Login.userID, Login.userName);
