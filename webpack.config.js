@@ -20,6 +20,17 @@ module.exports = {
         exclude: /node_modules/
     },
     {
+      //Image files are copied to dist folder
+      test: /\.(jpe?g|png|gif|svg)$/,
+      use: [{
+        loader: 'file-loader',
+        options:{
+          name: '[name].[ext]',
+          outputPath: 'assets/'
+        }
+      }]
+    },
+    {
         //(s)css files wil be handled by the scss-loader and then send to the css-loader and fuinally saved as a bundle
         test:/\.(s*)css$/,
         use:[{loader :'file-loader', options: {name: 'bundle.css'}}, 'extract-loader', 'css-loader', 'sass-loader']
