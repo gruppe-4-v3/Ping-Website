@@ -24,7 +24,7 @@ export class GameScene extends Phaser.Scene {
 
     /** POWERUP PROPERTIES */
     //Times
-    powerUpSpawnTime: number = 35;
+    powerUpSpawnTime: number = 55;
     lastPowerUpTime: number = this.powerUpSpawnTime
     //Colors
 
@@ -269,9 +269,9 @@ export class GameScene extends Phaser.Scene {
             this.time.addEvent({delay: 100, callback: function(){   
               
                 this.time.addEvent({delay: 100, callback: function(){
-                    scale += 0.01
+                    scale += 0.005
                     this.player.setScale(scale, scale)
-                }, callbackScope: this, repeat: 50})                       
+                }, callbackScope: this, repeat: 100})                       
             },
             callbackScope: this})
         }
