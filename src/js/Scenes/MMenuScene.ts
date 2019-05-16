@@ -1,5 +1,6 @@
 import { TextButtons } from '../GameObjects/TextButtons'
 import { ImageButtons } from '../GameObjects/ImageButtons'
+import img from '../../assets/PlayGameButRest.png'
 
 export class MMenuScene extends Phaser.Scene {
     constructor(){
@@ -40,7 +41,7 @@ export class MMenuScene extends Phaser.Scene {
            350,
            400,
            'playButtonAtlas',
-           'PlayGameButRest.png',
+           {img},
            'PlayGameButActive.png',
            'PlayGameButHover.png',
            () => {
