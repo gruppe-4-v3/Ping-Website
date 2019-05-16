@@ -11,6 +11,7 @@ export class GameOverScene extends Phaser.Scene {
 
     create() : void
     {
+        
         var gameOverText;
         gameOverText = this.add.text(10, 200, '', { fontSize: '32px', fill: '#000' });
         gameOverText.setText("You're not very good at this, are you?");
@@ -18,7 +19,7 @@ export class GameOverScene extends Phaser.Scene {
         var playAgainButton = new TextButtons(this,350,375,'Play again?',{fill:'#f2f2f2'});
         this.add.existing(playAgainButton);
         playAgainButton.on('pointerup', () => {
-            this.scene.launch('GameScene');
+            this.scene.launch((<any>this.sys.settings.data).oldKey);
             this.scene.stop();
         })
 

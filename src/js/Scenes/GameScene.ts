@@ -64,6 +64,7 @@ export class GameScene extends Phaser.Scene {
     create(): void {
 
         this.livesRemaining = 3;
+        this.score = 0;
 
         //Adds a simple visual reference of lives remaining.
         this.lifeText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#f2f2f2' });
@@ -167,7 +168,12 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.existing(ball);
 
         let ballBody: Phaser.Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>ball.body
-        ballBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
+        if (Phaser.Math.Between(1, 10) == 5) {
+            ballBody.velocity.x = 0;
+        }
+        else {
+            ballBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
+        }
         ballBody.velocity.y = this.ballVelocityY;
         ballBody.bounce.x = 1
         ballBody.bounce.y = 1
@@ -258,7 +264,7 @@ export class GameScene extends Phaser.Scene {
         {
             this.playerSpeed = this.playerSpeed / 2
 
-            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = 300},
+            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = this.playerSpeed * 2},
             callbackScope: this})
         }
         else if(ball.fillColor == this.smallColor)
@@ -328,7 +334,6 @@ export class GameScene extends Phaser.Scene {
             RESTCalls.getUser(Login.userID, Login.userName);
         }
         Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score) : console.log("Bruger ikke logget ind, gemmer ikke score.")
-        this.scene.launch("GameOverScene");
-        this.scene.stop();
+        this.scene.start("GameOverScene", {'oldKey':this.sys.settings.key, 'finalScore': this.score});
     }
 }
