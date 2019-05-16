@@ -258,7 +258,7 @@ export class GameScene extends Phaser.Scene {
         {
             this.playerSpeed = this.playerSpeed / 2
 
-            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = 300},
+            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = this.playerSpeed * 2},
             callbackScope: this})
         }
         else if(ball.fillColor == this.smallColor)
