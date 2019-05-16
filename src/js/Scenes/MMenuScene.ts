@@ -1,6 +1,6 @@
 import { TextButtons } from '../GameObjects/TextButtons'
 import { ImageButtons } from '../GameObjects/ImageButtons'
-import img from '../../assets/PlayGameButRest.png'
+//import img from '../../assets/PlayGameButRest.png'
 
 export class MMenuScene extends Phaser.Scene {
     constructor(){
@@ -43,7 +43,7 @@ export class MMenuScene extends Phaser.Scene {
             this.scene.stop();
         })
 
-       new ImageButtons(
+       /*new ImageButtons(
            this,
            350,
            400,
@@ -55,7 +55,7 @@ export class MMenuScene extends Phaser.Scene {
             this.scene.launch('GameScene');
             this.scene.stop();  
            }
-       );
+       );*/
     }
 
     update() : void

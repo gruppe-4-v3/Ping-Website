@@ -64,6 +64,7 @@ export class GameScene extends Phaser.Scene {
     create(): void {
 
         this.livesRemaining = 3;
+        this.score = 0;
 
         //Adds a simple visual reference of lives remaining.
         this.lifeText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#f2f2f2' });
@@ -333,7 +334,6 @@ export class GameScene extends Phaser.Scene {
             RESTCalls.getUser(Login.userID, Login.userName);
         }
         Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score) : console.log("Bruger ikke logget ind, gemmer ikke score.")
-        this.scene.launch("GameOverScene");
-        this.scene.stop();
+        this.scene.start("GameOverScene", {'oldKey':this.sys.settings.key, 'finalScore': this.score});
     }
 }
