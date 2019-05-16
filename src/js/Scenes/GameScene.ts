@@ -28,10 +28,12 @@ export class GameScene extends Phaser.Scene {
     powerUpSpawnTime: number = 35;
     lastPowerUpTime: number = this.powerUpSpawnTime
     //Colors
-
+    playerColor : number = 0x0038ff;
+    //Powerups
     fastColor: number = 0xffce00;
     biggerColor: number = 0x00ff1e;
     straightColor: number = 0xf272c7;
+    //Powerdowns
     slowColor: number = 0xff0000;
     smallColor: number = 0x6f00ff;
 
@@ -282,7 +284,7 @@ export class GameScene extends Phaser.Scene {
     /** Create and adds a player GameObject to the GameScene*/
     private spawnPlayer(): GameObjects.Rectangle
     {
-        this.player = this.add.rectangle(400, 580, 100, 10, 0x0038ff)
+        this.player = this.add.rectangle(400, 580, 100, 10, this.playerColor)
         let playerBody: Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>this.physics.add.existing(this.player).body;
         playerBody.onCollide = true
         playerBody.immovable = true
@@ -321,10 +323,13 @@ export class GameScene extends Phaser.Scene {
 
     /** May contain spoilers */
     private endGame() {
-//        this.scene.pause();
-
+        this.scene.pause();
+        Login.signinfunc;
         console.log(Login.userID);
-        Login.userID ? RESTCalls.postHighscore(Login.userID, this.score) : console.log("Bruger ikke logget ind, gemmer ikke score.")
+        if (Login.userID.length > 0){
+            RESTCalls.getUser(Login.userID, Login.userName);
+        }
+        Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score) : console.log("Bruger ikke logget ind, gemmer ikke score.")
         this.scene.launch("GameOverScene");
         this.scene.stop();
     }

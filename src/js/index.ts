@@ -43,6 +43,8 @@ createScoreBtn.addEventListener("click", createScore)
 
 function createUser() {
   RESTCalls.getUser("111111", "Emil Hammer");
+  Login.userID = "111111";
+  Login.userName = "Emil Hammer";
 }
 
 function createScore() {
