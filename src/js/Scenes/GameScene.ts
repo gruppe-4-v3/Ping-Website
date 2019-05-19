@@ -21,12 +21,16 @@ export class GameScene extends Phaser.Scene {
     score: number = 0
     scoreText: Phaser.GameObjects.Text
 
-    /** POWERUP PROPERTIES */
+    
+    /** The speed of the player */
+    playerSpeed: number = 600;
+    /** The colors of the player */
+    playerColor : number = 0x0038ff;
+
+    //<<<<<<<<<< POWERUP PROPERTIES >>>>>>>>>>\\
     //Times
     powerUpSpawnTime: number = 75;
     lastPowerUpTime: number = this.powerUpSpawnTime
-    //Colors
-    playerColor : number = 0x0038ff;
     //Powerups
     fastColor: number = 0xffce00;
     biggerColor: number = 0x00ff1e;
@@ -35,23 +39,26 @@ export class GameScene extends Phaser.Scene {
     slowColor: number = 0xff0000;
     smallColor: number = 0x6f00ff;
 
-
-    /** How often a new ball spawns in seconds */
+    //<<<<<<<<<< BALL PROPERTIES >>>>>>>>>>\\
+    /** How often a new ball spawns in seconds */ 
     ballSpawnTime: number = 2
-    /** Time since last ball spawned */
+    /** Time since last ball spawned */ 
     lastBallTime: number = this.ballSpawnTime
+    /** How big the balls spawning are */ 
+    ballSize: number = 15;
+    /** How fast the ball will move horizontally to the left */ 
+    minBallVelocityX: number = -100;
+    /** How fast the ball will move horizontally to the right*/ 
+    maxBallVelocityX: number = 100;
+    /** How fast the ball will fall */ 
+    ballVelocityY: number = 100;
 
     onlyVertical: boolean = false;
     
-    /** How fast the ball will move horizontally */
-    minBallVelocityX: number = -100;
-    maxBallVelocityX: number = 100;
+    
 
-    /** How fast the ball will fall */
-    ballVelocityY: number = 100;
+    
 
-    /** The players speed */
-    playerSpeed: number = 600;
 
     /** Loads all assets from files into memory */
     preload(): void {
@@ -158,25 +165,32 @@ export class GameScene extends Phaser.Scene {
     */
     private spawnBall(): GameObjects.Arc {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
-        let size: number = 15;
         let color: number = 0x0038ff;
 
         // add ball to the GameScene rendere
-        let ball: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, size, color);
+        let ball: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, this.ballSize, color);
 
         // give ball an arcade physics body
         this.physics.add.existing(ball);
 
         let ballBody: Phaser.Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>ball.body
+
+        // Gives ball a 1 in 10 chance to fall vertical down
         if (Phaser.Math.Between(1, 10) == 5) {
             ballBody.velocity.x = 0;
         }
         else {
             ballBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
         }
+
+        // Sets the vertical speed of the ball (How fast the ball falls down)
         ballBody.velocity.y = this.ballVelocityY;
+
+        // Sets the balls walls and floor bounce to not lose momentum when bouncing
         ballBody.bounce.x = 1
         ballBody.bounce.y = 1
+
+        // Enable the ball to colide with the bounds of the map
         ballBody.collideWorldBounds = true
 
         // emits worldborder event when ball touches the border 
@@ -222,11 +236,10 @@ export class GameScene extends Phaser.Scene {
     }
 
     private onPlayerCollidePowerUp(ball: GameObjects.Rectangle, player: GameObjects.GameObject){
-        
-        
-
+        // Removes powerup from game
         ball.destroy()
         
+        // Set player speed to double, if ball color is equal to fast powerup
         if(ball.fillColor == this.fastColor)
         {
             this.playerSpeed = this.playerSpeed * 2
@@ -234,7 +247,7 @@ export class GameScene extends Phaser.Scene {
             this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = this.playerSpeed/2},
             callbackScope: this})
         }
-
+        // Make player bigger, if ball color is equal to enlarge powerup
         else if(ball.fillColor == this.biggerColor)
         {
             this.player.setScale(2,2)
@@ -250,6 +263,7 @@ export class GameScene extends Phaser.Scene {
             },
             callbackScope: this})
         }
+        // Only spawn balls that fall straight down, if ball color is equal to straight down powerup
         else if(ball.fillColor == this.straightColor)
         {
         
@@ -260,6 +274,7 @@ export class GameScene extends Phaser.Scene {
           callbackScope: this})
           
         }
+        // Slow player to half speed if ball color is equal to slow player powerup
         else if(ball.fillColor == this.slowColor)
         {
             this.playerSpeed = this.playerSpeed / 2
@@ -267,6 +282,7 @@ export class GameScene extends Phaser.Scene {
             this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = this.playerSpeed * 2},
             callbackScope: this})
         }
+        // Make player little if ball color is equal to shrink player powerup
         else if(ball.fillColor == this.smallColor)
         {
             this.player.setScale(0.5,0.5)
@@ -306,19 +322,13 @@ export class GameScene extends Phaser.Scene {
     private onWorldboundsCollision(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
         // remove gameobject if it collides with the bottom of the world and reduces amount of lives remaining
         if(down){
+            body.gameObject.destroy()
 
-            if(body.width == 20)
-            {
-                body.gameObject.destroy()
-            
-            }
-            else
-            {
-                body.gameObject.destroy()
+            if(body.gameObject instanceof Phaser.GameObjects.Arc) {
                 this.livesRemaining--;
             }
             
-            //Stops the physics if there's no lives left
+            //Call endGame method if player has 0 lives
             if (this.livesRemaining < 1) {
                 this.endGame()
             }
