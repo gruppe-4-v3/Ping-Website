@@ -1,18 +1,14 @@
-import { Controller } from './Controller'
+export * from './PingGame';
 
-/**  */
-export class Ping extends Phaser.Game {
-    constructor(GameConfig?: GameConfig, Controller?: Controller){
-        super(GameConfig)
-        
-        if(Controller !== undefined){
-            this.hasExternalController = true
-            this.externalController = Controller
-        }
-        else
-            this.hasExternalController = false
-    }
+/** Scene */
+export * from './Scenes/GameScene';
+export * from './Scenes/ChallengeMode';
+export * from './Scenes/GameOverScene';
+export * from './Scenes/HighScoreScene';
+export * from './Scenes/MMenuScene';
+export * from './Scenes/PauseScene';
+export * from './Scenes/StandardMode';
 
-    hasExternalController: boolean;
-    externalController: Controller;
-}
+/** GameObject */
+export * from './GameObjects/ImageButtons';
+export * from './GameObjects/TextButtons';

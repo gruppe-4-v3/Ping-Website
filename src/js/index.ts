@@ -1,17 +1,17 @@
 import * as Phaser from "phaser";
-/* Scene imports */
-import { PauseScene } from "./Scenes/PauseScene";
-import { MMenuScene } from "./Scenes/MMenuScene";
-import { HighScoreScene } from "./Scenes/HighScoreScene";
-import { GameOverScene } from "./Scenes/GameOverScene";
-/* End of scene imports */
 import { Login } from "./Login"
 import { RESTCalls } from "./RESTCalls";
-import { ChallengeMode } from "./Scenes/ChallengeMode";
-import { StandardMode } from "./Scenes/StandardMode";
 import { Controller } from "./Controller"
-import { Ping } from './Ping'
-
+import {
+  PingGame,
+// Scenes
+  PauseScene, 
+  MMenuScene, 
+  HighScoreScene, 
+  GameOverScene,
+  StandardMode,
+  ChallengeMode
+} from './ping'
 
 /** GameConfig that contains all settings for the Phaser.Game object
  * 
@@ -64,4 +64,4 @@ document.getElementById('connectPiBtn').addEventListener('click', () => {
 })
 
 // starts game
-let game: Phaser.Game = new Ping(config, piController);
+let game: Phaser.Game = new PingGame(config, piController);
