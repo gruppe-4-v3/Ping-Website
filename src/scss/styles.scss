@@ -1,9 +1,9 @@
 $fontColor: #0091aa;
 $colorHeading: #be4a14;
-#game  // div with id: content
+/*#game  // div with id: content
 {     
 }
-
+*/
 h2
 {
     color: $colorHeading;
@@ -11,4 +11,12 @@ h2
 
 h1{
     @extend h2;
+}
+
+#connectPiBtn {
+    background: red
+}
+
+#disconnectPiBtn {
+    background: green
 }

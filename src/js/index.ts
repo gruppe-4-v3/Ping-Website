@@ -1,6 +1,5 @@
 import * as Phaser from "phaser";
 /* Scene imports */
-import { GameScene } from "./Scenes/GameScene"
 import { PauseScene } from "./Scenes/PauseScene";
 import { MMenuScene } from "./Scenes/MMenuScene";
 import { HighScoreScene } from "./Scenes/HighScoreScene";
@@ -10,6 +9,8 @@ import { Login } from "./Login"
 import { RESTCalls } from "./RESTCalls";
 import { ChallengeMode } from "./Scenes/ChallengeMode";
 import { StandardMode } from "./Scenes/StandardMode";
+import { Controller } from "./Controller"
+import { Ping } from './Ping'
 
 
 /** GameConfig that contains all settings for the Phaser.Game object
@@ -53,5 +54,14 @@ function createScore() {
   RESTCalls.postHighscore("111111", 500);
 }
 
+/** Create new instace of controller obejct */
+let piController: Controller = new Controller();
+
+/** Add a eventlistener that connects to the contoller when connect button is pressed */
+document.getElementById('connectPiBtn').addEventListener('click', () => { 
+  piController.ip = (<HTMLInputElement>document.getElementById('piIp')).value;
+  piController.Connect()
+})
+
 // starts game
-let game: Phaser.Game = new Phaser.Game(config);
+let game: Phaser.Game = new Ping(config, piController);
