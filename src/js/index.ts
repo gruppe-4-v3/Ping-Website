@@ -11,7 +11,7 @@ import {
   GameOverScene,
   StandardMode,
   ChallengeMode
-} from './ping'
+} from './Ping'
 
 /** GameConfig that contains all settings for the Phaser.Game object
  * 
