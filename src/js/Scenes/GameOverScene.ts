@@ -19,7 +19,7 @@ export class GameOverScene extends Phaser.Scene {
         var playAgainButton = new TextButtons(this,350,375,'Play again?',{fill:'#f2f2f2'});
         this.add.existing(playAgainButton);
         playAgainButton.on('pointerup', () => {
-            this.scene.launch((<any>this.sys.settings.data).oldKey);
+            this.scene.launch((<any>this.sys.settings.data).oldSceneKey);
             this.scene.stop();
         })
 
