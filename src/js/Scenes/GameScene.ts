@@ -29,7 +29,7 @@ export class GameScene extends Phaser.Scene {
 
     //<<<<<<<<<< POWERUP PROPERTIES >>>>>>>>>>\\
     //Times
-    powerUpSpawnTime: number = 75;
+    powerUpSpawnTime: number = 105;
     lastPowerUpTime: number = this.powerUpSpawnTime
     //Powerups
     fastColor: number = 0xffce00;
@@ -244,7 +244,7 @@ export class GameScene extends Phaser.Scene {
         {
             this.playerSpeed = this.playerSpeed * 2
 
-            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = this.playerSpeed/2},
+            this.time.addEvent({delay: 10000, callback: function(){this.playerSpeed = this.playerSpeed/2},
             callbackScope: this})
         }
         // Make player bigger, if ball color is equal to enlarge powerup
@@ -254,7 +254,7 @@ export class GameScene extends Phaser.Scene {
 
             let scale: number;
             scale = 2;
-            this.time.addEvent({delay: 100, callback: function(){   
+            this.time.addEvent({delay: 5000, callback: function(){   
               
                 this.time.addEvent({delay: 100, callback: function(){
                     scale -= 0.01
@@ -270,7 +270,7 @@ export class GameScene extends Phaser.Scene {
         this.maxBallVelocityX = 0;
         this.minBallVelocityX = 0;
 
-          this.time.addEvent({delay: 5000, callback: function(){this.maxBallVelocityX = 100, this.minBallVelocityX = -100},
+          this.time.addEvent({delay: 10000, callback: function(){this.maxBallVelocityX = 100, this.minBallVelocityX = -100},
           callbackScope: this})
           
         }
@@ -279,7 +279,7 @@ export class GameScene extends Phaser.Scene {
         {
             this.playerSpeed = this.playerSpeed / 2
 
-            this.time.addEvent({delay: 5000, callback: function(){this.playerSpeed = this.playerSpeed * 2},
+            this.time.addEvent({delay: 10000, callback: function(){this.playerSpeed = this.playerSpeed * 2},
             callbackScope: this})
         }
         // Make player little if ball color is equal to shrink player powerup
@@ -289,7 +289,7 @@ export class GameScene extends Phaser.Scene {
 
             let scale: number;
             scale = 0.5;
-            this.time.addEvent({delay: 100, callback: function(){   
+            this.time.addEvent({delay: 5000, callback: function(){   
               
                 this.time.addEvent({delay: 100, callback: function(){
                     scale += 0.005
