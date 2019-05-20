@@ -19,6 +19,22 @@ export class PauseScene extends Phaser.Scene {
                 fullScreenButton.on('pointerup', () => {
                     this.scale.toggleFullscreen();
                 });
+                
+                //Button for resuming of game
+                var fullScreenButton = new TextButtons(this,700,100,'RESUME',{fill:'#f2f2f2'});
+                this.add.existing(fullScreenButton);
+                fullScreenButton.on('pointerup', () => {
+                    this.scene.resume((<any>this.sys.settings.data).oldSceneKey);
+                    this.scene.stop();
+                });
+
+                //Button for returning to the menu
+                var fullScreenButton = new TextButtons(this,700,150,'QUIT GAME',{fill:'#f2f2f2'});
+                this.add.existing(fullScreenButton);
+                fullScreenButton.on('pointerup', () => {
+                    this.scene.start('MMenuScene');
+                    this.scene.stop((<any>this.sys.settings.data).oldSceneKey);
+                });
 
         this.pauseButton = this.input.keyboard.addKey('p');
     }
@@ -26,7 +42,7 @@ export class PauseScene extends Phaser.Scene {
     update() : void
     {
         if(Phaser.Input.Keyboard.JustDown(this.pauseButton)){
-            this.scene.resume('StandardMode');
+            this.scene.resume((<any>this.sys.settings.data).oldSceneKey);
             this.scene.stop();
         }
     }

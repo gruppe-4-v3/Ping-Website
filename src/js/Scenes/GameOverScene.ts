@@ -11,9 +11,11 @@ export class GameOverScene extends Phaser.Scene {
 
     create() : void
     {
-        
+        var finalScoreText;
         var gameOverText;
+        finalScoreText = this.add.text(350, 340,'',{ fontSize: '32px', fill: '#000' });
         gameOverText = this.add.text(10, 200, '', { fontSize: '32px', fill: '#000' });
+        finalScoreText.setText("Final Score: " + (<any>this.sys.settings.data).finalScore);
         gameOverText.setText("You're not very good at this, are you?");
 
         var playAgainButton = new TextButtons(this,350,375,'Play again?',{fill:'#f2f2f2'});

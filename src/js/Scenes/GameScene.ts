@@ -111,8 +111,8 @@ export class GameScene extends Phaser.Scene {
 
         // Pause the GameScene if the pausebutton key is pressed and switch to PauseScene. 
         if (Phaser.Input.Keyboard.JustDown(this.pauseButton)) {
-            this.scene.launch('PauseScene');
-            this.scene.pause('GameScene');
+            this.scene.launch('PauseScene', {'oldSceneKey':this.sys.settings.key});
+            this.scene.pause();
         }
 
         this.lastBallTime = this.lastBallTime + deltaInSec
