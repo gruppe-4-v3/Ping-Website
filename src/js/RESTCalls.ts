@@ -25,9 +25,10 @@ export class RESTCalls {
       })
   }
 
-  static postHighscore(userID: string, score: number) {
+  static postHighscore(userID: string, score: number, type: string) {
     console.log(userID + " : " + score);
-    axios.post<IScore>('https://pingwebapi.azurewebsites.net/api/highscore', { UserId: userID, Score: score })
+    let date = new Date();
+    axios.post<IScore>('https://pingwebapi.azurewebsites.net/api/highscore', { UserId: userID, Score: score, Time: date.toJSON, Type: type })
       .then((response: AxiosResponse) => {
         console.log("Highscore postet til database: " + userID + " : " + score)
       })
@@ -36,10 +37,16 @@ export class RESTCalls {
       })
   }
 
-  static getGlobalHighscore() {
-    return axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore/top/15')
+  static getStandardGlobalHighscore() {
+    return axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore/Standard/top/15')
       .then((response: AxiosResponse<IScore[]>) => {
-          return response.data.sort((n1, n2) => n2.score - n1.score)
+          return response.data.sort((n1: IScore, n2: IScore) => n2.score - n1.score)
+      })
+  }
+  static getChallengeGlobalHighscore() {
+    return axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore/Challenge/top/15')
+      .then((response: AxiosResponse<IScore[]>) => {
+          return response.data.sort((n1: IScore, n2: IScore) => n2.score - n1.score)
       })
   }
 
