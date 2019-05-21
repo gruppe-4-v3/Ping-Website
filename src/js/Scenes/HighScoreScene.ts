@@ -36,12 +36,11 @@ export class HighScoreScene extends Phaser.Scene {
             this.add.text(0, 150, "Dato");
 
             response.forEach(element => {
-                let dateFormat = element.time.getDay + "/" + element.time.getMonth + "-" + element.time.getFullYear + " - " + element.time.getHours + ":" + element.time.getMinutes;
-                //this.add.text(x,y,"#" + rang + " - " + element.userId + ": " + element.score + " : " + dateFormat);
+                //let dateFormat = element.time.getDay + "/" + element.time.getMonth + "-" + element.time.getFullYear + " - " + element.time.getHours + ":" + element.time.getMinutes;
                 this.add.text(0, y, "#" + rang);
-                this.add.text(50, y, element.userId + ":");
-                this.add.text(100, y, "" + element.score + " :");
-                this.add.text(150, y, dateFormat)
+                this.add.text(100, y, element.userId + ":");
+                this.add.text(200, y, "" + element.score + " :");
+                this.add.text(300, y, ""+element.time.getDate)
 
                 y = y + 20;
                 rang++;
