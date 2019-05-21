@@ -61,8 +61,3 @@ export class RESTCalls {
     })
   }
 }
-
-interface ScoreText {
-  text: string;
-  score: number;
-}
