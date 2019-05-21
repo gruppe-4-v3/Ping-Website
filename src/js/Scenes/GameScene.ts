@@ -29,7 +29,7 @@ export class GameScene extends Phaser.Scene {
 
     //<<<<<<<<<< POWERUP PROPERTIES >>>>>>>>>>\\
     //Times
-    powerUpSpawnTime: number = 25;
+    powerUpSpawnTime: number = 19;
     lastPowerUpTime: number = this.powerUpSpawnTime
     //Powerups
     fastColor: number = 0x5dff00;
