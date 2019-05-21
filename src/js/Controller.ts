@@ -1,14 +1,11 @@
 export class Controller {
-    constructor(port?: number){
-        if(port === undefined){
-            this.port = 12000;
-        }
-        else{
-            this.port = port;
-        }
+    constructor(){
+        this.port = 12000;
+
+        document.getElementById('connectPiBtn').onclick = () => this.Connect()
     }
     
-    private webSocketClient: WebSocket;
+    webSocketClient: WebSocket;
 
     webSocketURL: string
     ip: string;
@@ -16,6 +13,7 @@ export class Controller {
     isConnected: boolean = false;
 
     Connect(): void{
+        this.ip = (<HTMLInputElement>document.getElementById('piIp')).value;
         this.webSocketURL = 'ws://' + this.ip + ':' + this.port;
         this.webSocketClient = new WebSocket(this.webSocketURL);
         console.log('Connecting...');
@@ -25,6 +23,7 @@ export class Controller {
             let connectBtn = <HTMLButtonElement>document.getElementById('connectPiBtn');
             connectBtn.innerText = 'Connected...';
             connectBtn.setAttribute('id', 'disconnectPiBtn');
+            connectBtn.onclick = () => this.Disconnect()
         })
     }
 
@@ -32,9 +31,10 @@ export class Controller {
         this.webSocketClient.close();
         this.isConnected = false;
         console.log('Connection to ' + this.ip + ' has been closed.');
-        let connectBtn = <HTMLButtonElement>document.getElementById('disconnectPiBtn');
-        connectBtn.innerText = 'Disconnected...';
-        connectBtn.setAttribute('id', 'connectPiBtn');
+        let disconnectBtn = <HTMLButtonElement>document.getElementById('disconnectPiBtn');
+        disconnectBtn.innerText = 'Disconnected...';
+        disconnectBtn.setAttribute('id', 'connectPiBtn');
+        disconnectBtn.onclick = () => this.Connect()
 
     }
 }
