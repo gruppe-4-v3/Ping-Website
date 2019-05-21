@@ -23,7 +23,6 @@ export class HighScoreScene extends Phaser.Scene {
 
     update(): void {}
 
-
     createGlobalHighscore() {
         RESTCalls.getStandardGlobalHighscore().then(response => {
             console.log("Nede i then i createGlobalHighscore");
@@ -32,11 +31,10 @@ export class HighScoreScene extends Phaser.Scene {
             let rang = 1;
 
             response.forEach(element => {
-                this.add.text(x,y,"#" + rang + " - " + element.userId + ": " + element.score);
+                this.add.text(x,y,"#" + rang + " - " + element.userId + ": " + element.score + " : " + element.time.getDate);
                 y = y + 20;
                 rang++;
-            })
-            
+            })     
         });
     }
 }
