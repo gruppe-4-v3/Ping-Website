@@ -17,8 +17,11 @@ export class GameOverScene extends Phaser.Scene {
         finalScoreText = this.add.text(350, 340,'',{ fontSize: '32px', fill: '#000' });
         gameOverText = this.add.text(10, 200, '', { fontSize: '32px', fill: '#000' });
         finalScoreText.setText("Final Score: " + pointsFinal);
-        if (pointsFinal <= 500) {
+        if (pointsFinal <= 100) {
             gameOverText.setText("You're not very good at this, are you?");
+        }
+        if (pointsFinal <= 500) {
+            gameOverText.setText("Only slightly better. Keep at it!")
         } 
         else if (pointsFinal <= 1000){
             gameOverText.setText("You're getting there!");
