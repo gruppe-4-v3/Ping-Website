@@ -12,6 +12,9 @@ export class GameScene extends Phaser.Scene {
     player: Phaser.GameObjects.Rectangle
     pauseButton: Phaser.Input.Keyboard.Key
     time: Phaser.Time.Clock
+
+    //** Gamemode */
+    gameMode: string = "Standard";
     
     /** Counter for the amount of lives left */
     livesRemaining: number;
@@ -360,7 +363,7 @@ export class GameScene extends Phaser.Scene {
         if (Login.userID.length > 0){
             RESTCalls.getUser(Login.userID, Login.userName);
         }
-        Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score, "Standard") : console.log("Bruger ikke logget ind, gemmer ikke score.")
+        Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score, this.gameMode) : console.log("Bruger ikke logget ind, gemmer ikke score.")
         this.scene.start("GameOverScene", {'oldSceneKey':this.sys.settings.key, 'finalScore': this.score});
     }
 }

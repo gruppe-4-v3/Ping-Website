@@ -25,8 +25,6 @@ export class HighScoreScene extends Phaser.Scene {
 
     createGlobalHighscore() {
         RESTCalls.getStandardGlobalHighscore().then(response => {
-            console.log("Nede i then i createGlobalHighscore");
-            let x = 0;
             let y = 20;
             let rang = 1;
 
@@ -34,6 +32,7 @@ export class HighScoreScene extends Phaser.Scene {
             this.add.text(50,0, "Navn");
             this.add.text(300,0, "Score");
             this.add.text(400,0, "Dato");
+            this.add.text(650,0, "Gamemode");
 
             response.forEach(element => {
                 // Takes the date element and makes it to a string. Splits it up in 2 - separated at T.
@@ -45,6 +44,7 @@ export class HighScoreScene extends Phaser.Scene {
                 this.add.text(50, y, element.userId);
                 this.add.text(300, y, "" + element.score);
                 this.add.text(400, y, ""+ dateFormat)
+                this.add.text(650, y, element.type);
 
                 y = y + 20;
                 rang++;

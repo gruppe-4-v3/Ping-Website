@@ -8,7 +8,9 @@ export class ChallengeMode extends GameScene {
         })
     }
 
-    
+    /** Gamemode */
+    gameMode : string = "Challenge";
+
     /** The speed of the player */
     playerSpeed: number = 1000;
 
