@@ -29,15 +29,15 @@ export class GameScene extends Phaser.Scene {
 
     //<<<<<<<<<< POWERUP PROPERTIES >>>>>>>>>>\\
     //Times
-    powerUpSpawnTime: number = 105;
+    powerUpSpawnTime: number = 25;
     lastPowerUpTime: number = this.powerUpSpawnTime
     //Powerups
     fastColor: number = 0xffce00;
-    biggerColor: number = 0x00ff1e;
-    straightColor: number = 0xf272c7;
+    biggerColor: number = 0x00ff83;
+    straightColor: number = 0x0061ff;
     //Powerdowns
     slowColor: number = 0xff0000;
-    smallColor: number = 0x6f00ff;
+    smallColor: number = 0xff0094;
 
     //<<<<<<<<<< BALL PROPERTIES >>>>>>>>>>\\
     /** How often a new ball spawns in seconds */ 
@@ -122,34 +122,12 @@ export class GameScene extends Phaser.Scene {
             this.lastBallTime = 0
         }
 
+       
+
         this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
-        // Spawn new ball if time since last ball spawn is greater time allowd
+        // Spawn new power if time since last power spawn is greater time allowd
         if(this.lastPowerUpTime > this.powerUpSpawnTime) {
-            this.PowerUpAndDown(this.fastColor)
-            this.lastPowerUpTime = 0
-        }
-        this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
-        // Spawn new ball if time since last ball spawn is greater time allowd
-        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
-            this.PowerUpAndDown(this.biggerColor)
-            this.lastPowerUpTime = 0
-        }
-        this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
-        // Spawn new ball if time since last ball spawn is greater time allowd
-        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
-            this.PowerUpAndDown(this.straightColor)
-            this.lastPowerUpTime = 0
-        }
-        this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
-        // Spawn new ball if time since last ball spawn is greater time allowd
-        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
-            this.PowerUpAndDown(this.slowColor)
-            this.lastPowerUpTime = 0
-        }
-        this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
-        // Spawn new ball if time since last ball spawn is greater time allowd
-        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
-            this.PowerUpAndDown(this.smallColor)
+            this.PowerUpAndDown(this.getRandomPower())
             this.lastPowerUpTime = 0
         }
 
@@ -202,6 +180,40 @@ export class GameScene extends Phaser.Scene {
         return ball;
     }
 
+    
+
+
+    private  getRandomPower(): number
+    {
+        enum Color{
+            fastColor, biggerColor, straightColor, slowColor, smallColor 
+        }
+        let amount = Math.floor(Math.random()* Object.keys(Color).length/2)
+        console.log(amount)
+        if(amount == 0)
+        {
+            return this.fastColor
+        }
+        else if (amount == 1)
+        {
+            return this.biggerColor
+        }
+        else if (amount == 2)
+        {
+            return this.straightColor
+        }
+        else if (amount == 3)
+        {
+            return this.slowColor
+        }
+        else if(amount == 4)
+        {
+            return this.smallColor
+        }
+
+
+    }
+
     protected onPlayerCollide(ball: GameObjects.GameObject, player: GameObjects.GameObject) {
         ball.destroy()
         this.score++;
@@ -209,29 +221,34 @@ export class GameScene extends Phaser.Scene {
     }
 
 
+
+    /**
+     * Method that create powerups and downs to the GameScene
+     * @param color The color decide what the powerup/down do
+     * see properties for what the colors do and if you want to change it
+     */
     private PowerUpAndDown(color: number): GameObjects.Rectangle
     {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
         let size: number = 15;
-        //farven 0xffce00;
 
-        let ball: Phaser.GameObjects.Rectangle = this.add.rectangle(spawnPoint.x, spawnPoint.y, 20, 20, color);
-        this.physics.add.existing(ball);
+        let square: Phaser.GameObjects.Rectangle = this.add.rectangle(spawnPoint.x, spawnPoint.y, 20, 20, color);
+        this.physics.add.existing(square);
 
-        let ballBody: Phaser.Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>ball.body
-        ballBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
-        ballBody.velocity.y = this.ballVelocityY;
-        ballBody.bounce.x = 1
-        ballBody.bounce.y = 1
-        ballBody.collideWorldBounds = true
+        let squareBody: Phaser.Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>square.body
+        squareBody.velocity.x = Phaser.Math.Between(this.minBallVelocityX, this.maxBallVelocityX);
+        squareBody.velocity.y = this.ballVelocityY;
+        squareBody.bounce.x = 1
+        squareBody.bounce.y = 1
+        squareBody.collideWorldBounds = true
 
-                // emits worldborder event when ball touches the border 
-                ballBody.onWorldBounds = true
+                // emits worldborder event when square touches the border 
+                squareBody.onWorldBounds = true
 
-                this.physics.add.collider(ball, this.player, this.onPlayerCollidePowerUp, null, this)
+                this.physics.add.collider(square, this.player, this.onPlayerCollidePowerUp, null, this)
 
 
-                return ball;
+                return square;
 
     }
 
