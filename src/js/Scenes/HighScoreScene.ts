@@ -1,6 +1,7 @@
 import { TextButtons } from "../GameObjects/TextButtons"
 import { RESTCalls } from "../RESTCalls";
 import { Scene } from "phaser";
+import { Login } from "../Login";
 
 export class HighScoreScene extends Phaser.Scene {
     constructor() {
@@ -33,16 +34,22 @@ export class HighScoreScene extends Phaser.Scene {
         GameModeStandard.on('pointerup', () => {
             if(this.globalHighscore == true){
                 this.textGroup.clear(true, true);
-                console.log("Laver global highscore")
                 this.createGlobalHighscore("Standard");
+            }
+            else{
+                this.textGroup.clear(true, true);
+                this.createLocalHighscore("Standard");
             }
         })
 
         GameModeChallenge.on('pointerup', () => {
             if(this.globalHighscore == true){
                 this.textGroup.clear(true, true);
-                console.log("Laver global highscore")
                 this.createGlobalHighscore("Challenge");
+            }
+            else{
+                this.textGroup.clear(true, true);
+                this.createLocalHighscore("Challenge");
             }
         })
 
@@ -50,10 +57,14 @@ export class HighScoreScene extends Phaser.Scene {
 
         LocalHSBtn.on('pointerup', () => {
             this.globalHighscore = false;
+            this.textGroup.clear(true, true);
+            this.createLocalHighscore("Standard");
         })
 
         GlobalHSBtn.on('pointerup', () => {
             this.globalHighscore = true;
+            this.textGroup.clear(true, true);
+            this.createGlobalHighscore("Standard");
         })
 
         MainMenuBtn.on('pointerup', () => {
@@ -64,7 +75,37 @@ export class HighScoreScene extends Phaser.Scene {
 
     update(): void {}
 
-    createGlobalHighscore(gamemode : string) {
+    createLocalHighscore(gamemode: string){
+        Login.signinfunc();
+        RESTCalls.getLocalHighscore(Login.userID,gamemode).then(response => {
+            let y = 50;
+            let rang = 1;      
+
+            this.textGroup.add(this.add.text(0,y, "Rank"));
+            this.textGroup.add(this.add.text(50,y, "Name"));
+            this.textGroup.add(this.add.text(300,y, "Score"));
+            this.textGroup.add(this.add.text(400,y, "Date"));
+            this.textGroup.add(this.add.text(650,y, "Gamemode"));
+
+            response.forEach(element => {
+                y = y + 20;
+                // Takes the date element and makes it to a string. Splits it up in 2 - separated at T.
+                let dateString = element.time.toString();
+                let dateStringSplit = dateString.split("T", 2)
+                let dateFormat = dateStringSplit[0] + " - " + dateStringSplit[1];
+
+                this.textGroup.add(this.add.text(0, y, "#" + rang));
+                this.textGroup.add(this.add.text(50, y, element.userId));
+                this.textGroup.add(this.add.text(300, y, "" + element.score));
+                this.textGroup.add(this.add.text(400, y, ""+ dateFormat))
+                this.textGroup.add(this.add.text(650, y, element.type));
+
+                rang++;
+            })
+        });
+    }
+
+    createGlobalHighscore(gamemode: string) {
         RESTCalls.getGlobalHighscore(gamemode).then(response => {
             let y = 50;
             let rang = 1;      

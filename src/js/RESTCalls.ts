@@ -37,16 +37,18 @@ export class RESTCalls {
       })
   }
 
-  static getGlobalHighscore(gamemode : string) {
+  static getGlobalHighscore(gamemode: string) {
     return axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore/' + gamemode + '/top/15')
       .then((response: AxiosResponse<IScore[]>) => {
-          return response.data.sort((n1: IScore, n2: IScore) => n2.score - n1.score)
+        return response.data.sort((n1: IScore, n2: IScore) => n2.score - n1.score)
       })
   }
 
-  static getLocalHighscore(userID: string) {
-    axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore/' + userID)
-      .then((response: AxiosResponse<IScore[]>) => { });
+  static getLocalHighscore(userID: string, gamemode: string) {
+    return axios.get<IScore[]>('https://pingwebapi.azurewebsites.net/api/highscore/' + gamemode + '/' + userID)
+      .then((response: AxiosResponse<IScore[]>) => {
+        return response.data.sort((n1: IScore, n2: IScore) => n2.score - n1.score)
+      });
   }
 
   static getUsernameFromId(id: string) {
