@@ -28,7 +28,6 @@ export class RESTCalls {
   static postHighscore(userID: string, score: number, type: string) {
     console.log(userID + " : " + score);
     let date = new Date();
-    console.log(date);
     axios.post<IScore>('https://pingwebapi.azurewebsites.net/api/highscore', { UserId: userID, Score: score, Time: date, Type: type })
       .then((response: AxiosResponse) => {
         console.log("Highscore postet til database: " + userID + " : " + score)
