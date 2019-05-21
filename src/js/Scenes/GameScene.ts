@@ -47,7 +47,8 @@ export class GameScene extends Phaser.Scene {
     /** Time since last ball spawned */ 
     lastBallTime: number = this.ballSpawnTime
     /** How big the balls spawning are */ 
-    ballSize: number = 15;
+    ballSizeMin: number = 5;
+    ballSizeMax: number = 35;
     /** How fast the ball will move horizontally to the left */ 
     minBallVelocityX: number = -100;
     /** How fast the ball will move horizontally to the right*/ 
@@ -139,7 +140,7 @@ export class GameScene extends Phaser.Scene {
         let color: number = 0x0038ff;
 
         // add ball to the GameScene rendere
-        let ball: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, this.ballSize, color);
+        let ball: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, Phaser.Math.Between(this.ballSizeMin, this.ballSizeMax), color);
 
         // give ball an arcade physics body
         this.physics.add.existing(ball);
@@ -202,9 +203,11 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    protected onPlayerCollide(ball: GameObjects.GameObject, player: GameObjects.GameObject) {
-        ball.destroy()
-        this.score++;
+    protected onPlayerCollide(ball: Phaser.GameObjects.Arc, player: GameObjects.GameObject) {
+        let ballSize = ball.width;
+        ball.destroy();
+        /** Feel free to change this algorithm. Currently gives around 3 points for the smallest ball */
+        this.score = this.score + Math.floor(((this.ballSizeMax / ballSize) / 2) + 1);
     }
 
     /**
