@@ -57,11 +57,6 @@ function createScore() {
 /** Create new instace of controller obejct */
 let piController: Controller = new Controller();
 
-/** Add a eventlistener that connects to the contoller when connect button is pressed */
-document.getElementById('connectPiBtn').addEventListener('click', () => { 
-  piController.ip = (<HTMLInputElement>document.getElementById('piIp')).value;
-  piController.Connect()
-})
 
 // starts game
 let game: Phaser.Game = new PingGame(config, piController);
