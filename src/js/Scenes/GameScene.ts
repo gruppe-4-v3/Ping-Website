@@ -23,8 +23,7 @@ export class GameScene extends Phaser.Scene {
     /** Score for current game  */
     score: number = 0
     scoreText: Phaser.GameObjects.Text
-
-    
+   
     /** The speed of the player */
     playerSpeed: number = 600;
     /** The colors of the player */
@@ -58,11 +57,6 @@ export class GameScene extends Phaser.Scene {
 
     onlyVertical: boolean = false;
     
-    
-
-    
-
-
     /** Loads all assets from files into memory */
     preload(): void {
     }
@@ -125,16 +119,12 @@ export class GameScene extends Phaser.Scene {
             this.lastBallTime = 0
         }
 
-       
-
         this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
         // Spawn new power if time since last power spawn is greater time allowd
         if(this.lastPowerUpTime > this.powerUpSpawnTime) {
             this.PowerUpAndDown(this.getRandomPower())
             this.lastPowerUpTime = 0
         }
-
-
 
         this.scoreText.text = 'Score: ' + this.score.toString()
         this.lifeText.text = 'Lives: ' + this.livesRemaining.toString();
@@ -183,9 +173,6 @@ export class GameScene extends Phaser.Scene {
         return ball;
     }
 
-    
-
-
     private  getRandomPower(): number
     {
         enum Color{
@@ -213,17 +200,12 @@ export class GameScene extends Phaser.Scene {
         {
             return this.smallColor
         }
-
-
     }
 
     protected onPlayerCollide(ball: GameObjects.GameObject, player: GameObjects.GameObject) {
         ball.destroy()
         this.score++;
-        
     }
-
-
 
     /**
      * Method that create powerups and downs to the GameScene
@@ -359,11 +341,15 @@ export class GameScene extends Phaser.Scene {
     private endGame() {
         this.scene.pause();
         Login.signinfunc;
-        console.log(Login.userID);
+
         if (Login.userID.length > 0){
             RESTCalls.getUser(Login.userID, Login.userName);
         }
+        
+        /** If User is logged on calls postHighscore, if not do nothing. */
         Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score, this.gameMode) : console.log("Bruger ikke logget ind, gemmer ikke score.")
+        
+        /** Switches scene to Game Over */
         this.scene.start("GameOverScene", {'oldSceneKey':this.sys.settings.key, 'finalScore': this.score});
     }
 }
