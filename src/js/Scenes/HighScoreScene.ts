@@ -31,7 +31,7 @@ export class HighScoreScene extends Phaser.Scene {
             let rang = 1;
 
             response.forEach(element => {
-                this.add.text(x,y,"#" + rang + " - " + element.userId + ": " + element.score + " : " + element.time.getDate);
+                this.add.text(x,y,"#" + rang + " - " + element.userId + ": " + element.score + " : " + element.time);
                 y = y + 20;
                 rang++;
             })     
