@@ -17,14 +17,26 @@ export class HighScoreScene extends Phaser.Scene {
     preload(): void { }
 
     create(): void {
+
+        /** Only shows local highscore if user is logged in. */
+        Login.signinfunc();
+        if(Login.userID.length >= 1){
+            console.log(Login.userID)
+            let LocalHSBtn = new TextButtons(this, 400, 20, 'Local Leaderboard', { fill: '#8c1601'});
+            this.add.existing(LocalHSBtn);
+            LocalHSBtn.on('pointerup', () => {
+                this.globalHighscore = false;
+                this.textGroup.clear(true, true);
+                this.createLocalHighscore("Standard");
+            })
+        }
+
         let GlobalHSBtn = new TextButtons(this, 200, 20, 'Global Leaderboard', { fill: '#8c1601'});
-        let LocalHSBtn = new TextButtons(this, 400, 20, 'Local Leaderboard', { fill: '#8c1601'});
         let MainMenuBtn = new TextButtons(this, 350, 450, 'Back to the Main Menu', { fill: '#f2f2f2' });
         let GameModeStandard = new TextButtons(this, 250, 35, 'Standard', { fill: '8c1601' });
         let GameModeChallenge = new TextButtons(this, 450, 35, 'Challenge', { fill: '8c1601' });
 
         this.add.existing(GlobalHSBtn);
-        this.add.existing(LocalHSBtn);
         this.add.existing(MainMenuBtn);
         this.add.existing(GameModeStandard);
         this.add.existing(GameModeChallenge);
@@ -53,14 +65,6 @@ export class HighScoreScene extends Phaser.Scene {
             }
         })
 
-
-
-        LocalHSBtn.on('pointerup', () => {
-            this.globalHighscore = false;
-            this.textGroup.clear(true, true);
-            this.createLocalHighscore("Standard");
-        })
-
         GlobalHSBtn.on('pointerup', () => {
             this.globalHighscore = true;
             this.textGroup.clear(true, true);
@@ -76,7 +80,6 @@ export class HighScoreScene extends Phaser.Scene {
     update(): void {}
 
     createLocalHighscore(gamemode: string){
-        Login.signinfunc();
         RESTCalls.getLocalHighscore(Login.userID,gamemode).then(response => {
             let y = 50;
             let rang = 1;      
