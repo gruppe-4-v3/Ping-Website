@@ -1,6 +1,8 @@
 import { TextButtons } from "../GameObjects/TextButtons"
 import { RESTCalls } from "../RESTCalls";
-import { IUsers } from "../Model/IUsers";
+import { IScore } from "../Model/IScore";
+import axios, { AxiosResponse, AxiosError, AxiosPromise } from "../../node_modules/axios/index"
+
 
 export class HighScoreScene extends Phaser.Scene {
     constructor() {
@@ -26,7 +28,7 @@ export class HighScoreScene extends Phaser.Scene {
 
 
     createGlobalHighscore() {
-        RESTCalls.getGlobalHighscore().then(response => {
+        RESTCalls.getStandardGlobalHighscore().then(response : IScore => {
             console.log("Nede i then i createGlobalHighscore");
             let x = 0;
             let y = 0;

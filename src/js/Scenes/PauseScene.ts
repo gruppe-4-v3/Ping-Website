@@ -13,6 +13,9 @@ export class PauseScene extends Phaser.Scene {
 
     create() : void
     {
+        var pauseText;
+        pauseText = this.add.text(300,320,'',{fontSize:'32px',fill:'#000'});
+        pauseText.setText("GAME PAUSED");
                 //Button for fullscreen toggling
                 var fullScreenButton = new TextButtons(this,700,50,'FULLSCREEN',{fill:'#f2f2f2'});
                 this.add.existing(fullScreenButton);
