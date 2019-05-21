@@ -32,12 +32,12 @@ export class GameScene extends Phaser.Scene {
     powerUpSpawnTime: number = 25;
     lastPowerUpTime: number = this.powerUpSpawnTime
     //Powerups
-    fastColor: number = 0xffce00;
+    fastColor: number = 0x5dff00;
     biggerColor: number = 0x00ff83;
     straightColor: number = 0x0061ff;
     //Powerdowns
     slowColor: number = 0xff0000;
-    smallColor: number = 0xff0094;
+    smallColor: number = 0xfff600;
 
     //<<<<<<<<<< BALL PROPERTIES >>>>>>>>>>\\
     /** How often a new ball spawns in seconds */ 
