@@ -51,7 +51,7 @@ function createUser() {
 }
 
 function createScore() {
-  RESTCalls.postHighscore("111111", 500);
+  RESTCalls.postHighscore("111111", 500, "Standard");
 }
 
 /** Create new instace of controller obejct */
