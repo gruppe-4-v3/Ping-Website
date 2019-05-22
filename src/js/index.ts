@@ -26,7 +26,7 @@ let config: GameConfig = {
   width: 800,
   height: 600,
   parent: document.getElementById('game'),
-  backgroundColor: "#ff8d00",
+  backgroundColor: "#6f7899",
   physics: {
     default: "arcade"
   },
