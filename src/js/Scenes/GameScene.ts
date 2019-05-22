@@ -23,6 +23,8 @@ export class GameScene extends Phaser.Scene {
     /** Score for current game  */
     score: number = 0
     scoreText: Phaser.GameObjects.Text
+
+    infoPauseText: Phaser.GameObjects.Text
    
     /** The speed of the player */
     playerSpeed: number = 600;
@@ -76,6 +78,8 @@ export class GameScene extends Phaser.Scene {
         this.lifeText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#f2f2f2' });
         //Adds a score counter
         this.scoreText = this.add.text(300, 16, '', { fontSize: '32px', fill: '#f2f2f2' });
+
+        //Adds a text explaining how to pause.
         this.infoPauseText = this.add.text(16, 41,'PRESS P TO PAUSE', {fill:'#f2f2f2'})
 
         // Calls function if anything touches the worldbounds
