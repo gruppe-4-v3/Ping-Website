@@ -27,19 +27,19 @@ export class GameScene extends Phaser.Scene {
     /** The speed of the player */
     playerSpeed: number = 600;
     /** The colors of the player */
-    playerColor : number = 0x0038ff;
+    playerColor : number = 0x1099b5;
 
     //<<<<<<<<<< POWERUP PROPERTIES >>>>>>>>>>\\
     //Times
     powerUpSpawnTime: number = 19;
     lastPowerUpTime: number = this.powerUpSpawnTime
     //Powerups
-    fastColor: number = 0x5dff00;
-    biggerColor: number = 0x00ff83;
-    straightColor: number = 0x0061ff;
+    fastColor: number = 0xd6cf00;
+    biggerColor: number = 0x00b500;
+    straightColor: number = 0x5b5b5b;
     //Powerdowns
-    slowColor: number = 0xff0000;
-    smallColor: number = 0xfff600;
+    slowColor: number = 0xa50000;
+    smallColor: number = 0xff008c;
 
     //<<<<<<<<<< BALL PROPERTIES >>>>>>>>>>\\
     /** How often a new ball spawns in seconds */ 
@@ -137,7 +137,7 @@ export class GameScene extends Phaser.Scene {
     */
     private spawnBall(): GameObjects.Arc {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
-        let color: number = 0x0038ff;
+        let color: number = 0xffffff;
 
         // add ball to the GameScene rendere
         let ball: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, Phaser.Math.Between(this.ballSizeMin, this.ballSizeMax), color);
