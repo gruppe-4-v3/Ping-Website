@@ -13,7 +13,7 @@ export class PauseScene extends Phaser.Scene {
 
     create(): void {
         var pauseText;
-        (<any>this.sys.settings.data).theme.pause();
+        this.sound.pauseAll();
 
         pauseText = this.add.text(300, 320, '', { fontSize: '32px', fill: '#000' });
         pauseText.setText("GAME PAUSED");
@@ -32,7 +32,7 @@ export class PauseScene extends Phaser.Scene {
 
         ResumeButton.on('pointerup', () => {
             this.scene.resume((<any>this.sys.settings.data).oldSceneKey);
-            (<any>this.sys.settings.data).theme.resume();
+            this.sound.resumeAll();
             this.scene.stop();
         });
 
