@@ -14,6 +14,7 @@ export class PauseScene extends Phaser.Scene {
     create() : void
     {
         var pauseText;
+        (<any>this.sys.settings.data).theme.pause();
         pauseText = this.add.text(300,320,'',{fontSize:'32px',fill:'#000'});
         pauseText.setText("GAME PAUSED");
                 //Button for fullscreen toggling
@@ -24,17 +25,18 @@ export class PauseScene extends Phaser.Scene {
                 });
                 
                 //Button for resuming of game
-                var fullScreenButton = new TextButtons(this,700,100,'RESUME',{fill:'#f2f2f2'});
-                this.add.existing(fullScreenButton);
-                fullScreenButton.on('pointerup', () => {
+                var ResumeButton = new TextButtons(this,700,100,'RESUME',{fill:'#f2f2f2'});
+                this.add.existing(ResumeButton);
+                ResumeButton.on('pointerup', () => {
                     this.scene.resume((<any>this.sys.settings.data).oldSceneKey);
+                    (<any>this.sys.settings.data).theme.resume();
                     this.scene.stop();
                 });
 
                 //Button for returning to the menu
-                var fullScreenButton = new TextButtons(this,700,150,'QUIT GAME',{fill:'#f2f2f2'});
-                this.add.existing(fullScreenButton);
-                fullScreenButton.on('pointerup', () => {
+                var QuitButton = new TextButtons(this,700,150,'QUIT GAME',{fill:'#f2f2f2'});
+                this.add.existing(QuitButton);
+                QuitButton.on('pointerup', () => {
                     this.scene.start('MMenuScene');
                     this.scene.stop((<any>this.sys.settings.data).oldSceneKey);
                 });
