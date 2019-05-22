@@ -15,7 +15,7 @@ export class GameOverScene extends Phaser.Scene {
         var finalScoreText;
         var gameOverText;
         pointsFinal = (<any>this.sys.settings.data).finalScore;
-        finalScoreText = this.add.text(0, 340,'',{ fontSize: '32px', fill: '#000', boundsAlignH: "center" });
+        finalScoreText = this.add.text(350, 340,'',{ fontSize: '32px', fill: '#000' });
         gameOverText = this.add.text(10, 200, '', { fontSize: '32px', fill: '#000' });
         finalScoreText.setText("Final Score: " + pointsFinal);
         if (pointsFinal <= 100) {
