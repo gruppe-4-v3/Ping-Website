@@ -11,7 +11,7 @@ export class Controller {
     ip: string;
     port: number;
     isConnected: boolean = false;
-    OnMessage: (event: MessageEvent) => any;
+    speed: number;
 
     Connect(): void{
         this.ip = (<HTMLInputElement>document.getElementById('piIp')).value;
@@ -29,7 +29,9 @@ export class Controller {
         connectBtn.setAttribute('id', 'disconnectPiBtn');
         connectBtn.onclick = () => this.Disconnect()
 
-        this.webSocketClient.addEventListener('message', (event) => this.OnMessage(event))
+        this.webSocketClient.addEventListener('message', (event) => {
+            this.speed = +event.data
+        })
     }
 
     Disconnect(): void {
