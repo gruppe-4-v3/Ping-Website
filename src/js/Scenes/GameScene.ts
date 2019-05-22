@@ -414,11 +414,11 @@ export class GameScene extends Phaser.Scene {
     private onWorldboundsCollision(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
         // remove gameobject if it collides with the bottom of the world and reduces amount of lives remaining
         if (down) {
-            this.hpLostSound.play();
             body.gameObject.destroy()
 
             if (body.gameObject.name == 'Ball') {
                 this.livesRemaining--;
+                this.hpLostSound.play();
             }
 
             //Call endGame method if player has 0 lives
