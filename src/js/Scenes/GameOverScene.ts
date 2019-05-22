@@ -7,10 +7,17 @@ export class GameOverScene extends Phaser.Scene {
         })
     }
 
-    preload() : void{}
+    theme: Phaser.Sound.BaseSound;
+
+    preload() : void{
+        this.load.audio('Avemarie', '../../assets/audio/avemarie.wav');
+        this.load.audio('Theme', '../../assets/audio/theme.wav');
+    }
 
     create() : void
     {
+        this.theme = this.sound.add('Theme', { loop: true });
+
         var pointsFinal = 0;
         var finalScoreText;
         var gameOverText;
@@ -37,16 +44,22 @@ export class GameOverScene extends Phaser.Scene {
         var playAgainButton = new TextButtons(this,350,375,'Play again?',{fill:'#f2f2f2'});
         this.add.existing(playAgainButton);
         playAgainButton.on('pointerup', () => {
-            this.scene.launch((<any>this.sys.settings.data).oldSceneKey);
+            this.scene.launch((<any>this.sys.settings.data).oldSceneKey, {theme: this.theme})
+            aveMarie.stop();
             this.scene.stop();
+            this.theme.play();
         })
 
         var mainMenuButton = new TextButtons(this,350,400,'Back to the Main Menu',{fill:'#f2f2f2'});
         this.add.existing(mainMenuButton);
         mainMenuButton.on('pointerup', () => {
             this.scene.launch('MMenuScene');
+            aveMarie.stop();
             this.scene.stop();
         })
+
+        let aveMarie = this.sound.add('Avemarie');
+        aveMarie.play();
     }
 
     update() : void

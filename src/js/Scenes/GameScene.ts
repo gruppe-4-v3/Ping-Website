@@ -1,6 +1,7 @@
 import { GameObjects, Physics, Scene, Time, Game } from 'phaser'
 import { RESTCalls } from "./../RESTCalls"
 import { Login } from "./../Login"
+import { MMenuScene } from './MMenuScene';
 
 export class GameScene extends Phaser.Scene {
 
@@ -12,6 +13,8 @@ export class GameScene extends Phaser.Scene {
     player: Phaser.GameObjects.Rectangle
     pauseButton: Phaser.Input.Keyboard.Key
     time: Phaser.Time.Clock
+
+    theme: Phaser.Sound.BaseSound;
 
     //** Gamemode */
     gameMode: string = "Standard";
@@ -62,7 +65,7 @@ export class GameScene extends Phaser.Scene {
     
     /** Loads all assets from files into memory */
     preload(): void {
-        this.load.audio('Death', '../../assets/audio/death.wav')
+        this.load.audio('Coin', '../../assets/audio/coin.wav')
     }
 
     /** Initializes all game objects and adds them to the game.
@@ -212,6 +215,8 @@ export class GameScene extends Phaser.Scene {
 
     protected onPlayerCollide(ball: Phaser.GameObjects.Arc, player: GameObjects.GameObject) {
         let ballSize = ball.width;
+        let coinSound = this.sound.add('Coin');
+        coinSound.play();
         ball.destroy();
         /** Feel free to change this algorithm. Currently gives around 3 points for the smallest ball */
         this.score = this.score + Math.floor(((this.ballSizeMax / ballSize) / 2) + 1);
@@ -349,10 +354,10 @@ export class GameScene extends Phaser.Scene {
 
     /** May contain spoilers */
     private endGame() {
-        let deathSound = this.sound.add('Death');
-        deathSound.play();
         this.scene.pause();
         Login.signinfunc;
+        this.theme = (<any>this.sys.settings.data).theme;
+        this.theme.stop();
 
         if (Login.userID.length > 0){
             RESTCalls.getUser(Login.userID, Login.userName);
@@ -360,7 +365,7 @@ export class GameScene extends Phaser.Scene {
         
         /** If User is logged on calls postHighscore, if not do nothing. */
         Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score, this.gameMode) : console.log("Bruger ikke logget ind, gemmer ikke score.")
-        
+
         /** Switches scene to Game Over */
         this.scene.start("GameOverScene", {'oldSceneKey':this.sys.settings.key, 'finalScore': this.score});
     }
