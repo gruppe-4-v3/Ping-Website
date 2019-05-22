@@ -1,6 +1,5 @@
 import * as Phaser from "phaser";
 import { Login } from "./Login"
-import { RESTCalls } from "./RESTCalls";
 import { Controller } from "./Controller"
 import {
   PingGame,
@@ -23,11 +22,11 @@ let config: GameConfig = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
-  title: "Ping (Name Subject to Change)",
+  title: "Ping",
   width: 800,
   height: 600,
   parent: document.getElementById('game'),
-  backgroundColor: "#ff8d00",
+  backgroundColor: "#6f7899",
   physics: {
     default: "arcade"
   },
@@ -38,25 +37,8 @@ let config: GameConfig = {
 var signinbut: HTMLDivElement = <HTMLDivElement>document.getElementById("signin2");
 signinbut.addEventListener('sign', Login.signinfunc);
 
-let createUserBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById("createUser");
-createUserBtn.addEventListener("click", createUser)
-
-let createScoreBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById("createScore");
-createScoreBtn.addEventListener("click", createScore)
-
-function createUser() {
-  RESTCalls.getUser("111111", "Emil Hammer");
-  Login.userID = "111111";
-  Login.userName = "Emil Hammer";
-}
-
-function createScore() {
-  RESTCalls.postHighscore("111111", 500, "Standard");
-}
-
 /** Create new instace of controller obejct */
 let piController: Controller = new Controller();
 
-
-// starts game
+/** Starts game */
 let game: Phaser.Game = new PingGame(config, piController);

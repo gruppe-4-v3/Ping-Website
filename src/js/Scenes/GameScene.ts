@@ -12,6 +12,9 @@ export class GameScene extends Phaser.Scene {
     player: Phaser.GameObjects.Rectangle
     pauseButton: Phaser.Input.Keyboard.Key
     time: Phaser.Time.Clock
+
+    //** Gamemode */
+    gameMode: string = "Standard";
     
     /** Counter for the amount of lives left */
     livesRemaining: number;
@@ -20,24 +23,23 @@ export class GameScene extends Phaser.Scene {
     /** Score for current game  */
     score: number = 0
     scoreText: Phaser.GameObjects.Text
-
-    
+   
     /** The speed of the player */
     playerSpeed: number = 600;
     /** The colors of the player */
-    playerColor : number = 0x0038ff;
+    playerColor : number = 0x1099b5;
 
     //<<<<<<<<<< POWERUP PROPERTIES >>>>>>>>>>\\
     //Times
     powerUpSpawnTime: number = 19;
     lastPowerUpTime: number = this.powerUpSpawnTime
     //Powerups
-    fastColor: number = 0x5dff00;
-    biggerColor: number = 0x00ff83;
-    straightColor: number = 0x0061ff;
+    fastColor: number = 0xd6cf00;
+    biggerColor: number = 0x00b500;
+    straightColor: number = 0x5b5b5b;
     //Powerdowns
-    slowColor: number = 0xff0000;
-    smallColor: number = 0xfff600;
+    slowColor: number = 0xa50000;
+    smallColor: number = 0xff008c;
 
     //<<<<<<<<<< BALL PROPERTIES >>>>>>>>>>\\
     /** How often a new ball spawns in seconds */ 
@@ -45,7 +47,8 @@ export class GameScene extends Phaser.Scene {
     /** Time since last ball spawned */ 
     lastBallTime: number = this.ballSpawnTime
     /** How big the balls spawning are */ 
-    ballSize: number = 15;
+    ballSizeMin: number = 5;
+    ballSizeMax: number = 35;
     /** How fast the ball will move horizontally to the left */ 
     minBallVelocityX: number = -100;
     /** How fast the ball will move horizontally to the right*/ 
@@ -55,11 +58,6 @@ export class GameScene extends Phaser.Scene {
 
     onlyVertical: boolean = false;
     
-    
-
-    
-
-
     /** Loads all assets from files into memory */
     preload(): void {
     }
@@ -122,16 +120,12 @@ export class GameScene extends Phaser.Scene {
             this.lastBallTime = 0
         }
 
-       
-
         this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
         // Spawn new power if time since last power spawn is greater time allowd
         if(this.lastPowerUpTime > this.powerUpSpawnTime) {
             this.PowerUpAndDown(this.getRandomPower())
             this.lastPowerUpTime = 0
         }
-
-
 
         this.scoreText.text = 'Score: ' + this.score.toString()
         this.lifeText.text = 'Lives: ' + this.livesRemaining.toString();
@@ -143,10 +137,10 @@ export class GameScene extends Phaser.Scene {
     */
     private spawnBall(): GameObjects.Arc {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
-        let color: number = 0x0038ff;
+        let color: number = 0xffffff;
 
         // add ball to the GameScene rendere
-        let ball: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, this.ballSize, color);
+        let ball: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, Phaser.Math.Between(this.ballSizeMin, this.ballSizeMax), color);
 
         // give ball an arcade physics body
         this.physics.add.existing(ball);
@@ -180,9 +174,6 @@ export class GameScene extends Phaser.Scene {
         return ball;
     }
 
-    
-
-
     private  getRandomPower(): number
     {
         enum Color{
@@ -210,17 +201,14 @@ export class GameScene extends Phaser.Scene {
         {
             return this.smallColor
         }
-
-
     }
 
-    protected onPlayerCollide(ball: GameObjects.GameObject, player: GameObjects.GameObject) {
-        ball.destroy()
-        this.score++;
-        
+    protected onPlayerCollide(ball: Phaser.GameObjects.Arc, player: GameObjects.GameObject) {
+        let ballSize = ball.width;
+        ball.destroy();
+        /** Feel free to change this algorithm. Currently gives around 3 points for the smallest ball */
+        this.score = this.score + Math.floor(((this.ballSizeMax / ballSize) / 2) + 1);
     }
-
-
 
     /**
      * Method that create powerups and downs to the GameScene
@@ -356,11 +344,15 @@ export class GameScene extends Phaser.Scene {
     private endGame() {
         this.scene.pause();
         Login.signinfunc;
-        console.log(Login.userID);
+
         if (Login.userID.length > 0){
             RESTCalls.getUser(Login.userID, Login.userName);
         }
-        Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score, "Standard") : console.log("Bruger ikke logget ind, gemmer ikke score.")
+        
+        /** If User is logged on calls postHighscore, if not do nothing. */
+        Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score, this.gameMode) : console.log("Bruger ikke logget ind, gemmer ikke score.")
+        
+        /** Switches scene to Game Over */
         this.scene.start("GameOverScene", {'oldSceneKey':this.sys.settings.key, 'finalScore': this.score});
     }
 }
