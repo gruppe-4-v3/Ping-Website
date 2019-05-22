@@ -21,7 +21,7 @@ export class GameOverScene extends Phaser.Scene {
         if (pointsFinal <= 100) {
             gameOverText.setText("You're not very good at this, are you?");
         }
-        if (pointsFinal <= 500) {
+        else if (pointsFinal <= 500) {
             gameOverText.setText("Only slightly better. Keep at it!")
         } 
         else if (pointsFinal <= 1000){
