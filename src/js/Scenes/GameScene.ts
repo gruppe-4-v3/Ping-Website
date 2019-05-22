@@ -15,10 +15,16 @@ export class GameScene extends Phaser.Scene {
     time: Phaser.Time.Clock
 
     theme: Phaser.Sound.BaseSound;
+    growSound: Phaser.Sound.BaseSound;
+    shrinkSound: Phaser.Sound.BaseSound;
+    speedSound: Phaser.Sound.BaseSound;
+    slowSound: Phaser.Sound.BaseSound;
+    straightSound: Phaser.Sound.BaseSound;
+    hpLostSound: Phaser.Sound.BaseSound;
 
     //** Gamemode */
     gameMode: string = "Standard";
-    
+
     /** Counter for the amount of lives left */
     livesRemaining: number;
     lifeText: Phaser.GameObjects.Text
@@ -26,11 +32,11 @@ export class GameScene extends Phaser.Scene {
     /** Score for current game  */
     score: number = 0
     scoreText: Phaser.GameObjects.Text
-   
+
     /** The speed of the player */
-    playerSpeed: number = 600;
+    playerSpeed: number = 500;
     /** The colors of the player */
-    playerColor : number = 0x1099b5;
+    playerColor: number = 0x1099b5;
     /**Ball color */
     ballColor: number = 0xffffff;
 
@@ -41,6 +47,7 @@ export class GameScene extends Phaser.Scene {
     //Color
     bombColor: number = 0x000000;
 
+    bombSound: Phaser.Sound.BaseSound;
 
     //<<<<<<<<<< POWERUP PROPERTIES >>>>>>>>>>\\
     //Times
@@ -55,25 +62,32 @@ export class GameScene extends Phaser.Scene {
     smallColor: number = 0xff008c;
 
     //<<<<<<<<<< BALL PROPERTIES >>>>>>>>>>\\
-    /** How often a new ball spawns in seconds */ 
+    /** How often a new ball spawns in seconds */
     ballSpawnTime: number = 2
-    /** Time since last ball spawned */ 
+    /** Time since last ball spawned */
     lastBallTime: number = this.ballSpawnTime
-    /** How big the balls spawning are */ 
+    /** How big the balls spawning are */
     ballSizeMin: number = 5;
     ballSizeMax: number = 35;
-    /** How fast the ball will move horizontally to the left */ 
+    /** How fast the ball will move horizontally to the left */
     minBallVelocityX: number = -100;
-    /** How fast the ball will move horizontally to the right*/ 
+    /** How fast the ball will move horizontally to the right*/
     maxBallVelocityX: number = 100;
-    /** How fast the ball will fall */ 
+    /** How fast the ball will fall */
     ballVelocityY: number = 100;
 
     onlyVertical: boolean = false;
-    
+
     /** Loads all assets from files into memory */
     preload(): void {
-        this.load.audio('Coin', '../../assets/audio/coin.wav')
+        this.load.audio('Coin', '../../assets/audio/coin.wav');
+        this.load.audio('Bomb', '../../assets/audio/bomb.wav');
+        this.load.audio('Grow', '../../assets/audio/grow.wav');
+        this.load.audio('Shrink', '../../assets/audio/shrink.wav');
+        this.load.audio('Speed', '../../assets/audio/speed.wav');
+        this.load.audio('Slow', '../../assets/audio/slow.wav');
+        this.load.audio('Straight', '../../assets/audio/Straight.wav');
+        this.load.audio('HpLost', '../../assets/audio/hplost.wav');
     }
 
     /** Initializes all game objects and adds them to the game.
@@ -81,6 +95,13 @@ export class GameScene extends Phaser.Scene {
      * Contains all code that only needs to be run one time
      */
     create(): void {
+        this.bombSound = this.sound.add('Bomb');
+        this.growSound = this.sound.add('Grow');
+        this.shrinkSound = this.sound.add('Shrink');
+        this.speedSound = this.sound.add('Speed');
+        this.slowSound = this.sound.add('Slow');
+        this.straightSound = this.sound.add('Straight');
+        this.hpLostSound = this.sound.add('HpLost');
 
         this.livesRemaining = 3;
         this.score = 0;
@@ -105,8 +126,8 @@ export class GameScene extends Phaser.Scene {
         // Converts delta to seconds
         let deltaInSec: number = delta / 1000
 
-        if(this.player.body instanceof Phaser.Physics.Arcade.Body){
-            if(this.cursor.left.isDown)// move left if the left key is pressed
+        if (this.player.body instanceof Phaser.Physics.Arcade.Body) {
+            if (this.cursor.left.isDown)// move left if the left key is pressed
             {
                 this.player.body.velocity.x = -this.playerSpeed;
             }
@@ -123,7 +144,7 @@ export class GameScene extends Phaser.Scene {
 
         // Pause the GameScene if the pausebutton key is pressed and switch to PauseScene. 
         if (Phaser.Input.Keyboard.JustDown(this.pauseButton)) {
-            this.scene.launch('PauseScene', {'oldSceneKey':this.sys.settings.key});
+            this.scene.launch('PauseScene', { 'oldSceneKey': this.sys.settings.key });
             this.scene.pause();
         }
 
@@ -136,14 +157,14 @@ export class GameScene extends Phaser.Scene {
 
         this.lastPowerUpTime = this.lastPowerUpTime + deltaInSec
         // Spawn new power if time since last power spawn is greater time allowd
-        if(this.lastPowerUpTime > this.powerUpSpawnTime) {
+        if (this.lastPowerUpTime > this.powerUpSpawnTime) {
             this.PowerUpAndDown(this.getRandomPower())
             this.lastPowerUpTime = 0
         }
 
         this.lastBombTime = this.lastBombTime + deltaInSec
         // Spawn new bomb if time since last bomb spawn is greater time allowd
-        if(this.lastBombTime > this.BombSpawnTime) {
+        if (this.lastBombTime > this.BombSpawnTime) {
             this.spawnBomb()
             this.lastBombTime = 0
         }
@@ -196,31 +217,25 @@ export class GameScene extends Phaser.Scene {
         return ball;
     }
 
-    private  getRandomPower(): number
-    {
-        enum Color{
-            fastColor, biggerColor, straightColor, slowColor, smallColor 
+    private getRandomPower(): number {
+        enum Color {
+            fastColor, biggerColor, straightColor, slowColor, smallColor
         }
-        let amount = Math.floor(Math.random()* Object.keys(Color).length/2)
+        let amount = Math.floor(Math.random() * Object.keys(Color).length / 2)
         console.log(amount)
-        if(amount == 0)
-        {
+        if (amount == 0) {
             return this.fastColor
         }
-        else if (amount == 1)
-        {
+        else if (amount == 1) {
             return this.biggerColor
         }
-        else if (amount == 2)
-        {
+        else if (amount == 2) {
             return this.straightColor
         }
-        else if (amount == 3)
-        {
+        else if (amount == 3) {
             return this.slowColor
         }
-        else if(amount == 4)
-        {
+        else if (amount == 4) {
             return this.smallColor
         }
 
@@ -241,8 +256,7 @@ export class GameScene extends Phaser.Scene {
      * see properties for what the colors do and if you want to change it
      */
 
-    private spawnBomb(): GameObjects.Arc
-    {
+    private spawnBomb(): GameObjects.Arc {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
 
         let bomb: Phaser.GameObjects.Arc = this.add.circle(spawnPoint.x, spawnPoint.y, 15, this.bombColor)
@@ -262,16 +276,16 @@ export class GameScene extends Phaser.Scene {
         return bomb;
     }
 
-    private onPlayerCollideBomb()
-    {
-        if(this.livesRemaining == 1)
-        {
+    private onPlayerCollideBomb(bomb: Phaser.GameObjects.Arc) {
+        this.bombSound.play();
+
+        if (this.livesRemaining == 1) {
             this.endGame();
         }
         this.livesRemaining--;
+        bomb.destroy();
     }
-    private PowerUpAndDown(color: number): GameObjects.Rectangle
-    {
+    private PowerUpAndDown(color: number): GameObjects.Rectangle {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
         let size: number = 15;
 
@@ -285,89 +299,99 @@ export class GameScene extends Phaser.Scene {
         squareBody.bounce.y = 1
         squareBody.collideWorldBounds = true
 
-                // emits worldborder event when square touches the border 
-                squareBody.onWorldBounds = true
+        // emits worldborder event when square touches the border 
+        squareBody.onWorldBounds = true
 
-                this.physics.add.collider(square, this.player, this.onPlayerCollidePowerUp, null, this)
+        this.physics.add.collider(square, this.player, this.onPlayerCollidePowerUp, null, this)
 
 
-                return square;
+        return square;
 
     }
 
-    private onPlayerCollidePowerUp(square: GameObjects.Rectangle, player: GameObjects.GameObject){
+    private onPlayerCollidePowerUp(square: GameObjects.Rectangle, player: GameObjects.GameObject) {
         // Removes powerup from game
         square.destroy()
-        
+
         // Set player speed to double, if ball color is equal to fast powerup
-        if(square.fillColor == this.fastColor)
-        {
-            this.playerSpeed = this.playerSpeed * 2
+        if (square.fillColor == this.fastColor) {
+            this.speedSound.play();
+            this.playerSpeed = this.playerSpeed * 1.3
 
-            
-
-            this.time.addEvent({delay: 10000, callback: function(){this.playerSpeed = this.playerSpeed/2},
-            callbackScope: this})
+            this.time.addEvent({
+                delay: 10000, callback: function () { this.playerSpeed = this.playerSpeed / 1.3 },
+                callbackScope: this
+            })
 
 
         }
         // Make player bigger, if ball color is equal to enlarge powerup
-        else if(square.fillColor == this.biggerColor)
-        {
-            this.player.setScale(2,2)
+        else if (square.fillColor == this.biggerColor) {
+            this.growSound.play();
+            this.player.setScale(2, 2)
 
             let scale: number;
             scale = 2;
-            this.time.addEvent({delay: 5000, callback: function(){   
-              
-                this.time.addEvent({delay: 100, callback: function(){
-                    scale -= 0.01
-                    this.player.setScale(scale, scale)
-                }, callbackScope: this, repeat: 100})                       
-            },
-            callbackScope: this})
+            this.time.addEvent({
+                delay: 5000, callback: function () {
+
+                    this.time.addEvent({
+                        delay: 100, callback: function () {
+                            scale -= 0.01
+                            this.player.setScale(scale, scale)
+                        }, callbackScope: this, repeat: 100
+                    })
+                },
+                callbackScope: this
+            })
         }
         // Only spawn balls that fall straight down, if ball color is equal to straight down powerup
-        else if(square.fillColor == this.straightColor)
-        {
-        
-        this.maxBallVelocityX = 0;
-        this.minBallVelocityX = 0;
+        else if (square.fillColor == this.straightColor) {
+            this.straightSound.play();
+            this.maxBallVelocityX = 0;
+            this.minBallVelocityX = 0;
 
-          this.time.addEvent({delay: 10000, callback: function(){this.maxBallVelocityX = 100, this.minBallVelocityX = -100},
-          callbackScope: this})
-          
+            this.time.addEvent({
+                delay: 10000, callback: function () { this.maxBallVelocityX = 100, this.minBallVelocityX = -100 },
+                callbackScope: this
+            })
+
         }
         // Slow player to half speed if ball color is equal to slow player powerup
-        else if(square.fillColor == this.slowColor)
-        {
-            this.playerSpeed = this.playerSpeed / 2
+        else if (square.fillColor == this.slowColor) {
+            this.slowSound.play();
+            this.playerSpeed = this.playerSpeed / 3
 
-            this.time.addEvent({delay: 10000, callback: function(){this.playerSpeed = this.playerSpeed * 2},
-            callbackScope: this})
+            this.time.addEvent({
+                delay: 10000, callback: function () { this.playerSpeed = this.playerSpeed * 3 },
+                callbackScope: this
+            })
         }
         // Make player little if ball color is equal to shrink player powerup
-        else if(square.fillColor == this.smallColor)
-        {
-            this.player.setScale(0.5,0.5)
+        else if (square.fillColor == this.smallColor) {
+            this.shrinkSound.play();
+            this.player.setScale(0.5, 0.5)
 
             let scale: number;
             scale = 0.5;
-            this.time.addEvent({delay: 5000, callback: function(){   
-              
-                this.time.addEvent({delay: 100, callback: function(){
-                    scale += 0.005
-                    this.player.setScale(scale, scale)
-                }, callbackScope: this, repeat: 100})                       
-            },
-            callbackScope: this})
+            this.time.addEvent({
+                delay: 5000, callback: function () {
+
+                    this.time.addEvent({
+                        delay: 100, callback: function () {
+                            scale += 0.005
+                            this.player.setScale(scale, scale)
+                        }, callbackScope: this, repeat: 100
+                    })
+                },
+                callbackScope: this
+            })
         }
 
     }
 
     /** Create and adds a player GameObject to the GameScene*/
-    private spawnPlayer(): GameObjects.Rectangle
-    {
+    private spawnPlayer(): GameObjects.Rectangle {
         this.player = this.add.rectangle(400, 580, 100, 10, this.playerColor)
         let playerBody: Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>this.physics.add.existing(this.player).body;
         playerBody.onCollide = true
@@ -385,13 +409,14 @@ export class GameScene extends Phaser.Scene {
     */
     private onWorldboundsCollision(body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) {
         // remove gameobject if it collides with the bottom of the world and reduces amount of lives remaining
-        if(down){
+        if (down) {
+            this.hpLostSound.play();
             body.gameObject.destroy()
 
-            if(body.gameObject.name == 'Ball') {
+            if (body.gameObject.name == 'Ball') {
                 this.livesRemaining--;
             }
-            
+
             //Call endGame method if player has 0 lives
             if (this.livesRemaining < 1) {
                 this.endGame()
@@ -406,14 +431,14 @@ export class GameScene extends Phaser.Scene {
         this.theme = (<any>this.sys.settings.data).theme;
         this.theme.stop();
 
-        if (Login.userID.length > 0){
+        if (Login.userID.length > 0) {
             RESTCalls.getUser(Login.userID, Login.userName);
         }
-        
+
         /** If User is logged on calls postHighscore, if not do nothing. */
         Login.userID.length > 0 ? RESTCalls.postHighscore(Login.userID, this.score, this.gameMode) : console.log("Bruger ikke logget ind, gemmer ikke score.")
 
         /** Switches scene to Game Over */
-        this.scene.start("GameOverScene", {'oldSceneKey':this.sys.settings.key, 'finalScore': this.score});
+        this.scene.start("GameOverScene", { 'oldSceneKey': this.sys.settings.key, 'finalScore': this.score });
     }
 }

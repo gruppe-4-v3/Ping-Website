@@ -11,12 +11,17 @@ export class HighScoreScene extends Phaser.Scene {
     }
 
     globalHighscore : boolean = true;
-
+    highscoreTheme: Phaser.Sound.BaseSound;
     textGroup : Phaser.GameObjects.Group;
 
-    preload(): void { }
+    preload(): void {
+        this.load.audio('Highscore', '../../assets/audio/Highscore.mp3')
+     }
 
     create(): void {
+        this.highscoreTheme = this.sound.add('Highscore', {loop:true});
+        this.highscoreTheme.play();
+
 
         /** Only shows local highscore if user is logged in. */
         Login.signinfunc();
@@ -74,6 +79,7 @@ export class HighScoreScene extends Phaser.Scene {
         MainMenuBtn.on('pointerup', () => {
             this.scene.launch('MMenuScene');
             this.scene.stop();
+            this.highscoreTheme.stop();
         })
 
         this.createGlobalHighscore("Standard")
