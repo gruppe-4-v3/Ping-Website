@@ -61,7 +61,12 @@ typings/
 .next
 
 /node_modules
-/dist
+/dist/bundle.css
+/dist/bundle.js
+/dist/bundle.js.map
+/dist/HTML5AudioSound.js
+/dist/HTML5AudioSoundManager.js
+/dist/index.html
 azure-pipelines.yml
 /.vscode
 .DS_Store
