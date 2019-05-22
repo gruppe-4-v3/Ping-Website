@@ -1,6 +1,7 @@
 import { GameObjects, Physics, Scene, Time, Game } from 'phaser'
 import { RESTCalls } from "./../RESTCalls"
 import { Login } from "./../Login"
+import { PingGame } from '../PingGame';
 import { MMenuScene } from './MMenuScene';
 
 export class GameScene extends Phaser.Scene {
@@ -142,6 +143,8 @@ export class GameScene extends Phaser.Scene {
             this.player.body.collideWorldBounds = true;
         }
 
+        this.movePlayer()
+            
         // Pause the GameScene if the pausebutton key is pressed and switch to PauseScene. 
         if (Phaser.Input.Keyboard.JustDown(this.pauseButton)) {
             this.scene.launch('PauseScene', { 'oldSceneKey': this.sys.settings.key });
@@ -396,6 +399,7 @@ export class GameScene extends Phaser.Scene {
         let playerBody: Physics.Arcade.Body = <Phaser.Physics.Arcade.Body>this.physics.add.existing(this.player).body;
         playerBody.onCollide = true
         playerBody.immovable = true
+        playerBody.collideWorldBounds = true;
 
         return this.player
     }
@@ -441,4 +445,33 @@ export class GameScene extends Phaser.Scene {
         /** Switches scene to Game Over */
         this.scene.start("GameOverScene", { 'oldSceneKey': this.sys.settings.key, 'finalScore': this.score });
     }
+
+    private movePlayer(){
+        let data: number = undefined
+        if((<PingGame>this.game).externalController.isConnected){
+            data = (<PingGame>this.game).externalController.speed
+        }
+        
+        if(this.player.body instanceof Phaser.Physics.Arcade.Body){
+            
+            if (data !== undefined && data !== 0){
+                this.player.body.velocity.x = data * 100;
+            }
+            else if(this.cursor.left.isDown)// move left if the left key is pressed
+            {
+                this.player.body.velocity.x = -this.playerSpeed;
+            }
+            else if (this.cursor.right.isDown)// move right if the right key is pressed
+            {
+                this.player.body.velocity.x = this.playerSpeed;
+            }
+            else//stop if no key is pressed.
+            {
+                this.player.body.velocity.x = 0;
+            }
+        }
+            
+        
+    }
+    
 }
