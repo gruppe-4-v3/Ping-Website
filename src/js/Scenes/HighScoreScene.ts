@@ -75,6 +75,8 @@ export class HighScoreScene extends Phaser.Scene {
             this.scene.launch('MMenuScene');
             this.scene.stop();
         })
+
+        this.createGlobalHighscore("Standard")
     }
 
     update(): void {}
