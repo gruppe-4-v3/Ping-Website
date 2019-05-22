@@ -60,6 +60,7 @@ export class GameScene extends Phaser.Scene {
     
     /** Loads all assets from files into memory */
     preload(): void {
+        this.load.audio('Death', '../../assets/audio/death.wav')
     }
 
     /** Initializes all game objects and adds them to the game.
@@ -342,6 +343,8 @@ export class GameScene extends Phaser.Scene {
 
     /** May contain spoilers */
     private endGame() {
+        let deathSound = this.sound.add('Death');
+        deathSound.play();
         this.scene.pause();
         Login.signinfunc;
 
