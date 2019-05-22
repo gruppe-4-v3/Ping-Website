@@ -22,7 +22,6 @@ export class ChallengeMode extends GameScene {
     protected onPlayerCollide(ball: Phaser.GameObjects.Arc): void
     {
         let ballSize = ball.width;
-        ball.destroy();
         /** Feel free to change this algorithm. Currently gives around 3 points for the smallest ball */
         this.score = this.score + Math.floor(((this.ballSizeMax / ballSize) / 2) + 1);
     }
