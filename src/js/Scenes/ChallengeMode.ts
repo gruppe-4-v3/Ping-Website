@@ -12,7 +12,7 @@ export class ChallengeMode extends GameScene {
     gameMode : string = "Challenge";
 
     /** The speed of the player */
-    playerSpeed: number = 1000;
+    playerSpeed: number = 800;
 
     /** How often a new ball spawns in seconds */ 
     ballSpawnTime = 10;
