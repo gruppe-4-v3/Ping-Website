@@ -19,8 +19,11 @@ export class ChallengeMode extends GameScene {
     /** Time since last ball spawned */ 
     lastBallTime = this.ballSpawnTime;
     
-    protected onPlayerCollide(): void
+    protected onPlayerCollide(ball: Phaser.GameObjects.Arc): void
     {
-        this.score++;
+        let ballSize = ball.width;
+        ball.destroy();
+        /** Feel free to change this algorithm. Currently gives around 3 points for the smallest ball */
+        this.score = this.score + Math.floor(((this.ballSizeMax / ballSize) / 2) + 1);
     }
 }
