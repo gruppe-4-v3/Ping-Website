@@ -1,5 +1,6 @@
 import { TextButtons } from '../GameObjects/TextButtons'
 import { ImageButtons } from '../GameObjects/ImageButtons'
+import { GameScene } from './GameScene';
 //import img from '../../assets/PlayGameButRest.png'
 
 export class MMenuScene extends Phaser.Scene {
@@ -22,16 +23,16 @@ export class MMenuScene extends Phaser.Scene {
             this.scale.toggleFullscreen();
         });
 
-        var playButton = new TextButtons(this,350,300,'Start Game!',{fill:'#f2f2f2'});
+        var playButton = new TextButtons(this,350,300,'Start Game!',{fill:'#f2f2f2', boundsAlignH: "center"});
         this.add.existing(playButton);
         playButton.on('pointerup', () => {
             this.scene.launch('StandardMode');
             this.scene.stop();
         })
 
-        var playButton = new TextButtons(this,350,325,'Start Challenge Mode!',{fill:'#f2f2f2'});
-        this.add.existing(playButton);
-        playButton.on('pointerup', () => {
+        var challengeButton = new TextButtons(this,310,325,'Start Challenge Mode!',{fill:'#f2f2f2'});
+        this.add.existing(challengeButton);
+        challengeButton.on('pointerup', () => {
             this.scene.launch('ChallengeMode');
             this.scene.stop();
         })
@@ -42,6 +43,8 @@ export class MMenuScene extends Phaser.Scene {
             this.scene.launch('HighScoreScene');
             this.scene.stop();
         })
+
+
 
        /*new ImageButtons(
            this,

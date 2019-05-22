@@ -1,3 +1,5 @@
+import { Scene } from "phaser";
+
 export class TextButtons extends Phaser.GameObjects.Text {
     constructor(scene: Phaser.Scene, x: number, y: number, text: string | string[], style: object) {
         super(scene, x, y, text, style);
@@ -24,4 +26,5 @@ export class TextButtons extends Phaser.GameObjects.Text {
     enterButtonHoverState() {
         this.setStyle({ fill: '#ff0' });
     }
+
 }
