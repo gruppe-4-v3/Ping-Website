@@ -51,6 +51,7 @@ export class PauseScene extends Phaser.Scene {
     update(): void {
         if (Phaser.Input.Keyboard.JustDown(this.pauseButton)) {
             this.scene.resume((<any>this.sys.settings.data).oldSceneKey);
+            this.sound.resumeAll();
             this.scene.stop();
         }
     }

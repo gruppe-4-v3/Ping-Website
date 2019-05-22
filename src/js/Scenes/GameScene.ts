@@ -33,6 +33,9 @@ export class GameScene extends Phaser.Scene {
     score: number = 0
     scoreText: Phaser.GameObjects.Text
 
+    /** Text for showing how to pause */
+    infoPauseText: Phaser.GameObjects.Text;
+
     /** The speed of the player */
     playerSpeed: number = 500;
     /** The colors of the player */
@@ -109,6 +112,9 @@ export class GameScene extends Phaser.Scene {
         //Adds a simple visual reference of lives remaining.
         this.lifeText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#f2f2f2' });
         this.scoreText = this.add.text(300, 16, '', { fontSize: '32px', fill: '#f2f2f2' })
+
+        //Adds a text explaining how to pause.	
+        this.infoPauseText = this.add.text(16, 41,'PRESS P TO PAUSE', {fill:'#f2f2f2'})
 
         // Calls function if anything touches the worldbounds
         this.physics.world.on('worldbounds', (body: Physics.Arcade.Body, up: boolean, down: boolean, left: boolean, right: boolean) => this.onWorldboundsCollision(body, up, down, left, right))
