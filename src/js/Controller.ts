@@ -1,10 +1,10 @@
 export class Controller {
-    constructor(){
+    constructor() {
         this.port = 12000;
 
         document.getElementById('connectPiBtn').onclick = () => this.Connect()
     }
-    
+
     webSocketClient: WebSocket;
 
     webSocketURL: string
@@ -13,7 +13,7 @@ export class Controller {
     isConnected: boolean = false;
     speed: number;
 
-    Connect(): void{
+    Connect(): void {
         this.ip = (<HTMLInputElement>document.getElementById('piIp')).value;
         this.webSocketURL = 'ws://' + this.ip + ':' + this.port;
         this.webSocketClient = new WebSocket(this.webSocketURL);

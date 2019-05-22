@@ -7,5 +7,4 @@ export class StandardMode extends GameScene {
             key: "StandardMode"
         })
     }
-
 }

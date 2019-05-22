@@ -1,5 +1,3 @@
-import { Scene } from "phaser";
-
 export class TextButtons extends Phaser.GameObjects.Text {
     constructor(scene: Phaser.Scene, x: number, y: number, text: string | string[], style: object) {
         super(scene, x, y, text, style);
@@ -10,10 +8,9 @@ export class TextButtons extends Phaser.GameObjects.Text {
             .on('pointerover', () => this.enterButtonHoverState())
             .on('pointerout', () => this.enterButtonRestState())
             .on('pointerdown', () => this.enterButtonActiveState())
-        //.on('pointerup', () => this.enterButtonHoverState());
     }
 
-    originalColor : string;
+    originalColor: string;
 
     enterButtonActiveState() {
         this.setStyle({ fill: '#e60000' });
@@ -26,5 +23,4 @@ export class TextButtons extends Phaser.GameObjects.Text {
     enterButtonHoverState() {
         this.setStyle({ fill: '#ff0' });
     }
-
 }

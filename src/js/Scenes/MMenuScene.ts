@@ -1,7 +1,4 @@
 import { TextButtons } from '../GameObjects/TextButtons'
-import { ImageButtons } from '../GameObjects/ImageButtons'
-import { GameScene } from './GameScene';
-//import img from '../../assets/PlayGameButRest.png'
 
 export class MMenuScene extends Phaser.Scene {
     constructor() {
@@ -17,6 +14,7 @@ export class MMenuScene extends Phaser.Scene {
     }
 
     create(): void {
+        /** Adding and playing the theme melody */
         this.theme = this.sound.add('Theme', { loop: true });
         this.theme.play();
 
@@ -27,20 +25,25 @@ export class MMenuScene extends Phaser.Scene {
             this.scale.toggleFullscreen();
         });
 
+        /** Adding start game buttons and functionality  */
         var playButton = new TextButtons(this, 350, 300, 'Start Game!', { fill: '#f2f2f2', boundsAlignH: "center" });
         this.add.existing(playButton);
+
         playButton.on('pointerup', () => {
             this.scene.launch('StandardMode', { theme: this.theme });
             this.scene.stop();
         })
 
+        /** Adding start challenge game and functionality */
         var challengeButton = new TextButtons(this, 310, 325, 'Start Challenge Mode!', { fill: '#f2f2f2' });
         this.add.existing(challengeButton);
+
         challengeButton.on('pointerup', () => {
             this.scene.launch('ChallengeMode', { theme: this.theme });
             this.scene.stop();
         })
 
+        /** Adding highscore button and functionality */
         var highScoreButton = new TextButtons(this, 350, 350, 'High Scores', { fill: '#f2f2f2' });
         this.add.existing(highScoreButton);
         highScoreButton.on('pointerup', () => {
@@ -48,24 +51,6 @@ export class MMenuScene extends Phaser.Scene {
             this.theme.stop();
             this.scene.stop();
         })
-
-
-
-        /*new ImageButtons(
-            this,
-            350,
-            400,
-            'playButtonAtlas',
-            {img},
-            'PlayGameButActive.png',
-            'PlayGameButHover.png',
-            () => {
-             this.scene.launch('GameScene');
-             this.scene.stop();  
-            }
-        );*/
     }
-
-    update(): void {
-    }
+    update(): void { }
 }

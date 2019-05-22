@@ -3,10 +3,10 @@ import { Login } from "./Login"
 import { Controller } from "./Controller"
 import {
   PingGame,
-// Scenes
-  PauseScene, 
-  MMenuScene, 
-  HighScoreScene, 
+  // Scenes
+  PauseScene,
+  MMenuScene,
+  HighScoreScene,
   GameOverScene,
   StandardMode,
   ChallengeMode
@@ -30,6 +30,7 @@ let config: GameConfig = {
   physics: {
     default: "arcade"
   },
+  /** All scenes in the game has to be added here. The first one is the one the game starts on. */
   scene: [MMenuScene, StandardMode, ChallengeMode, PauseScene, HighScoreScene, GameOverScene],
   url: "http://projectping.azurewebsites.net/"
 }

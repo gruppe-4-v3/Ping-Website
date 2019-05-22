@@ -2,10 +2,8 @@ import { GameObjects, Physics, Scene, Time, Game } from 'phaser'
 import { RESTCalls } from "./../RESTCalls"
 import { Login } from "./../Login"
 import { PingGame } from '../PingGame';
-import { MMenuScene } from './MMenuScene';
 
 export class GameScene extends Phaser.Scene {
-
     constructor(config: string | Phaser.Scenes.Settings.Config) {
         super(config);
     }
@@ -15,6 +13,7 @@ export class GameScene extends Phaser.Scene {
     pauseButton: Phaser.Input.Keyboard.Key
     time: Phaser.Time.Clock
 
+    /** Properties for sounds */
     theme: Phaser.Sound.BaseSound;
     growSound: Phaser.Sound.BaseSound;
     shrinkSound: Phaser.Sound.BaseSound;
@@ -23,7 +22,7 @@ export class GameScene extends Phaser.Scene {
     straightSound: Phaser.Sound.BaseSound;
     hpLostSound: Phaser.Sound.BaseSound;
 
-    //** Gamemode */
+    /** Gamemode */
     gameMode: string = "Standard";
 
     /** Counter for the amount of lives left */
@@ -144,10 +143,10 @@ export class GameScene extends Phaser.Scene {
         }
 
         this.movePlayer()
-            
+
         // Pause the GameScene if the pausebutton key is pressed and switch to PauseScene. 
         if (Phaser.Input.Keyboard.JustDown(this.pauseButton)) {
-            this.scene.launch('PauseScene', { 'oldSceneKey': this.sys.settings.key, theme:this.theme });
+            this.scene.launch('PauseScene', { 'oldSceneKey': this.sys.settings.key, theme: this.theme });
             this.scene.pause();
         }
 
@@ -258,7 +257,6 @@ export class GameScene extends Phaser.Scene {
      * @param color The color decide what the powerup/down do
      * see properties for what the colors do and if you want to change it
      */
-
     private spawnBomb(): GameObjects.Arc {
         let spawnPoint = { x: Phaser.Math.Between(25, 775), y: 50 }
 
@@ -274,7 +272,6 @@ export class GameScene extends Phaser.Scene {
         bombBody.onWorldBounds = true
 
         this.physics.add.collider(bomb, this.player, this.onPlayerCollideBomb, null, this)
-
 
         return bomb;
     }
@@ -307,9 +304,7 @@ export class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(square, this.player, this.onPlayerCollidePowerUp, null, this)
 
-
         return square;
-
     }
 
     private onPlayerCollidePowerUp(square: GameObjects.Rectangle, player: GameObjects.GameObject) {
@@ -325,8 +320,6 @@ export class GameScene extends Phaser.Scene {
                 delay: 10000, callback: function () { this.playerSpeed = this.playerSpeed / 1.3 },
                 callbackScope: this
             })
-
-
         }
         // Make player bigger, if ball color is equal to enlarge powerup
         else if (square.fillColor == this.biggerColor) {
@@ -390,7 +383,6 @@ export class GameScene extends Phaser.Scene {
                 callbackScope: this
             })
         }
-
     }
 
     /** Create and adds a player GameObject to the GameScene*/
@@ -446,18 +438,18 @@ export class GameScene extends Phaser.Scene {
         this.scene.start("GameOverScene", { 'oldSceneKey': this.sys.settings.key, 'finalScore': this.score });
     }
 
-    private movePlayer(){
+    private movePlayer() {
         let data: number = undefined
-        if((<PingGame>this.game).externalController.isConnected){
+        if ((<PingGame>this.game).externalController.isConnected) {
             data = (<PingGame>this.game).externalController.speed
         }
-        
-        if(this.player.body instanceof Phaser.Physics.Arcade.Body){
-            
-            if (data !== undefined && data !== 0){
+
+        if (this.player.body instanceof Phaser.Physics.Arcade.Body) {
+
+            if (data !== undefined && data !== 0) {
                 this.player.body.velocity.x = data * 100;
             }
-            else if(this.cursor.left.isDown)// move left if the left key is pressed
+            else if (this.cursor.left.isDown)// move left if the left key is pressed
             {
                 this.player.body.velocity.x = -this.playerSpeed;
             }
@@ -470,8 +462,5 @@ export class GameScene extends Phaser.Scene {
                 this.player.body.velocity.x = 0;
             }
         }
-            
-        
     }
-    
 }
