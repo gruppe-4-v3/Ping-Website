@@ -41,7 +41,7 @@ export class HighScoreScene extends Phaser.Scene {
 
         /** Menu buttons for choosing highscore */
         let GlobalHSBtn = new TextButtons(this, 200, 20, 'Global Leaderboard', { fill: '#8c1601' });
-        let MainMenuBtn = new TextButtons(this, 350, 450, 'Back to the Main Menu', { fill: '#f2f2f2' });
+        let MainMenuBtn = new TextButtons(this, 350, 550, 'Back to the Main Menu', { fill: '#f2f2f2' });
         let GameModeStandard = new TextButtons(this, 250, 35, 'Standard', { fill: '8c1601' });
         let GameModeChallenge = new TextButtons(this, 450, 35, 'Challenge', { fill: '8c1601' });
 
@@ -105,7 +105,9 @@ export class HighScoreScene extends Phaser.Scene {
             this.textGroup.add(this.add.text(400, y, "Date"));
             this.textGroup.add(this.add.text(650, y, "Gamemode"));
 
-            response.forEach(element => {
+            for (let i = 0; i < 20; i++) {
+                let element = response[i];
+                
                 y = y + 20;
                 // Takes the date element and makes it to a string. Splits it up in 2 - separated at T.
                 let dateString = element.time.toString();
@@ -119,7 +121,7 @@ export class HighScoreScene extends Phaser.Scene {
                 this.textGroup.add(this.add.text(650, y, element.type));
 
                 rang++;
-            })
+            }
         });
     }
 

@@ -39,9 +39,7 @@ export class GameScene extends Phaser.Scene {
     /** The speed of the player */
     playerSpeed: number = 500;
     /** The colors of the player */
-    playerColor: number = 0x1099b5;
-    /**Ball color */
-    ballColor: number = 0xffffff;
+    playerColor: number = 0xff8300;
 
     //<<<<<<<<<< BOMB PROPERTIES >>>>>>>>>>\\
     //Times
@@ -65,6 +63,8 @@ export class GameScene extends Phaser.Scene {
     smallColor: number = 0xff008c;
 
     //<<<<<<<<<< BALL PROPERTIES >>>>>>>>>>\\
+    /**Ball color */
+    ballColor: number = 0xffffff;
     /** How often a new ball spawns in seconds */
     ballSpawnTime: number = 2
     /** Time since last ball spawned */
