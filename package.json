@@ -10,7 +10,9 @@
     "serve": "node_modules\\.bin\\http-server dist/ -g -o",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors",
-    "test": "jest"
+    "test": "jest",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "Ebbe Vang, evang.dk",
   "license": "ISC",
@@ -40,6 +42,8 @@
     "@types/node": "^12.0.2",
     "axios": "^0.18.0",
     "googleapis": "^39.2.0",
-    "phaser": "^3.16.2"
-  }
+    "phaser": "^3.16.2",
+    "snyk": "^1.230.5"
+  },
+  "snyk": true
 }
